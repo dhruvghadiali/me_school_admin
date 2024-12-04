@@ -1,0 +1,33 @@
+{
+    "theme":{
+        "light":{
+            "backgroundHEX": "#FAFAFA",
+            "backgroundHSL": "0 0% 98%",
+            "primaryHEX": "#3B98Ba",
+            "primaryHSL": "196 52% 48%",
+            "primaryForegroundHEX": "#1B1B1D",
+            "primaryForegroundHSL": "240 5% 11%",
+            "secondaryHEX": "#E1E5EA",
+            "secondaryHSL": "213 18% 90%",
+            "secondaryForegroundHEX": "#1B1B1D",
+            "secondaryForegroundHSL": "240 5% 11%",
+            "dangerHEX": "#AB4459",
+            "dangerHSL": "348 43% 47%",
+            "dangerForegroundHEX": "#1B1B1D",
+            "dangerForegroundHSL": "240 5% 11%",
+            "successHEX": "#60B159",
+            "successHSL": "115 36% 52%",
+            "successForegroundHEX": "#1B1B1D",
+            "successForegroundHSL": "240 5% 11%",
+            "warningHEX": "#D17615",
+            "warningHSL": "31 82% 45%",
+            "warningForegroundHEX": "#1B1B1D",
+            "warningForegroundHSL": "240 5% 11%",
+            "darkHEX": "#1B1B1D",
+            "darkHSL": "240 5% 11%",
+            "darkForegroundHEX": "#FAFAFA",
+            "darkForegroundHSL": "0 0% 98%"
+        },
+        "dark":{}
+    }
+}
