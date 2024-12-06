@@ -4,8 +4,7 @@ import { Label } from "../../ui/label";
 import {
   inputClassNameByVariant,
   inputMessageClassNameByVariant,
-} from "../../../utils/meClassNameWrapper";
-import { variants } from "../../../utils/enums";
+} from "./meInputClassNameWrapper";
 
 const MEInput = ({
   required,
@@ -44,18 +43,9 @@ MEInput.propTypes = {
   required: PropTypes.bool,
   label: PropTypes.string,
   message: PropTypes.string,
-  inputVariant: PropTypes.objectOf(variants),
-  labelVariant: PropTypes.objectOf(variants),
-  messageVariant: PropTypes.objectOf(variants),
-};
-
-MEInput.defaultProps = {
-  required: false,
-  label: "",
-  message: "",
-  inputVariant: variants.PRIMARY,
-  labelVariant: variants.PRIMARY,
-  messageVariant: variants.PRIMARY,
+  inputVariant: PropTypes.string,
+  labelVariant: PropTypes.string,
+  messageVariant: PropTypes.string,
 };
 
 export default MEInput;
