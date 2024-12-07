@@ -1,16 +1,30 @@
+import { useEffect } from "react";
 import { useFormik } from "formik";
 import { useSelector, useDispatch } from "react-redux";
+import {useNavigate} from 'react-router';
 import * as Yup from "yup";
+
 import MEInput from "../../../common/input/meInput";
 import MEButton from "../../../common/button/meButton";
 import MELoaderIcon from "../../../common/loader/meLoaderIcon";
 import { variants } from "../../../../utils/enums";
+import { sidebarMenuName } from "../../../../utils/enums";
+import { routeName } from "../../../../utils/routeName";
 import { validationMessage } from "../../../../utils/validationMessage";
 import { validateUser } from "../../../../slice/login/loginAction";
+import { changeActiveMenu } from "../../../../slice/sidebar/sidebarSlice";
 
 const LoginForm = () => {
-  const { loader, error } = useSelector((state) => state.login);
+  const { loader, error, isValidUser } = useSelector((state) => state.login);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(isValidUser){
+      navigate(routeName.home,{replace: true});
+      dispatch(changeActiveMenu(sidebarMenuName.HOME))
+    } 
+  }, [isValidUser]);
 
   const formik = useFormik({
     initialValues: {

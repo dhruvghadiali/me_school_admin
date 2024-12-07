@@ -6,3 +6,11 @@ export const variants = {
     SUCCESS: "success",
     DARK: "dark",
 };
+
+export const sidebarMenuName = {
+    HOME: "home",
+    ADMISSION: "admission",
+    PROFILE: "profile",
+    SETTINGS: "settings",
+    LOGOUT: "logout",
+}
