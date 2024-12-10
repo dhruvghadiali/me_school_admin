@@ -86,7 +86,7 @@ const MESidebar = ({ children }) => {
           </SidebarFooter>
         </SidebarContent>
       </Sidebar>
-      <main>
+      <main className="w-full ">
         <SidebarTrigger />
         <div className="ml-5">{children}</div>
       </main>
