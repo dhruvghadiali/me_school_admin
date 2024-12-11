@@ -1,0 +1,3 @@
+const HomeScreenChartSummary = () => {
+    return(<></>);
+}
