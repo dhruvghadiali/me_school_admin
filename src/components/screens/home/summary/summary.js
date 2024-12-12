@@ -4,7 +4,7 @@ import {variants} from '../../../../utils/enums';
 
 const HomeScreenSummary = () => {
   return (
-    <div className="grid grid-flow-row grid-cols-4 mr-5 gap-4 mt-10">
+    <div className="grid grid-flow-row grid-cols-4 mr-5 gap-4 mt-5 mb-5">
       <HomeScreenSummaryCard
         SummaryTitle="781K"
         summaryDescription="Admission Form"
