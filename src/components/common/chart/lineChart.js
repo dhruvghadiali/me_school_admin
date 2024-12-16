@@ -34,7 +34,7 @@ const chartConfig = {
 
 const MELineChart = ({ buttonVariant, ...props }) => {
   return (
-    <ChartContainer config={chartConfig} className=" w-full">
+    <ChartContainer config={chartConfig} className="h-80 w-full">
       <LineChart accessibilityLayer data={chartData}>
         <CartesianGrid vertical={false}  strokeWidth={.2} stroke="#000000" />
         <XAxis

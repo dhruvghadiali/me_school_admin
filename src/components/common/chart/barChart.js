@@ -34,9 +34,9 @@ const chartConfig = {
 
 const MEBarChart = ({ buttonVariant, ...props }) => {
   return (
-    <ChartContainer config={chartConfig} className=" w-full">
-      <BarChart accessibilityLayer data={chartData}>
-        <CartesianGrid vertical={false} />
+    <ChartContainer config={chartConfig} className="h-80 w-full">
+      <BarChart accessibilityLayer data={chartData} >
+        <CartesianGrid vertical={false}  strokeWidth={.2} stroke="#000000"/>
         <XAxis
           dataKey="month"
           tickLine={false}
