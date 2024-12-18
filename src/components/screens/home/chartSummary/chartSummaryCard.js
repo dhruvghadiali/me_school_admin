@@ -1,5 +1,6 @@
 import { FilterIcon } from "lucide-react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import _ from "lodash";
 import {
   Card,
   CardContent,
@@ -21,6 +22,10 @@ const HomeScreenChartSummaryCard = ({
   summaryHeader,
   summarySubtitle,
   summaryNotes,
+  dropdownList,
+  activeDropdown,
+  dropdownTitle,
+  onDropdownSelection,
   children,
 }) => {
   return (
@@ -39,12 +44,23 @@ const HomeScreenChartSummaryCard = ({
                 <FilterIcon size={15} className="text-dark" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="mr-2">
-                <DropdownMenuLabel>Status</DropdownMenuLabel>
+                <DropdownMenuLabel className="text-dark text-xs font-semibold">
+                  {_.startCase(dropdownTitle)}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Admission Form</DropdownMenuItem>
-                <DropdownMenuItem>Approved Form</DropdownMenuItem>
-                <DropdownMenuItem>Rejected Form</DropdownMenuItem>
-                <DropdownMenuItem>Canceled Form</DropdownMenuItem>
+                {_.map(dropdownList, (dropdownLabel) => (
+                  <DropdownMenuItem
+                    className={
+                      activeDropdown === dropdownLabel
+                        ? "text-primary"
+                        : "text-dark"
+                    }
+                    key={dropdownLabel}
+                    onClick={() => onDropdownSelection(dropdownLabel)}
+                  >
+                    {_.startCase(dropdownLabel)}
+                  </DropdownMenuItem>
+                ))}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -59,9 +75,13 @@ const HomeScreenChartSummaryCard = ({
 };
 
 HomeScreenChartSummaryCard.propTypes = {
-    summaryHeader: PropTypes.string,
-    summarySubtitle: PropTypes.string,
-    summaryNotes: PropTypes.string,
-  };
+  summaryHeader: PropTypes.string,
+  summarySubtitle: PropTypes.string,
+  summaryNotes: PropTypes.string,
+  dropdownTitle: PropTypes.string,
+  activeDropdown: PropTypes.string,
+  dropdownList: PropTypes.array,
+  onDropdownSelection: PropTypes.func,
+};
 
 export default HomeScreenChartSummaryCard;

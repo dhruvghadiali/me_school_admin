@@ -7,7 +7,7 @@ export const mockSummaryData = {
   },
   applicationFormSummary: [
     {
-      label: "admissionForm",
+      label: "admission form",
       data : [
         { year: "2024", applicationForm: 500,},
         { year: "2023", applicationForm: 500,},
@@ -22,7 +22,7 @@ export const mockSummaryData = {
       ]
     },
     {
-      label: "approvedForm",
+      label: "approved form",
       data : [
         { year: "2024", applicationForm: 500,},
         { year: "2023", applicationForm: 500,},
@@ -37,7 +37,7 @@ export const mockSummaryData = {
       ]
     },
     {
-      label: "rejectedForm",
+      label: "rejected form",
       data : [
         { year: "2024", applicationForm: 500,},
         { year: "2023", applicationForm: 500,},
@@ -52,7 +52,7 @@ export const mockSummaryData = {
       ]
     },
     {
-      label: "canceledForm",
+      label: "canceled form",
       data : [
         { year: "2024", applicationForm: 500,},
         { year: "2023", applicationForm: 500,},

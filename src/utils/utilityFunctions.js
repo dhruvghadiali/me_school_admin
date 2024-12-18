@@ -5,3 +5,7 @@ export const indianNumberFormate = (value) => {
   if (val >= 1000) return `${(value / 1000).toFixed(2)} T`;
   return value;
 };
+
+export const isUndefinedOrNull = (value) => {
+  return value === undefined || value === null;
+}
