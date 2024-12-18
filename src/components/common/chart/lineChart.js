@@ -1,6 +1,5 @@
 import { Line, LineChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,

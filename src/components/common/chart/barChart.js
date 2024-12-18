@@ -1,64 +1,43 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "../../ui/chart";
+import PropTypes from "prop-types";
 
-const chartData = [
-  { month: "January", desktop: 500, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
-
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "#2563eb",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "#60a5fa",
-  },
-};
-
-const MEBarChart = ({ buttonVariant, ...props }) => {
+const MEBarChart = (props) => {
+  const { xAxisDataKey, YAxisDataKey, barColor, chartData, chartConfig } = props;
   return (
     <ChartContainer config={chartConfig} className="h-80 w-full">
-      <BarChart accessibilityLayer data={chartData} >
-        <CartesianGrid vertical={false}  strokeWidth={.2} stroke="#000000"/>
+      <BarChart accessibilityLayer data={chartData}>
+        <CartesianGrid vertical={false} strokeWidth={0.2} stroke="#000000" />
         <XAxis
-          dataKey="month"
+          dataKey={xAxisDataKey}
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-          tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
-          dataKey="desktop"
+          dataKey={YAxisDataKey}
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-        //   tickFormatter={(value) => value.slice(0, 3)}
+          max={1000}
         />
         <ChartTooltip content={<ChartTooltipContent />} />
-        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+        <Bar dataKey={YAxisDataKey} fill={barColor} radius={20} barSize={20}  />
       </BarChart>
     </ChartContainer>
   );
 };
 
-MEBarChart.propTypes = {};
+MEBarChart.propTypes = {
+  xAxisDataKey: PropTypes.string,
+  YAxisDataKey: PropTypes.string,
+  barColor: PropTypes.string,
+  chartData: PropTypes.array,
+  chartConfig: PropTypes.object,
+};
 
 export default MEBarChart;

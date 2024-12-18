@@ -18,16 +18,18 @@ import {
   DropdownMenuTrigger,
 } from "../../../ui/dropdown-menu";
 
-const HomeScreenChartSummaryCard = ({
-  summaryHeader,
-  summarySubtitle,
-  summaryNotes,
-  dropdownList,
-  activeDropdown,
-  dropdownTitle,
-  onDropdownSelection,
-  children,
-}) => {
+const HomeScreenChartSummaryCard = (props) => {
+  const {
+    summaryHeader,
+    summarySubtitle,
+    summaryNotes,
+    dropdownList,
+    activeDropdown,
+    dropdownTitle,
+    onDropdownSelection,
+    children,
+  } = props;
+
   return (
     <Card className="">
       <CardHeader>
@@ -48,7 +50,7 @@ const HomeScreenChartSummaryCard = ({
                   {_.startCase(dropdownTitle)}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {_.map(dropdownList, (dropdownLabel) => (
+                {_.map(dropdownList, (dropdownLabel, index) => (
                   <DropdownMenuItem
                     className={
                       activeDropdown === dropdownLabel
@@ -56,7 +58,7 @@ const HomeScreenChartSummaryCard = ({
                         : "text-dark"
                     }
                     key={dropdownLabel}
-                    onClick={() => onDropdownSelection(dropdownLabel)}
+                    onClick={() => onDropdownSelection(dropdownLabel, index)}
                   >
                     {_.startCase(dropdownLabel)}
                   </DropdownMenuItem>

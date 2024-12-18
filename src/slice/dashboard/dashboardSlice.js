@@ -10,6 +10,7 @@ export const dashboardSlice = createSlice({
     loader: false,
     error: "",
     applicationFormSummaryActiveMenu: "",
+    applicationFormSummaryBarChartColor: "",
     classLevelSummaryActiveMenu: "",
   },
   reducers: {
@@ -18,10 +19,33 @@ export const dashboardSlice = createSlice({
       state.loader = false;
       state.error = "";
       state.applicationFormSummaryActiveMenu = "";
+      state.applicationFormSummaryBarChartColor = "";
       state.classLevelSummaryActiveMenu = "";
     },
     setApplicationFormSummaryActiveMenu: (state, action) => {
       state.applicationFormSummaryActiveMenu = action.payload;
+    },
+    setApplicationFormSummaryBarChartColor: (state, action) => {
+      let color = '';
+      switch(action.payload){
+        case 0:
+          color = '#3b98ba';
+          break;
+        case 1:
+          color = '#60b159';
+          break;
+        case 2:
+          color = '#ab4459';
+          break;
+        case 3:
+          color = '#d17615';
+          break;
+        default:
+          color = '#1b1b1d';
+          break;
+      }
+
+      state.applicationFormSummaryBarChartColor = color;
     },
     setClassLevelSummaryActiveMenu: (state, action) => {
       state.classLevelSummaryActiveMenu = action.payload;
@@ -32,8 +56,6 @@ export const dashboardSlice = createSlice({
       .addCase(summary.pending, (state, _) => {
         state.loader = true;
         state.error = "";
-        state.applicationFormSummaryActiveMenu = "";
-        state.classLevelSummaryActiveMenu = "";
         state.summaryData = defaultSummaryData;
       })
       .addCase(summary.fulfilled, (state, action) => {
@@ -43,8 +65,6 @@ export const dashboardSlice = createSlice({
       })
       .addCase(summary.rejected, (state, action) => {
         state.loader = false;
-        state.applicationFormSummaryActiveMenu = "";
-        state.classLevelSummaryActiveMenu = "";
         state.summaryData = defaultSummaryData;
         state.error = action.payload || responseMessage.somethingWentWrong;
       });
@@ -54,6 +74,7 @@ export const dashboardSlice = createSlice({
 export const {
   resetState,
   setApplicationFormSummaryActiveMenu,
+  setApplicationFormSummaryBarChartColor,
   setClassLevelSummaryActiveMenu,
 } = dashboardSlice.actions;
 
