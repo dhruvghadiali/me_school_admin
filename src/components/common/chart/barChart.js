@@ -26,7 +26,7 @@ const MEBarChart = (props) => {
           max={1000}
         />
         <ChartTooltip content={<ChartTooltipContent />} />
-        <Bar dataKey={YAxisDataKey} fill={barColor} radius={20} barSize={20}  />
+        <Bar dataKey={YAxisDataKey} fill={barColor} radius={20} barSize={20} name={"Forms"}  />
       </BarChart>
     </ChartContainer>
   );

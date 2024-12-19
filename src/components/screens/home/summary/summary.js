@@ -17,7 +17,7 @@ const HomeScreenSummary = () => {
             : "-"
         }
         summaryDescription="Admission Form"
-        titleVariant={variants.DARK}
+        titleVariant={variants.PRIMARY}
       />
       <HomeScreenSummaryCard
         SummaryTitle={

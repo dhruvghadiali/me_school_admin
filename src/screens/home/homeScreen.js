@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { summary } from "../../slice/dashboard/dashboardAction";
+import { resetState } from "../../slice/dashboard/dashboardSlice";
 import AuthHoc from "../../components/common/authHoc/authHoc";
 import MESidebar from "../../components/common/sidebar/meSidebar";
 import HomeScreenHeader from "../../components/screens/home/header/header";
@@ -14,6 +15,7 @@ const HomeScreen = () => {
   const { loader } = useSelector((state) => state.dashboard);
 
   useEffect(() => {
+    dispatch(resetState());
     dispatch(summary());
   }, []);
 

@@ -1,12 +1,10 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
+import { useDispatch, useSelector } from "react-redux";
 
 import HomeScreenChartSummaryCard from "./chartSummaryCard";
 import MEBarChart from "../../../common/chart/barChart";
 import MELineChart from "../../../common/chart/lineChart";
 import {
-  resetState,
   setApplicationFormSummaryActiveMenu,
   setApplicationFormSummaryBarChartColor,
   setClassLevelSummaryActiveMenu,
@@ -14,52 +12,18 @@ import {
 
 const HomeScreenChartSummary = () => {
   const {
-    summaryData,
+    applicationFormSummaryDropdownList,
+    applicationFormSummaryChartData,
+    applicationFormSummaryChartConfig,
     applicationFormSummaryActiveMenu,
     applicationFormSummaryBarChartColor,
+    classLevelSummaryDropdownList,
+    classLevelSummaryChartData,
     classLevelSummaryActiveMenu,
+    classLevelSummaryChartConfig,
+    classLevelSummaryLineChartConfig,
   } = useSelector((state) => state.dashboard);
   const dispatch = useDispatch();
-
-  const applicationFormSummary =
-    summaryData &&
-    summaryData.applicationFormSummary &&
-    summaryData.applicationFormSummary.length > 0
-      ? summaryData.applicationFormSummary
-      : [];
-
-  const applicationFormSummaryDropdownList = _.map(
-    applicationFormSummary,
-    "label"
-  );
-
-  const applicationFormSummaryChartData = _.find(
-    applicationFormSummary,
-    (summary) => summary.label === applicationFormSummaryActiveMenu
-  );
-
-  const classLevelSummary =
-    summaryData &&
-    summaryData.classLevelSummary &&
-    summaryData.classLevelSummary.length > 0
-      ? summaryData.classLevelSummary
-      : [];
-
-  const classLevelSummaryDropdownList = _.map(classLevelSummary, "label");
-
-  useEffect(() => {
-    dispatch(resetState());
-
-    if (applicationFormSummaryDropdownList.length > 0) {
-      applicationFormSummaryActiveMenuAction(
-        applicationFormSummaryDropdownList[0]
-      );
-      applicationFormSummaryBarChartColorAction(0);
-    }
-
-    classLevelSummaryDropdownList.length > 0 &&
-      classLevelSummaryActiveMenuAction(classLevelSummaryDropdownList[0]);
-  }, []);
 
   const applicationFormSummaryActiveMenuAction = (selectedOption) =>
     dispatch(setApplicationFormSummaryActiveMenu(selectedOption));
@@ -80,21 +44,18 @@ const HomeScreenChartSummary = () => {
         dropdownList={applicationFormSummaryDropdownList}
         activeDropdown={applicationFormSummaryActiveMenu}
         dropdownTitle="from status"
-        summaryHeader={`Summary by Year (${_.upperCase(applicationFormSummaryActiveMenu)})`}
+        summaryHeader={`Summary by Year (${_.upperCase(
+          applicationFormSummaryActiveMenu
+        )})`}
         summarySubtitle="Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click."
         summaryNotes="Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click."
       >
         <MEBarChart
-          chartData={
-            applicationFormSummaryChartData &&
-            applicationFormSummaryChartData.data
-              ? applicationFormSummaryChartData.data
-              : []
-          }
-          chartConfig={{}}
+          chartData={applicationFormSummaryChartData}
+          chartConfig={applicationFormSummaryChartConfig}
+          barColor={applicationFormSummaryBarChartColor}
           xAxisDataKey="year"
           YAxisDataKey="form"
-          barColor={applicationFormSummaryBarChartColor}
         />
       </HomeScreenChartSummaryCard>
       <HomeScreenChartSummaryCard
@@ -104,11 +65,19 @@ const HomeScreenChartSummary = () => {
         dropdownList={classLevelSummaryDropdownList}
         activeDropdown={classLevelSummaryActiveMenu}
         dropdownTitle="year"
-        summaryHeader="Summary by Class Level"
+        summaryHeader={`Summary by Class Level (${_.upperCase(
+          classLevelSummaryActiveMenu
+        )})`}
         summarySubtitle="Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click."
         summaryNotes="Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click."
       >
-        <MELineChart />
+        <MELineChart
+          chartData={classLevelSummaryChartData}
+          chartConfig={classLevelSummaryChartConfig}
+          lineConfig={classLevelSummaryLineChartConfig}
+          xAxisDataKey="classLevel"
+          YAxisDataKey="admissionForm"
+        />
       </HomeScreenChartSummaryCard>
     </div>
   );
