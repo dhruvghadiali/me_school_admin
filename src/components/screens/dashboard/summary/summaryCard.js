@@ -1,7 +1,13 @@
-import PropTypes from "prop-types";
+import { homeScreenSummaryCardTitleClassNameByVariant } from "@MEScreenComponents/dashboard/summary/summaryCardClassNameWrapper";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@MEShadcnComponents/card";
+
 import _ from "lodash";
-import { Card, CardHeader, CardTitle, CardDescription } from "../../../ui/card";
-import { homeScreenSummaryCardTitleClassNameByVariant } from "./summaryCardClassNameWrapper";
+import PropTypes from "prop-types";
 
 const HomeScreenSummaryCard = ({
   SummaryTitle,
@@ -9,7 +15,7 @@ const HomeScreenSummaryCard = ({
   titleVariant,
 }) => {
   return (
-    <Card className="h-fit">
+    <Card className="h-fit" key={_.uniqueId()}>
       <CardHeader className="items-center">
         <CardTitle
           className={`text-6xl ${homeScreenSummaryCardTitleClassNameByVariant(

@@ -1,20 +1,22 @@
-import PropTypes from "prop-types";
-import { Input } from "../../ui/input";
-import { Label } from "../../ui/label";
+import { Input } from "@MEShadcnComponents/input";
+import { Label } from "@MEShadcnComponents/label";
 import {
   inputClassNameByVariant,
   inputMessageClassNameByVariant,
-} from "./meInputClassNameWrapper";
+} from "@MECommonComponents/input/meInputClassNameWrapper";
 
-const MEInput = ({
-  required,
-  label,
-  message,
-  inputVariant,
-  labelVariant,
-  messageVariant,
-  ...props
-}) => {
+import PropTypes from "prop-types";
+
+const MEInput = (props) => {
+  const {
+    required,
+    label,
+    message,
+    inputVariant,
+    labelVariant,
+    messageVariant,
+  } = props;
+
   return (
     <div className="space-y-2">
       <Label className={inputMessageClassNameByVariant(labelVariant)}>

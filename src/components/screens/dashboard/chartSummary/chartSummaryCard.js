@@ -1,6 +1,4 @@
 import { FilterIcon } from "lucide-react";
-import PropTypes from "prop-types";
-import _ from "lodash";
 import {
   Card,
   CardContent,
@@ -8,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../../ui/card";
+} from "@MEShadcnComponents/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +14,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../ui/dropdown-menu";
+} from "@MEShadcnComponents/dropdown-menu";
+
+import _ from "lodash";
+import PropTypes from "prop-types";
 
 const DashboardScreenChartSummaryCard = (props) => {
   const {
@@ -35,9 +36,9 @@ const DashboardScreenChartSummaryCard = (props) => {
       <CardHeader>
         <div className="grid grid-cols-[auto_50px] gap-1 ">
           <div>
-            <CardTitle>{summaryHeader}</CardTitle>
+            <CardTitle>{_.upperFirst(summaryHeader)}</CardTitle>
             <CardDescription className="mt-2">
-              {summarySubtitle}
+              {_.upperFirst(summarySubtitle)}
             </CardDescription>
           </div>
           <div className="content-center justify-self-end">

@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import store from './store';
+import App from '@/App';
+import reportWebVitals from '@/reportWebVitals';
+import store from '@/store';
 
 import { Provider } from 'react-redux';
-import './styles/globals.css';
+
+import '@MEStyles/globals.css';
+import '@MELocalizationEn/i18n';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

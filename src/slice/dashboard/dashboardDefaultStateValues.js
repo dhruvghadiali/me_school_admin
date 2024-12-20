@@ -1,4 +1,4 @@
-import {variantColor} from '../../utils/enums';
+import {variantColor} from '@MEUtils/enums';
 
 export const defaultSummaryData = {
   summary: {

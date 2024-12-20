@@ -3,11 +3,14 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "../../ui/chart";
+} from "@MEShadcnComponents/chart";
+
 import PropTypes from "prop-types";
 
 const MEBarChart = (props) => {
-  const { xAxisDataKey, YAxisDataKey, barColor, chartData, chartConfig } = props;
+  const { xAxisDataKey, YAxisDataKey, barColor, chartData, chartConfig } =
+    props;
+
   return (
     <ChartContainer config={chartConfig} className="h-80 w-full">
       <BarChart accessibilityLayer data={chartData}>
@@ -26,7 +29,13 @@ const MEBarChart = (props) => {
           max={1000}
         />
         <ChartTooltip content={<ChartTooltipContent />} />
-        <Bar dataKey={YAxisDataKey} fill={barColor} radius={20} barSize={20} name={"Forms"}  />
+        <Bar
+          dataKey={YAxisDataKey}
+          fill={barColor}
+          radius={20}
+          barSize={20}
+          name={"Forms"}
+        />
       </BarChart>
     </ChartContainer>
   );

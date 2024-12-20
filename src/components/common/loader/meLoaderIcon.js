@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const MELoaderIcon = () => {
   return (
     <div role="status">
@@ -20,5 +22,7 @@ const MELoaderIcon = () => {
     </div>
   );
 };
+
+MELoaderIcon.propTypes = {};
 
 export default MELoaderIcon;

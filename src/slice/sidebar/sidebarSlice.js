@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { sidebarMenuName } from "../../utils/enums";
+import { sidebarMenuName } from "@MEUtils/enums";
 
 export const sidebarSlice = createSlice({
   name: "sidebar",
   initialState: {
-    activeMenu: sidebarMenuName.HOME,
+    activeMenu: sidebarMenuName.DASHBOARD,
   },
   reducers: {
     changeActiveMenu: (state, action) => {

@@ -1,5 +1,5 @@
-import AuthHoc from "../../components/common/authHoc/authHoc";
-import MESidebar from "../../components/common/sidebar/meSidebar";
+import AuthHoc from "@MECommonComponents/authHoc/authHoc";
+import MESidebar from "@MECommonComponents/sidebar/meSidebar";
 
 const ProfileScreen = () => {
   return (
