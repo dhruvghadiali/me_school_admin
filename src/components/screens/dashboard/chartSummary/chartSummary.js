@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 
-import HomeScreenChartSummaryCard from "./chartSummaryCard";
+import DashboardScreenChartSummaryCard from "./chartSummaryCard";
 import MEBarChart from "../../../common/chart/barChart";
 import MELineChart from "../../../common/chart/lineChart";
 import {
@@ -10,7 +10,7 @@ import {
   setClassLevelSummaryActiveMenu,
 } from "../../../../slice/dashboard/dashboardSlice";
 
-const HomeScreenChartSummary = () => {
+const DashboardScreenChartSummary = () => {
   const {
     applicationFormSummaryDropdownList,
     applicationFormSummaryChartData,
@@ -36,7 +36,7 @@ const HomeScreenChartSummary = () => {
 
   return (
     <div className="grid grid-flow-row grid-cols-2 gap-4 mr-5">
-      <HomeScreenChartSummaryCard
+      <DashboardScreenChartSummaryCard
         onDropdownSelection={(selectedOption, index) => {
           applicationFormSummaryActiveMenuAction(selectedOption);
           applicationFormSummaryBarChartColorAction(index);
@@ -57,8 +57,8 @@ const HomeScreenChartSummary = () => {
           xAxisDataKey="year"
           YAxisDataKey="form"
         />
-      </HomeScreenChartSummaryCard>
-      <HomeScreenChartSummaryCard
+      </DashboardScreenChartSummaryCard>
+      <DashboardScreenChartSummaryCard
         onDropdownSelection={(selectedOption) =>
           classLevelSummaryActiveMenuAction(selectedOption)
         }
@@ -78,9 +78,9 @@ const HomeScreenChartSummary = () => {
           xAxisDataKey="classLevel"
           YAxisDataKey="admissionForm"
         />
-      </HomeScreenChartSummaryCard>
+      </DashboardScreenChartSummaryCard>
     </div>
   );
 };
 
-export default HomeScreenChartSummary;
+export default DashboardScreenChartSummary;

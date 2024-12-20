@@ -1,12 +1,12 @@
-import { Home, Inbox, User, Settings, LogOutIcon } from "lucide-react";
+import { Gauge, Inbox, User, Settings, LogOutIcon } from "lucide-react";
 import { sidebarMenuName } from "../../../utils/enums";
 import { routeName } from "../../../utils/routeName";
 
 export const sidebarMenu = [
   {
-    title: sidebarMenuName.HOME,
-    url: routeName.home,
-    icon: Home,
+    title: sidebarMenuName.DASHBOARD,
+    url: routeName.dashboard,
+    icon: Gauge,
   },
   {
     title: sidebarMenuName.ADMISSION,

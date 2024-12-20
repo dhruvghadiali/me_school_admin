@@ -16,7 +16,7 @@ export const variantColor = {
 };
 
 export const sidebarMenuName = {
-    HOME: "home",
+    DASHBOARD: "dashboard",
     ADMISSION: "admission",
     PROFILE: "profile",
     SETTINGS: "settings",

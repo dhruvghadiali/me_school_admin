@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "../../../ui/dropdown-menu";
 
-const HomeScreenChartSummaryCard = (props) => {
+const DashboardScreenChartSummaryCard = (props) => {
   const {
     summaryHeader,
     summarySubtitle,
@@ -76,7 +76,7 @@ const HomeScreenChartSummaryCard = (props) => {
   );
 };
 
-HomeScreenChartSummaryCard.propTypes = {
+DashboardScreenChartSummaryCard.propTypes = {
   summaryHeader: PropTypes.string,
   summarySubtitle: PropTypes.string,
   summaryNotes: PropTypes.string,
@@ -86,4 +86,4 @@ HomeScreenChartSummaryCard.propTypes = {
   onDropdownSelection: PropTypes.func,
 };
 
-export default HomeScreenChartSummaryCard;
+export default DashboardScreenChartSummaryCard;
