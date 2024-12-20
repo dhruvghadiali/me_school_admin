@@ -4,7 +4,7 @@ import { sidebarMenuName } from "../../utils/enums";
 export const sidebarSlice = createSlice({
   name: "sidebar",
   initialState: {
-    activeMenu: sidebarMenuName.HOME,
+    activeMenu: sidebarMenuName.DASHBOARD,
   },
   reducers: {
     changeActiveMenu: (state, action) => {

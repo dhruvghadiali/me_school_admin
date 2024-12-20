@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import _ from "lodash";
 
 import MEButton from "../button/meButton";
@@ -7,6 +8,10 @@ import { sidebarMenu, footerMenu } from "./sidebarMenu";
 import { changeActiveMenu } from "../../../slice/sidebar/sidebarSlice";
 import { resetState } from "../../../slice/login/loginSlice";
 import { sidebarMenuName } from "../../../utils/enums";
+import {
+  sidebarMenuLabel,
+  sidebar,
+} from "../../../localization/sidebar/sidebarTranslationEn";
 import {
   Sidebar,
   SidebarContent,
@@ -24,6 +29,7 @@ import {
 
 const MESidebar = ({ children }) => {
   const { activeMenu } = useSelector((state) => state.sidebar);
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,7 +48,11 @@ const MESidebar = ({ children }) => {
         <SidebarContent>
           <SidebarHeader className="h-20 bg-danger p-2 justify-center items-center" />
           <SidebarGroup className="h-screen">
-            <SidebarGroupLabel>Hello!! "username"</SidebarGroupLabel>
+            <SidebarGroupLabel className="mr-5 truncate ...">
+              {i18n.exists("titleDynamic")
+                ? t("titleDynamic", { username: "ghadidh" })
+                : sidebar.titleStatic}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {sidebarMenu.map((item) => (
@@ -58,7 +68,13 @@ const MESidebar = ({ children }) => {
                         onClick={() => onClick(item)}
                       >
                         <item.icon />
-                        <span>{_.upperFirst(item.title)}</span>
+                        <span>
+                          {_.upperFirst(
+                            i18n.exists(item.title)
+                              ? t(item.title)
+                              : sidebarMenuLabel[item.title]
+                          )}
+                        </span>
                       </MEButton>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -77,7 +93,13 @@ const MESidebar = ({ children }) => {
                       onClick={() => onClick(item)}
                     >
                       <item.icon />
-                      <span>{_.upperFirst(item.title)}</span>
+                      <span>
+                        {_.upperFirst(
+                          i18n.exists(item.title)
+                            ? t(item.title)
+                            : sidebarMenuLabel[item.title]
+                        )}
+                      </span>
                     </MEButton>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

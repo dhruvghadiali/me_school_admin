@@ -1,11 +1,14 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import {loginForm} from './login/loginTranslationEn';
+import {sidebarMenuLabel, sidebar} from './sidebar/sidebarTranslationEn';
 
 const resources = {
   en: {
     translation: {
       ...loginForm,
+      ...sidebarMenuLabel,
+      ...sidebar,
     }
   },
 };
