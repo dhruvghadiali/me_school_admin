@@ -4,8 +4,10 @@ import {
   setApplicationFormSummaryBarChartColor,
   setClassLevelSummaryActiveMenu,
 } from "@MERedux/dashboard/dashboardSlice";
+import { dashboardSummary } from "@MELocalizationEn/dashboard/dashboardTranslationEn";
 
 import _ from "lodash";
+import { useTranslation } from "react-i18next";
 import MEBarChart from "@MECommonComponents/chart/barChart";
 import MELineChart from "@MECommonComponents/chart/lineChart";
 import DashboardScreenChartSummaryCard from "@MEScreenComponents/dashboard/chartSummary/chartSummaryCard";
@@ -23,7 +25,9 @@ const DashboardScreenChartSummary = () => {
     classLevelSummaryChartConfig,
     classLevelSummaryLineChartConfig,
   } = useSelector((state) => state.dashboard);
+
   const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
 
   const applicationFormSummaryActiveMenuAction = (selectedOption) =>
     dispatch(setApplicationFormSummaryActiveMenu(selectedOption));
@@ -43,12 +47,24 @@ const DashboardScreenChartSummary = () => {
         }}
         dropdownList={applicationFormSummaryDropdownList}
         activeDropdown={applicationFormSummaryActiveMenu}
-        dropdownTitle="from status"
-        summaryHeader={`Summary by Year (${_.upperCase(
-          applicationFormSummaryActiveMenu
-        )})`}
-        summarySubtitle="Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click."
-        summaryNotes="Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click."
+        dropdownTitle={
+          i18n.exists("barChartDropdownTitle")
+            ? t("barChartDropdownTitle")
+            : dashboardSummary.barChartDropdownTitle
+        }
+        summaryHeader={
+          i18n.exists("barChartHeaderDynamic")
+            ? t("barChartHeaderDynamic", {
+                selectedFilter: _.upperCase(applicationFormSummaryActiveMenu),
+              })
+            : dashboardSummary.barChartHeaderStatic
+        }
+        summarySubtitle={
+          i18n.exists("barChartSubtitle")
+            ? t("barChartSubtitle")
+            : dashboardSummary.barChartSubtitle
+        }
+        summaryNotes="** Notes **"
       >
         <MEBarChart
           chartData={applicationFormSummaryChartData}
@@ -64,12 +80,24 @@ const DashboardScreenChartSummary = () => {
         }
         dropdownList={classLevelSummaryDropdownList}
         activeDropdown={classLevelSummaryActiveMenu}
-        dropdownTitle="year"
-        summaryHeader={`Summary by Class Level (${_.upperCase(
-          classLevelSummaryActiveMenu
-        )})`}
-        summarySubtitle="Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click."
-        summaryNotes="Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click. Deploy your new project in one-click."
+        dropdownTitle={
+          i18n.exists("lineChartDropdownTitle")
+            ? t("lineChartDropdownTitle")
+            : dashboardSummary.lineChartDropdownTitle
+        }
+        summaryHeader={
+          i18n.exists("lineChartHeaderDynamic")
+            ? t("lineChartHeaderDynamic", {
+                selectedFilter: _.upperCase(classLevelSummaryActiveMenu),
+              })
+            : dashboardSummary.lineChartHeaderStatic
+        }
+        summarySubtitle={
+          i18n.exists("lineChartSubtitle")
+            ? t("lineChartSubtitle")
+            : dashboardSummary.lineChartSubtitle
+        }
+        summaryNotes="** Notes **"
       >
         <MELineChart
           chartData={classLevelSummaryChartData}

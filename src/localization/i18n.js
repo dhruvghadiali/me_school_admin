@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { loginForm } from "@MELocalizationEn/login/loginTranslationEn";
+import { dashboardSummary } from "@MELocalizationEn/dashboard/dashboardTranslationEn";
 import {
   sidebarMenuLabel,
   sidebar,
@@ -12,6 +13,7 @@ const resources = {
       ...loginForm,
       ...sidebarMenuLabel,
       ...sidebar,
+      ...dashboardSummary,
     },
   },
 };

@@ -36,9 +36,9 @@ const DashboardScreenChartSummaryCard = (props) => {
       <CardHeader>
         <div className="grid grid-cols-[auto_50px] gap-1 ">
           <div>
-            <CardTitle>{summaryHeader}</CardTitle>
+            <CardTitle>{_.upperFirst(summaryHeader)}</CardTitle>
             <CardDescription className="mt-2">
-              {summarySubtitle}
+              {_.upperFirst(summarySubtitle)}
             </CardDescription>
           </div>
           <div className="content-center justify-self-end">
