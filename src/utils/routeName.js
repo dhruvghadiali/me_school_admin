@@ -1,6 +1,6 @@
 export const routeName = {
     root: "/",
-    home: "/home",
+    dashboard: "/dashboard",
     admission: "/admission",
     schoolProfile: "/school-profile",
     settings: "/settings"

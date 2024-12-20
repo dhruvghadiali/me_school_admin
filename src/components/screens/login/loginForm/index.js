@@ -21,7 +21,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if(isValidUser){
-      navigate(routeName.home,{replace: true});
+      navigate(routeName.dashboard,{replace: true});
       dispatch(changeActiveMenu(sidebarMenuName.HOME))
     } 
   }, [isValidUser]);
