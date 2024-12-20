@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Line, LineChart, CartesianGrid, XAxis, YAxis } from "recharts";
+
 import {
   ChartContainer,
   ChartTooltip,
@@ -30,6 +31,7 @@ const MELineChart = (props) => {
         {_.map(lineConfig, (config) => {
           return (
             <Line
+              key={_.uniqueId()}
               dataKey={config.dataKey}
               fill={config.fill}
               stroke={config.stroke}

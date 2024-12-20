@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import _ from "lodash";
+
 import { Card, CardHeader, CardTitle, CardDescription } from "../../../ui/card";
 import { homeScreenSummaryCardTitleClassNameByVariant } from "./summaryCardClassNameWrapper";
 
@@ -9,7 +10,7 @@ const HomeScreenSummaryCard = ({
   titleVariant,
 }) => {
   return (
-    <Card className="h-fit">
+    <Card className="h-fit" key={_.uniqueId()}>
       <CardHeader className="items-center">
         <CardTitle
           className={`text-6xl ${homeScreenSummaryCardTitleClassNameByVariant(

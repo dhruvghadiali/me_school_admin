@@ -15,8 +15,7 @@ export const validateUser = createAsyncThunk(
             if (!res.ok) {
               throw new Error("Failed to fetch users");
             }
-            const data = await res.json();
-            resolve(data);
+            resolve();
           } catch (error) {
             reject(error);
           }

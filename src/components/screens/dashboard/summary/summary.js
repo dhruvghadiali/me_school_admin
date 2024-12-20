@@ -1,4 +1,6 @@
 import { useSelector } from "react-redux";
+import _ from 'lodash';
+
 import HomeScreenSummaryCard from "./summaryCard";
 import { variants } from "../../../../utils/enums";
 import { isUndefinedOrNull } from "../../../../utils/utilityFunctions";
@@ -13,7 +15,7 @@ const HomeScreenSummary = () => {
       <HomeScreenSummaryCard
         SummaryTitle={
           !isUndefinedOrNull(summary.admissionForm)
-            ? indianNumberFormate(summary.admissionForm)
+            ? _.toString(indianNumberFormate(summary.admissionForm)) 
             : "-"
         }
         summaryDescription="Admission Form"
@@ -22,7 +24,7 @@ const HomeScreenSummary = () => {
       <HomeScreenSummaryCard
         SummaryTitle={
           !isUndefinedOrNull(summary.approvedForm)
-            ? indianNumberFormate(summary.approvedForm)
+            ? _.toString(indianNumberFormate(summary.approvedForm))  
             : "-"
         }
         summaryDescription="Approved Form"
@@ -31,7 +33,7 @@ const HomeScreenSummary = () => {
       <HomeScreenSummaryCard
         SummaryTitle={
           !isUndefinedOrNull(summary.rejectedForm)
-            ? indianNumberFormate(summary.rejectedForm)
+            ? _.toString(indianNumberFormate(summary.rejectedForm))  
             : "-"
         }
         summaryDescription="Rejected Form"
@@ -40,7 +42,7 @@ const HomeScreenSummary = () => {
       <HomeScreenSummaryCard
         SummaryTitle={
           !isUndefinedOrNull(summary.canceledForm)
-            ? indianNumberFormate(summary.canceledForm)
+            ? _.toString(indianNumberFormate(summary.canceledForm))   
             : "-"
         }
         summaryDescription="Canceled Form"
