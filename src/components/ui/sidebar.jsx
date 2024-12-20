@@ -4,12 +4,12 @@ import { cva } from "class-variance-authority";
 import { PanelLeft } from "lucide-react"
 
 import { useIsMobile } from "../../hooks/use-mobile"
-import { cn } from "../../lib/utils"
-import { Button } from "./button"
-import { Input } from "./input"
-import { Separator } from "./separator"
-import { Sheet, SheetContent } from "./sheet"
-import { Skeleton } from "./skeleton"
+import { cn } from "@MELib/utils";
+import { Button } from "@MEShadcnComponents/button"
+import { Input } from "@MEShadcnComponents/input"
+import { Separator } from "@MEShadcnComponents/separator"
+import { Sheet, SheetContent } from "@MEShadcnComponents/sheet"
+import { Skeleton } from "@MEShadcnComponents/skeleton"
 import {
   Tooltip,
   TooltipContent,

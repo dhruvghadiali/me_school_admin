@@ -1,6 +1,7 @@
-import _ from "lodash";
-import { mockSummaryData } from "./mockResponse";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { mockSummaryData } from "@MERedux/dashboard/mockResponse";
+
+import _ from "lodash";
 
 export const summary = createAsyncThunk(
   "dashboard/summary",
@@ -17,12 +18,11 @@ export const summary = createAsyncThunk(
             if (!res.ok) {
               throw new Error("Failed to fetch users");
             }
-            await res.json();
             resolve(mockSummaryData);
           } catch (error) {
             reject(error);
           }
-        }, 2000); // 2 seconds delay
+        }, 5000); // 2 seconds delay
       });
 
       return response;

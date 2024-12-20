@@ -1,4 +1,4 @@
-import {variants} from '../../../../utils/enums';
+import {variants} from '@MEUtils/enums';
 
 export const homeScreenSummaryCardTitleClassNameByVariant = (titleVariant) => {
     switch (titleVariant) {

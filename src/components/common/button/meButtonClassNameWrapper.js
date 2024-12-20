@@ -1,4 +1,4 @@
-import { variants } from "../../../utils/enums";  
+import { variants } from "@MEUtils/enums";  
 
 export const buttonClassNameByVariant = (inputVariant) => {
   switch (inputVariant) {

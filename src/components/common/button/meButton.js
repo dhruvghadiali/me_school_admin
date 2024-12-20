@@ -1,6 +1,7 @@
+import { Button } from "@MEShadcnComponents/button";
+import { buttonClassNameByVariant } from "@MECommonComponents/button/meButtonClassNameWrapper";
+
 import PropTypes from "prop-types";
-import { Button } from "../../ui/button";
-import { buttonClassNameByVariant } from "./meButtonClassNameWrapper";
 
 const MEButton = ({ buttonVariant, ...props }) => {
   return (

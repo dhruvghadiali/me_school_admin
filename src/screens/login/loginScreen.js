@@ -1,6 +1,6 @@
-import AuthHoc from "../../components/common/authHoc/authHoc";
-import LoginForm from "../../components/screens/login/loginForm";
-import LoginFormHeader from "../../components/screens/login/loginFormHeader";
+import AuthHoc from "@MECommonComponents/authHoc/authHoc";
+import LoginForm from "@MEScreenComponents/login/loginForm";
+import LoginFormHeader from "@MEScreenComponents/login/loginFormHeader";
 
 const LoginScreen = () => {
   return (

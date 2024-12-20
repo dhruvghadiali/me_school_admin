@@ -1,11 +1,11 @@
+import { routeName } from "@MEUtils/routeName";
 import { BrowserRouter, Routes, Route,  } from "react-router";
 
-import LoginScreen from "./screens/login/loginScreen";
-import DashboardScreen from "./screens/dashboard/dashboardScreen";
-import AdmissionScreen from "./screens/admission/admissionScreen";
-import ProfileScreen from "./screens/profile/profileScreen";
-import SettingsScreen from "./screens/settings/settingsScreen";
-import { routeName } from "./utils/routeName";
+import LoginScreen from "@MEScreens/login/loginScreen";
+import DashboardScreen from "@MEScreens/dashboard/dashboardScreen";
+import AdmissionScreen from "@MEScreens/admission/admissionScreen";
+import ProfileScreen from "@MEScreens/profile/profileScreen";
+import SettingsScreen from "@MEScreens/settings/settingsScreen";
 
 function App() {
   return (

@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { thunk } from "redux-thunk";
 
-import loginSlice from "./slice/login/loginSlice";
-import sidebarSlice from "./slice/sidebar/sidebarSlice";
-import dashboardSlice from "./slice/dashboard/dashboardSlice";
-import loggerMiddleware from "./slice/middleware/logger";
+import loginSlice from "@MERedux/login/loginSlice";
+import sidebarSlice from "@MERedux/sidebar/sidebarSlice";
+import dashboardSlice from "@MERedux/dashboard/dashboardSlice";
+import loggerMiddleware from "@MERedux/middleware/logger";
 
 export default configureStore({
   reducer: {
