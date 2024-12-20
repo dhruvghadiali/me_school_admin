@@ -1,6 +1,7 @@
-import _ from "lodash";
-import { mockSummaryData } from "./mockResponse";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { mockSummaryData } from "@MERedux/dashboard/mockResponse";
+
+import _ from "lodash";
 
 export const summary = createAsyncThunk(
   "dashboard/summary",

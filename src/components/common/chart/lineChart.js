@@ -1,16 +1,17 @@
-import PropTypes from "prop-types";
-import _ from "lodash";
 import { Line, LineChart, CartesianGrid, XAxis, YAxis } from "recharts";
-
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "../../ui/chart";
+} from "@MEShadcnComponents/chart";
+
+import PropTypes from "prop-types";
+import _ from "lodash";
 
 const MELineChart = (props) => {
   const { xAxisDataKey, YAxisDataKey, chartData, chartConfig, lineConfig } =
     props;
+
   return (
     <ChartContainer config={chartConfig} className="h-80 w-full">
       <LineChart accessibilityLayer data={chartData}>

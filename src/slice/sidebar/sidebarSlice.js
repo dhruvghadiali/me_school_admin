@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { sidebarMenuName } from "../../utils/enums";
+import { sidebarMenuName } from "@MEUtils/enums";
 
 export const sidebarSlice = createSlice({
   name: "sidebar",

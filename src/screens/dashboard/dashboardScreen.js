@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { summary } from "@MERedux/dashboard/dashboardAction";
+import { resetState } from "@MERedux/dashboard/dashboardSlice";
 
-import { summary } from "../../slice/dashboard/dashboardAction";
-import { resetState } from "../../slice/dashboard/dashboardSlice";
-import AuthHoc from "../../components/common/authHoc/authHoc";
-import MESidebar from "@/src/components/screens/dashboard/header/header";
-// import DashboardScreenHeader from "../../components/screens/dashboard/header/header";
-import DashboardScreenHeader from "../../components/screens/dashboard/header/header";
-import DashboardScreenSummary from "../../components/screens/dashboard/summary/summary";
-import DashboardScreenChartSummary from "../../components/screens/dashboard/chartSummary/chartSummary";
-import DashboardScreenChartSummaryLoader from "../../components/screens/dashboard/chartSummary/chartSummaryLoader";
-import DashboardScreenSummaryLoader from "../../components/screens/dashboard/summary/summaryLoader";
+import AuthHoc from "@MECommonComponents/authHoc/authHoc";
+import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+import DashboardScreenHeader from "@MEScreenComponents/dashboard/header/header";
+import DashboardScreenSummary from "@MEScreenComponents/dashboard/summary/summary";
+import DashboardScreenChartSummary from "@MEScreenComponents/dashboard/chartSummary/chartSummary";
+import DashboardScreenChartSummaryLoader from "@MEScreenComponents/dashboard/chartSummary/chartSummaryLoader";
+import DashboardScreenSummaryLoader from "@MEScreenComponents/dashboard/summary/summaryLoader";
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();

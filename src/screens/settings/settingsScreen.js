@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import AuthHoc from "../../components/common/authHoc/authHoc";
-import MESidebar from "../../components/common/sidebar/meSidebar";
-import MEButton from "../../components/common/button/meButton";
+
+import AuthHoc from "@MECommonComponents/authHoc/authHoc";
+import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+import MEButton from "@MECommonComponents/button/meButton";
 
 const SettingsScreen = () => {
   const { t, i18n } = useTranslation(); 

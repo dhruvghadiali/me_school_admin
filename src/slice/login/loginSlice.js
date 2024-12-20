@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { validateUser } from "./loginAction";
-import { responseMessage } from "../../utils/responseMessage";
+import { validateUser } from "@MERedux/login/loginAction";
+import { responseMessage } from "@MEUtils/responseMessage";
 
 export const loginSlice = createSlice({
   name: "login",

@@ -12,4 +12,6 @@ const DashboardScreenHeader = () => {
   );
 };
 
+DashboardScreenHeader.propTypes = {};
+
 export default DashboardScreenHeader;

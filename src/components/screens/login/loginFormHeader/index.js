@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { loginForm } from "../../../../localization/login/loginTranslationEn";
+import { loginForm } from "@MELocalizationEn/login/loginTranslationEn";
 
 const LoginFormHeader = () => {
   const { t, i18n } = useTranslation();
@@ -22,5 +22,7 @@ const LoginFormHeader = () => {
     </>
   );
 };
+
+LoginFormHeader.propTypes = {};
 
 export default LoginFormHeader;

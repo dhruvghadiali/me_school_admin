@@ -1,6 +1,6 @@
 import { Gauge, Inbox, User, Settings, LogOutIcon } from "lucide-react";
-import { sidebarMenuName } from "../../../utils/enums";
-import { routeName } from "../../../utils/routeName";
+import { sidebarMenuName } from "@MEUtils/enums";
+import { routeName } from "@MEUtils/routeName";
 
 export const sidebarMenu = [
   {

@@ -1,4 +1,4 @@
-import { Skeleton } from "../../../ui/skeleton";
+import { Skeleton } from "@MEShadcnComponents/skeleton";
 
 const HomeScreenSummaryLoader = () => {
 
@@ -11,5 +11,7 @@ const HomeScreenSummaryLoader = () => {
     </div>
   );
 };
+
+HomeScreenSummaryLoader.propTypes = {};
 
 export default HomeScreenSummaryLoader;

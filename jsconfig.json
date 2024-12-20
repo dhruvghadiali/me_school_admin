@@ -1,10 +1,41 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
+        "baseUrl": "./",
         "paths": {
             "@/*": [
-                "./*"
+                "./src/*"
+            ],
+            "@MEScreenComponents/*": [
+                "./src/components/screens/*"
+            ],
+            "@MECommonComponents/*": [
+                "./src/components/common/*"
+            ],
+            "@MEShadcnComponents/*": [
+                "./src/components/ui/*"
+            ],
+            "@MELocalizationEn/*": [
+                "./src/localization/*"
+            ],
+            "@MEScreens/*": [
+                "./src/screens/*"
+            ],
+            "@MERedux/*": [
+                "./src/slice/*"
+            ],
+            "@MEStyles/*": [
+                "./src/styles/*"
+            ],
+            "@MEUtils/*": [
+                "./src/utils/*"
+            ],
+            "@MELib/*": [
+                "./src/lib/*"
+            ],
+            "@MEHooks/*": [
+                "./src/hooks/*"
             ]
         }
-    }
+    },
+    "include": ["./src/**/*"]
 }

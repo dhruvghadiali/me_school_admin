@@ -1,8 +1,13 @@
-import PropTypes from "prop-types";
-import _ from "lodash";
+import { homeScreenSummaryCardTitleClassNameByVariant } from "@MEScreenComponents/dashboard/summary/summaryCardClassNameWrapper";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@MEShadcnComponents/card";
 
-import { Card, CardHeader, CardTitle, CardDescription } from "../../../ui/card";
-import { homeScreenSummaryCardTitleClassNameByVariant } from "./summaryCardClassNameWrapper";
+import _ from "lodash";
+import PropTypes from "prop-types";
 
 const HomeScreenSummaryCard = ({
   SummaryTitle,

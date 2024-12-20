@@ -1,18 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { responseMessage } from "@MEUtils/responseMessage";
+import { variantColor } from "@MEUtils/enums";
 import {
   summary,
   prepareClassLevelSummary,
   prepareApplicationFormSummary,
-} from "./dashboardAction";
+} from "@MERedux/dashboard/dashboardAction";
 import {
   defaultSummaryData,
   defaultApplicationFormSummaryChartConfig,
   defaultClassLevelSummaryLineChartConfig,
   defaultClassLevelSummaryChartConfig,
   defaultApplicationFormSummaryBarChartColor,
-} from "./dashboardDefaultStateValues";
-import { responseMessage } from "../../utils/responseMessage";
-import {variantColor} from '../../utils/enums';
+} from "@MERedux/dashboard/dashboardDefaultStateValues";
 
 export const dashboardSlice = createSlice({
   name: "dashboard",
@@ -22,7 +22,8 @@ export const dashboardSlice = createSlice({
     error: "",
 
     applicationFormSummaryActiveMenu: "",
-    applicationFormSummaryBarChartColor: defaultApplicationFormSummaryBarChartColor,
+    applicationFormSummaryBarChartColor:
+      defaultApplicationFormSummaryBarChartColor,
     applicationFormSummaryDropdownList: [],
     applicationFormSummaryChartData: [],
     applicationFormSummaryChartConfig: defaultApplicationFormSummaryChartConfig,
@@ -40,7 +41,8 @@ export const dashboardSlice = createSlice({
       state.error = "";
 
       state.applicationFormSummaryActiveMenu = "";
-      state.applicationFormSummaryBarChartColor = defaultApplicationFormSummaryBarChartColor;
+      state.applicationFormSummaryBarChartColor =
+        defaultApplicationFormSummaryBarChartColor;
       state.applicationFormSummaryDropdownList = [];
       state.applicationFormSummaryChartData = [];
       state.applicationFormSummaryChartConfig =
@@ -103,7 +105,8 @@ export const dashboardSlice = createSlice({
 
         /** */
         state.applicationFormSummaryActiveMenu = "";
-        state.applicationFormSummaryBarChartColor = defaultApplicationFormSummaryBarChartColor;
+        state.applicationFormSummaryBarChartColor =
+          defaultApplicationFormSummaryBarChartColor;
         state.applicationFormSummaryDropdownList = [];
         state.applicationFormSummaryChartData = [];
         state.applicationFormSummaryChartConfig =
@@ -139,7 +142,8 @@ export const dashboardSlice = createSlice({
         state.classLevelSummaryActiveMenu = classLevelSummaryActiveMenu;
         state.classLevelSummaryDropdownList = classLevelSummaryDropdownList;
         state.classLevelSummaryChartData = classLevelSummaryChartData;
-        state.applicationFormSummaryBarChartColor = defaultApplicationFormSummaryBarChartColor;
+        state.applicationFormSummaryBarChartColor =
+          defaultApplicationFormSummaryBarChartColor;
 
         state.applicationFormSummaryDropdownList =
           applicationFormSummaryDropdownList;
@@ -155,7 +159,8 @@ export const dashboardSlice = createSlice({
 
         /** */
         state.applicationFormSummaryActiveMenu = "";
-        state.applicationFormSummaryBarChartColor = defaultApplicationFormSummaryBarChartColor;
+        state.applicationFormSummaryBarChartColor =
+          defaultApplicationFormSummaryBarChartColor;
         state.applicationFormSummaryDropdownList = [];
         state.applicationFormSummaryChartData = [];
         state.applicationFormSummaryChartConfig =

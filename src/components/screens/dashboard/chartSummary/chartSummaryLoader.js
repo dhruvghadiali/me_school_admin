@@ -1,4 +1,4 @@
-import { Skeleton } from "../../../ui/skeleton";
+import { Skeleton } from "@MEShadcnComponents/skeleton";
 
 const DashboardScreenChartSummaryLoader = () => {
   return (
@@ -8,5 +8,7 @@ const DashboardScreenChartSummaryLoader = () => {
     </div>
   );
 };
+
+DashboardScreenChartSummaryLoader.propTypes = {};
 
 export default DashboardScreenChartSummaryLoader;

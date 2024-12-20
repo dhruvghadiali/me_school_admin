@@ -1,20 +1,20 @@
 import { useEffect } from "react";
 import { useFormik } from "formik";
-import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import * as Yup from "yup";
+import { useSelector, useDispatch } from "react-redux";
 
-import MEInput from "../../../common/input/meInput";
-import MEButton from "../../../common/button/meButton";
-import MELoaderIcon from "../../../common/loader/meLoaderIcon";
-import { variants } from "../../../../utils/enums";
-import { sidebarMenuName } from "../../../../utils/enums";
-import { routeName } from "../../../../utils/routeName";
-import { validationMessage } from "../../../../utils/validationMessage";
-import { loginForm } from "../../../../localization/login/loginTranslationEn";
-import { validateUser } from "../../../../slice/login/loginAction";
-import { changeActiveMenu } from "../../../../slice/sidebar/sidebarSlice";
+import { routeName } from "@MEUtils/routeName";
+import { validateUser } from "@MERedux/login/loginAction";
+import { variants, sidebarMenuName } from "@MEUtils/enums";
+import { validationMessage } from "@MEUtils/validationMessage";
+import { changeActiveMenu } from  "@MERedux/sidebar/sidebarSlice"; 
+import { loginForm } from "@MELocalizationEn/login/loginTranslationEn";
+
+import * as Yup from "yup";
+import MEInput from "@MECommonComponents/input/meInput";
+import MEButton from "@MECommonComponents/button/meButton";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const LoginForm = () => {
   const { loader, error, isValidUser } = useSelector((state) => state.login);
@@ -99,5 +99,7 @@ const LoginSchema = Yup.object().shape({
     .max(10, validationMessage.passwordMax)
     .required(validationMessage.required),
 });
+
+LoginForm.propTypes = {};
 
 export default LoginForm;

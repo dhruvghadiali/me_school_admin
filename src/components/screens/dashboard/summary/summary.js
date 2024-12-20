@@ -1,10 +1,9 @@
 import { useSelector } from "react-redux";
-import _ from 'lodash';
+import { variants } from "@MEUtils/enums";
+import { isUndefinedOrNull, indianNumberFormate } from "@MEUtils/utilityFunctions";
 
-import HomeScreenSummaryCard from "./summaryCard";
-import { variants } from "../../../../utils/enums";
-import { isUndefinedOrNull } from "../../../../utils/utilityFunctions";
-import { indianNumberFormate } from "../../../../utils/utilityFunctions";
+import _ from 'lodash';
+import HomeScreenSummaryCard from "@MEScreenComponents/dashboard/summary/summaryCard";
 
 const HomeScreenSummary = () => {
   const { summaryData } = useSelector((state) => state.dashboard);
@@ -51,5 +50,7 @@ const HomeScreenSummary = () => {
     </div>
   );
 };
+
+HomeScreenSummary.propTypes = {};
 
 export default HomeScreenSummary;

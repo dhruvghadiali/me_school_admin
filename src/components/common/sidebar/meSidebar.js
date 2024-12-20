@@ -1,17 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import _ from "lodash";
 
-import MEButton from "../button/meButton";
-import { sidebarMenu, footerMenu } from "./sidebarMenu";
-import { changeActiveMenu } from "../../../slice/sidebar/sidebarSlice";
-import { resetState } from "../../../slice/login/loginSlice";
-import { sidebarMenuName } from "../../../utils/enums";
-import {
-  sidebarMenuLabel,
-  sidebar,
-} from "../../../localization/sidebar/sidebarTranslationEn";
+import { sidebarMenuName } from "@MEUtils/enums";
+import { resetState } from "@MERedux/login/loginSlice";
+import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
+import { sidebarMenu, footerMenu } from "@MECommonComponents/sidebar/sidebarMenu";
 import {
   Sidebar,
   SidebarContent,
@@ -25,7 +19,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
-} from "../../ui/sidebar";
+} from "@MEShadcnComponents/sidebar";
+import {
+  sidebarMenuLabel,
+  sidebar,
+} from "@MELocalizationEn/sidebar/sidebarTranslationEn";
+
+import MEButton from "@MECommonComponents/button/meButton";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
 const MESidebar = ({ children }) => {
   const { activeMenu } = useSelector((state) => state.sidebar);
@@ -114,6 +116,10 @@ const MESidebar = ({ children }) => {
       </main>
     </SidebarProvider>
   );
+};
+
+MESidebar.propTypes = {
+  children: PropTypes.any,
 };
 
 export default MESidebar;

@@ -1,4 +1,4 @@
-import { variants } from "../../../utils/enums";  
+import { variants } from "@MEUtils/enums";  
 
 export const inputClassNameByVariant = (inputVariant) => {
   switch (inputVariant) {

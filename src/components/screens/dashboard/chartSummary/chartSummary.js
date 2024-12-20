@@ -1,14 +1,14 @@
-import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-
-import DashboardScreenChartSummaryCard from "./chartSummaryCard";
-import MEBarChart from "../../../common/chart/barChart";
-import MELineChart from "../../../common/chart/lineChart";
 import {
   setApplicationFormSummaryActiveMenu,
   setApplicationFormSummaryBarChartColor,
   setClassLevelSummaryActiveMenu,
-} from "../../../../slice/dashboard/dashboardSlice";
+} from "@MERedux/dashboard/dashboardSlice";
+
+import _ from "lodash";
+import MEBarChart from "@MECommonComponents/chart/barChart";
+import MELineChart from "@MECommonComponents/chart/lineChart";
+import DashboardScreenChartSummaryCard from "@MEScreenComponents/dashboard/chartSummary/chartSummaryCard";
 
 const DashboardScreenChartSummary = () => {
   const {
@@ -82,5 +82,7 @@ const DashboardScreenChartSummary = () => {
     </div>
   );
 };
+
+DashboardScreenChartSummary.propTypes = {};
 
 export default DashboardScreenChartSummary;
