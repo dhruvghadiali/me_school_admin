@@ -6,6 +6,7 @@ import store from './store';
 
 import { Provider } from 'react-redux';
 import './styles/globals.css';
+import './localization/i18n';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

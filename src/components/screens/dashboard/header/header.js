@@ -1,9 +1,13 @@
-import { dashboardScreenStaticValue } from "../../../../utils/staticValues";
+
+import { useTranslation } from 'react-i18next';
+
 const DashboardScreenHeader = () => {
+  const { t } = useTranslation(); 
+  
   return (
     <div>
-      <p className="text-3xl font-semibold"> {dashboardScreenStaticValue.header} </p>
-      <p className="text-sm mt-1"> {dashboardScreenStaticValue.subtitle} </p>
+      {/* <p className="text-3xl font-semibold"> {t('Welcome to React')} </p>
+      <p className="text-sm mt-1"> {dashboardScreenStaticValue.subtitle} </p> */}
     </div>
   );
 };
