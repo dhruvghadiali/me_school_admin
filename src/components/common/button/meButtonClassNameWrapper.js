@@ -15,6 +15,6 @@ export const buttonClassNameByVariant = (inputVariant) => {
     case variants.DARK:
       return "bg-dark text-dark-foreground shadow hover:bg-dark/90";
     default:
-      return "bg-primary text-primary-foreground shadow hover:bg-primary/90";
+      return "";
   }
 };
