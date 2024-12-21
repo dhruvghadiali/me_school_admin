@@ -22,3 +22,8 @@ export const sidebarMenuName = {
     SETTINGS: "settings",
     LOGOUT: "logout",
 }
+
+export const admissionScreenContainerType = {
+    AGGRIDTABLE: "agGridTable",
+    FORMDETAILCARD: "formDetailCard"
+}
