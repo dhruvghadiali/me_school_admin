@@ -27,3 +27,11 @@ export const admissionScreenContainerType = {
     AGGRIDTABLE: "agGridTable",
     FORMDETAILCARD: "formDetailCard"
 }
+
+export const admissionScreenApplicationStatus = {
+    ALL: "all",
+    NEW: "new",
+    APPROVED: "approved",
+    REJECTED: "rejected",
+    CANCELED: "canceled",
+}

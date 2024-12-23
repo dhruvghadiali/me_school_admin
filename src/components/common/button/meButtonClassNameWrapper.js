@@ -1,7 +1,7 @@
 import { variants } from "@MEUtils/enums";  
 
-export const buttonClassNameByVariant = (inputVariant) => {
-  switch (inputVariant) {
+export const buttonClassNameByVariant = (buttonVariant) => {
+  switch (buttonVariant) {
     case variants.PRIMARY:
       return "bg-primary text-primary-foreground shadow hover:bg-primary/90";
     case variants.SECONDARY:

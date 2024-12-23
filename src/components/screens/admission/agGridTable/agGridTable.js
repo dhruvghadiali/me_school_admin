@@ -3,9 +3,18 @@ import { AgGridReact } from "ag-grid-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Eye, ListFilterIcon } from "lucide-react";
 
-import { Button } from "@MEShadcnComponents/button";
-import { admissionScreenContainerType } from "@MEUtils/enums";
-import { setAdmissionScreenContainerType } from "@MERedux/admission/admissionSlice";
+import { Label } from "@MEShadcnComponents/label";
+import { admissionForm } from "@MERedux/admission/admissionAction";
+
+import {
+  setAdmissionScreenContainerType,
+  setApplicationStatusFilter,
+} from "@MERedux/admission/admissionSlice";
+import {
+  admissionScreenContainerType,
+  admissionScreenApplicationStatus,
+  variants,
+} from "@MEUtils/enums";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,22 +25,18 @@ import {
   DropdownMenuTrigger,
 } from "@MEShadcnComponents/dropdown-menu";
 
+import _ from "lodash";
 import moment from "moment/moment";
 import MEButton from "@MECommonComponents/button/meButton";
+import MEBadge from "@MECommonComponents/badge/meBadge";
 
 const AdmissionScreenAGGridTable = () => {
-  const { tableData } = useSelector((state) => state.admission);
+  const { tableData, applicationStatus } = useSelector(
+    (state) => state.admission
+  );
   const dispatch = useDispatch();
 
-  const onViewAdmissionFormDetail = (data) => {
-    dispatch(
-      setAdmissionScreenContainerType(
-        admissionScreenContainerType.FORMDETAILCARD
-      )
-    );
-  };
-
-  const [colDefs, _] = useState([
+  const [colDefs, setColDefs] = useState([
     {
       headerName: "Action",
       cellRenderer: (data) => (
@@ -78,36 +83,74 @@ const AdmissionScreenAGGridTable = () => {
     },
   ]);
 
+  const onViewAdmissionFormDetail = (data) => {
+    dispatch(
+      setAdmissionScreenContainerType(
+        admissionScreenContainerType.FORMDETAILCARD
+      )
+    );
+  };
+
+  const onFilterOptionChange = (status) => {
+    dispatch(setApplicationStatusFilter(status));
+    dispatch(admissionForm());
+  }
+
+ 
+
   return (
-    <div className="pr-10">
-      <div className="justify-self-end">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="icon">
-              <ListFilterIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Form Status</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>All</DropdownMenuItem>
-              <DropdownMenuItem>New</DropdownMenuItem>
-              <DropdownMenuItem>Approved</DropdownMenuItem>
-              <DropdownMenuItem>Rejected</DropdownMenuItem>
-              <DropdownMenuItem>Canceled</DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <>
+      <div className="grid grid-flow-row grid-cols-2 mt-5 ml-1 mb-2">
+        <div className="self-center">
+          <Label> Application Status </Label>
+          <MEBadge badgeVariant={variants.PRIMARY}>
+            {_.upperCase(applicationStatus)}
+          </MEBadge>
+        </div>
+        <div className="justify-self-end">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="rounded-full bg-primary">
+              <MEButton
+                className="rounded-full bg-dark"
+                variant="icon"
+                size="icon"
+                aria-label="Filter"
+              >
+                <ListFilterIcon
+                  size={15}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                  className="text-secondary"
+                />
+              </MEButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 mr-10">
+              <DropdownMenuLabel>Application Status</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                {_.map(admissionScreenApplicationStatus, (status) => (
+                  <DropdownMenuItem
+                    className={`${
+                      applicationStatus == status ? "text-primary" : "text-dark"
+                    }`}
+                    onClick={() => onFilterOptionChange(status)}
+                  >
+                    {_.upperFirst(status)}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-      <div className="ag-theme-alpine w-full h-[700px]  mt-5">
+      <div className="ag-theme-alpine w-full h-[700px]">
         <AgGridReact
           rowData={tableData}
           columnDefs={colDefs}
           pagination={true}
         />
       </div>
-    </div>
+    </>
   );
 };
 

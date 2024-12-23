@@ -4,19 +4,38 @@ import _ from "lodash";
 
 const AdmissionScreenAGGridLoader = () => {
   return (
-    <div className="border-4 border-secondary mr-10 mt-10">
-      {_.times(15, (_) => {
+    <div className="border-2 border-secondary mt-10">
+      {_.times(15, (index) => {
         return (
-          <div className={`grid grid-flow-row grid-cols-8 gap-1 mb-5 mt-1 h-5`}>
-            <Skeleton className="bg-secondary p-4 rounded-none" />
-            <Skeleton className="bg-secondary p-4 rounded-none" />
-            <Skeleton className="bg-secondary p-4 rounded-none" />
-            <Skeleton className="bg-secondary p-4 rounded-none" />
-            <Skeleton className="bg-secondary p-4 rounded-none" />
-            <Skeleton className="bg-secondary p-4 rounded-none" />
-            <Skeleton className="bg-secondary p-4 rounded-none" />
-            <Skeleton className="bg-secondary p-4 rounded-none" />
-          </div>
+          <>
+            <div className={`grid grid-flow-row grid-cols-8`}>
+              <div className="border-r-2 border-secondary pt-2 pb-2 self-center">
+                <Skeleton className="bg-secondary h-7 ml-2 mr-2" />
+              </div>
+              <div className="border-r-2 border-secondary pt-2 pb-2 self-center">
+                <Skeleton className="bg-secondary h-7 ml-2 mr-2" />
+              </div>
+              <div className="border-r-2 border-secondary pt-2 pb-2 self-center">
+                <Skeleton className="bg-secondary h-7 ml-2 mr-2" />
+              </div>
+              <div className="border-r-2 border-secondary pt-2 pb-2 self-center">
+                <Skeleton className="bg-secondary h-7 ml-2 mr-2" />
+              </div>
+              <div className="border-r-2 border-secondary pt-2 pb-2 self-center">
+                <Skeleton className="bg-secondary h-7 ml-2 mr-2" />
+              </div>
+              <div className="border-r-2 border-secondary pt-2 pb-2 self-center">
+                <Skeleton className="bg-secondary h-7 ml-2 mr-2" />
+              </div>
+              <div className="border-r-2 border-secondary pt-2 pb-2 self-center">
+                <Skeleton className="bg-secondary h-7 ml-2 mr-2" />
+              </div>
+              <div className="pt-2 pb-2 self-center">
+                <Skeleton className="bg-secondary h-7 ml-2 mr-2" />
+              </div>
+            </div>
+            {index < 14 && <div className="border border-secondary"/>}
+          </>
         );
       })}
     </div>
