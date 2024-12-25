@@ -19,6 +19,25 @@ export const inputClassNameByVariant = (inputVariant) => {
   }
 };
 
+export const datePickerInputClassNameByVariant = (inputVariant) => {
+  switch (inputVariant) {
+    case variants.PRIMARY:
+      return "border border-primary/80 bg-transparent shadow-sm hover:bg-transparent hover:text-accent-foreground w-full justify-start text-left font-normal";
+    case variants.SECONDARY:
+      return "border border-secondary/80 bg-transparent shadow-sm hover:bg-transparent hover:text-accent-foreground w-full justify-start text-left font-normal";
+    case variants.SUCCESS:
+      return "border border-success/80 bg-transparent shadow-sm hover:bg-transparent hover:text-accent-foreground w-full justify-start text-left font-normal";
+    case variants.WARNING:
+      return "border border-warning/80 bg-transparent shadow-sm hover:bg-transparent hover:text-accent-foreground w-full justify-start text-left font-normal";
+    case variants.DANGER:
+      return "border border-danger/80 bg-transparent shadow-sm hover:bg-transparent hover:text-accent-foreground w-full justify-start text-left font-normal";
+    case variants.DARK:
+      return "border border-dark/80 bg-transparent shadow-sm hover:bg-transparent hover:text-accent-foreground w-full justify-start text-left font-normal";
+    default:
+      return "border border-dark/80 bg-transparent shadow-sm hover:bg-transparent hover:text-accent-foreground w-full justify-start text-left font-normal";
+  }
+};
+
 export const inputMessageClassNameByVariant = (messageVariant) => {
   switch (messageVariant) {
     case variants.PRIMARY:

@@ -35,3 +35,10 @@ export const admissionScreenApplicationStatus = {
     REJECTED: "rejected",
     CANCELED: "canceled",
 }
+
+export const admissionScreenApplicationFormDetailStatus = {
+    PENDING: "pending",
+    APPROVED: "approved",
+    REJECTED: "rejected",
+    CANCELED: "canceled",
+}

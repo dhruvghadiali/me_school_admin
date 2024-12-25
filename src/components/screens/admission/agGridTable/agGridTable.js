@@ -7,8 +7,9 @@ import { Label } from "@MEShadcnComponents/label";
 import { admissionForm } from "@MERedux/admission/admissionAction";
 
 import {
-  setAdmissionScreenContainerType,
+  setApplicationFormDetail,
   setApplicationStatusFilter,
+  setAdmissionScreenContainerType,
 } from "@MERedux/admission/admissionSlice";
 import {
   admissionScreenContainerType,
@@ -35,6 +36,20 @@ const AdmissionScreenAGGridTable = () => {
     (state) => state.admission
   );
   const dispatch = useDispatch();
+
+  const filterParams = {
+    comparator: (filterDate, cellValue) => {
+      console.log("cellValue", cellValue);
+      if (!cellValue) {
+        return -1;
+      }
+
+      const cellDate = new Date(cellValue);
+      if (cellDate < filterDate) return -1;
+      if (cellDate > filterDate) return 1;
+      return 0;
+    },
+  };
 
   const [colDefs, setColDefs] = useState([
     {
@@ -64,26 +79,54 @@ const AdmissionScreenAGGridTable = () => {
       field: "applicationStatus",
       filter: true,
       width: 180,
+      cellRenderer: (data) => {
+        return data.value ? _.upperCase(data.value) : "N/A";
+      },
     },
     {
       headerName: "Student Name",
       field: "studentName",
       filter: true,
       width: 550,
+      cellRenderer: (data) => {
+        return data.value ? _.startCase(data.value) : "N/A";
+      },
     },
-    { headerName: "Grade", field: "grade", filter: true, width: 170 },
+    {
+      headerName: "Grade",
+      field: "grade",
+      filter: true,
+      width: 170,
+      cellRenderer: (data) => {
+        return data.value ? _.upperCase(data.value) : "N/A";
+      },
+    },
     {
       headerName: "Registration Date",
       field: "registrationDate",
       width: 200,
       filter: "agDateColumnFilter",
       cellRenderer: (data) => {
-        return moment(data.value).format("DD MMMM YYYY");
+        return data.value && moment(data.value).isValid()
+          ? moment(data.value).format("DD MMMM YYYY")
+          : "N/A";
+      },
+    },
+    {
+      headerName: "Appointment Date",
+      field: "appointmentDate",
+      width: 200,
+      filter: "agDateColumnFilter",
+      cellRenderer: (data) => {
+        return data.value && moment(data.value).isValid()
+          ? moment(data.value).format("DD MMMM YYYY")
+          : "N/A";
       },
     },
   ]);
 
   const onViewAdmissionFormDetail = (data) => {
+    dispatch(setApplicationFormDetail(data.data));
     dispatch(
       setAdmissionScreenContainerType(
         admissionScreenContainerType.FORMDETAILCARD
@@ -94,9 +137,7 @@ const AdmissionScreenAGGridTable = () => {
   const onFilterOptionChange = (status) => {
     dispatch(setApplicationStatusFilter(status));
     dispatch(admissionForm());
-  }
-
- 
+  };
 
   return (
     <>
@@ -143,6 +184,7 @@ const AdmissionScreenAGGridTable = () => {
           </DropdownMenu>
         </div>
       </div>
+
       <div className="ag-theme-alpine w-full h-[700px]">
         <AgGridReact
           rowData={tableData}

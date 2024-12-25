@@ -20,7 +20,7 @@ const AuthHoc = ({ children }) => {
     }
   });
 
-  return <div className="bg-background h-screen w-screen">{children}</div>;
+  return <div className="bg-background h-screen w-full">{children}</div>;
 };
 
 AuthHoc.propTypes = {

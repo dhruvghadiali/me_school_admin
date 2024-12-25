@@ -1,11 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { responseMessage } from "@MEUtils/responseMessage";
+import { admissionForm } from "@MERedux/admission/admissionAction";
+
 import {
   admissionScreenContainerType,
   admissionScreenApplicationStatus,
 } from "@MEUtils/enums";
-import { admissionForm } from "@MERedux/admission/admissionAction";
-import { defaultAdmissionFormData } from "@MERedux/admission/admissionDefaultStateValues";
+import {
+  defaultAdmissionFormData,
+  defaultAdmissionFormDetail,
+} from "@MERedux/admission/admissionDefaultStateValues";
 
 export const admissionSlice = createSlice({
   name: "admission",
@@ -15,6 +19,7 @@ export const admissionSlice = createSlice({
     tableDataloader: false,
     tableDataError: "",
     containerType: admissionScreenContainerType.AGGRIDTABLE,
+    applicationFormDetail: defaultAdmissionFormDetail,
   },
   reducers: {
     resetState: (state, _) => {
@@ -29,6 +34,9 @@ export const admissionSlice = createSlice({
     },
     setApplicationStatusFilter: (state, action) => {
       state.applicationStatus = action.payload;
+    },
+    setApplicationFormDetail: (state, action) => {
+      state.applicationFormDetail = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -54,6 +62,7 @@ export const admissionSlice = createSlice({
 
 export const {
   resetState,
+  setApplicationFormDetail,
   setApplicationStatusFilter,
   setAdmissionScreenContainerType,
 } = admissionSlice.actions;
