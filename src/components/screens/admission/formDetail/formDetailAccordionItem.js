@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 
-const AdmissionScreenAccordionItem = ({item}) => {
+const AdmissionScreenFormDetailAccordionItem = ({item}) => {
   return (
     <>
       <AccordionItem value={item.id} key={item.id} className="py-2">
@@ -46,8 +46,8 @@ const AdmissionScreenAccordionItem = ({item}) => {
   );
 };
 
-AdmissionScreenAccordionItem.prototype = {
+AdmissionScreenFormDetailAccordionItem.prototype = {
     item: PropTypes.any,
 };
 
-export default AdmissionScreenAccordionItem;
+export default AdmissionScreenFormDetailAccordionItem;

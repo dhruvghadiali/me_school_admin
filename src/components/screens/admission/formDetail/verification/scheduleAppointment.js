@@ -8,7 +8,7 @@ import MEButton from "@MECommonComponents/button/meButton";
 import MEDatePicker from "@MECommonComponents/input/meDatePicker";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
-const AdmissionScreenScheduleAppointment = () => {
+const AdmissionScreenFormDetailScheduleAppointment = () => {
   const { applicationFormDetail } = useSelector((state) => state.admission);
 
   const formik = useFormik({
@@ -57,6 +57,6 @@ const AppointmentFormSchema = Yup.object().shape({
   appointmentDate: Yup.date().required("Appointment date required"),
 });
 
-AdmissionScreenScheduleAppointment.prototype = {};
+AdmissionScreenFormDetailScheduleAppointment.prototype = {};
 
-export default AdmissionScreenScheduleAppointment;
+export default AdmissionScreenFormDetailScheduleAppointment;
