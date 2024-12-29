@@ -42,3 +42,8 @@ export const admissionScreenApplicationFormDetailStatus = {
     REJECTED: "rejected",
     CANCELED: "canceled",
 }
+
+export const admissionScreenDocumentVerificationTypes = {
+    REQUIRED: "required",
+    OPTIONAL: "optional",
+}

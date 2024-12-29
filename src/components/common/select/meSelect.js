@@ -38,7 +38,7 @@ const MESelect = (props) => {
         <Label className={selectLabelClassNameByVariant(labelVariant)}>
           {label} {required && <span className="text-danger">*</span>}
         </Label>
-        <Select onValueChange={(value) => onValueChange(value)}>
+        <Select onValueChange={(value) => onValueChange(value)} value={selectedValue}>
           <SelectTrigger className={selectClassNameByVariant(selectVariant)}>
             <SelectValue placeholder={_.upperFirst(placeholder)} />
           </SelectTrigger>

@@ -1,5 +1,4 @@
 import { Skeleton } from "@MEShadcnComponents/skeleton";
-
 import _ from "lodash";
 
 const AdmissionScreenAGGridLoader = () => {
@@ -8,7 +7,7 @@ const AdmissionScreenAGGridLoader = () => {
       {_.times(15, (index) => {
         return (
           <>
-            <div className={`grid grid-flow-row grid-cols-8`}>
+            <div className={`grid grid-flow-row grid-cols-8`} key={index}>
               <div className="border-r-2 border-secondary pt-2 pb-2 self-center">
                 <Skeleton className="bg-secondary h-7 ml-2 mr-2" />
               </div>

@@ -12,9 +12,12 @@ import {
 
 import _ from "lodash";
 import AdmissionScreenFormDetailAccordionItem from "@MEScreenComponents/admission/formDetail/formDetailAccordionItem";
+import AdmissionScreenFormDetailDocumentVerificationLoader from "@MEScreenComponents/admission/formDetail/verification/documentVerificationLoader";
 
 const AdmissionScreenFormDetailVerification = () => {
-  const { applicationFormDetail } = useSelector((state) => state.admission);
+  const { applicationFormDetail, documentVerificationLoader } = useSelector(
+    (state) => state.admission
+  );
 
   return (
     <>
@@ -30,8 +33,12 @@ const AdmissionScreenFormDetailVerification = () => {
               applicationFormDetail.appointmentDate &&
               _.toLower(applicationFormDetail.applicationStatus) ===
                 _.toLower(admissionScreenApplicationFormDetailStatus.PENDING) &&
-              documentVerification.map((item) => (
-                <AdmissionScreenFormDetailAccordionItem item={item} />
+              (documentVerificationLoader ? (
+                <AdmissionScreenFormDetailDocumentVerificationLoader />
+              ) : (
+                documentVerification.map((item) => (
+                  <AdmissionScreenFormDetailAccordionItem item={item} />
+                ))
               ))}
 
             {applicationFormDetail &&
@@ -48,7 +55,7 @@ const AdmissionScreenFormDetailVerification = () => {
                 _.toLower(
                   admissionScreenApplicationFormDetailStatus.APPROVED
                 ) &&
-              rejectApplicationForm.map((item) => (
+              approvedApplicationForm.map((item) => (
                 <AdmissionScreenFormDetailAccordionItem item={item} />
               ))}
 
@@ -58,7 +65,7 @@ const AdmissionScreenFormDetailVerification = () => {
                 _.toLower(
                   admissionScreenApplicationFormDetailStatus.REJECTED
                 ) &&
-              approvedApplicationForm.map((item) => (
+              rejectApplicationForm.map((item) => (
                 <AdmissionScreenFormDetailAccordionItem item={item} />
               ))}
 

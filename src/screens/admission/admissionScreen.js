@@ -14,7 +14,7 @@ import AdmissionScreenAGGridLoader from "@MEScreenComponents/admission/agGridTab
 
 const AdmissionScreen = () => {
   const dispatch = useDispatch();
-  const { tableDataloader, containerType } = useSelector(
+  const { tableDataLoader, containerType } = useSelector(
     (state) => state.admission
   );
 
@@ -34,7 +34,7 @@ const AdmissionScreen = () => {
           <div className="mr-10">
             <AdmissionScreenHeader />
             {containerType === admissionScreenContainerType.AGGRIDTABLE &&
-              (tableDataloader ? (
+              (tableDataLoader ? (
                 <AdmissionScreenAGGridLoader />
               ) : (
                 <AdmissionScreenAGGridTable />

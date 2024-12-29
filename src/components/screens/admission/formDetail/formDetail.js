@@ -5,6 +5,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@MEShadcnComponents/card";
+import { ScrollArea } from "@MEShadcnComponents/scroll-area"
 
 import AdmissionScreenFormDetailHeader from "@MEScreenComponents/admission/formDetail/formDetailHeader";
 import AdmissionScreenFormDetailVerification from "@MEScreenComponents/admission/formDetail/verification/verification";
@@ -22,9 +23,9 @@ const AdmissionScreenFormDetail = () => {
             <div className="border-r border-secondary col-span-2 pr-5">
               <AdmissionScreenFormDetailHistory />
             </div>
-            <div className="overflow-auto max-h-[65vh]">
+            <ScrollArea className="max-h-[70vh]">
               <AdmissionScreenFormDetailVerification />
-            </div>
+            </ScrollArea>
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">

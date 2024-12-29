@@ -18,7 +18,22 @@ const applicationDetails = {
     physicalHealthProblem: false,
     mentalHealthProblem: false,
   },
+  documentVerification: [{ documentId: "1", isDocumentValidated: true }],
 };
+
+export const mockAdmissionVerificationDocuments = [
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+];
 
 export const mockAdmissionFormData = [
   {
@@ -41,11 +56,11 @@ export const mockAdmissionFormData = [
   },
   {
     applicationNumber: "AP-1234-ANK-123-10-12-2024",
-    applicationStatus: "pending",
+    applicationStatus: "approved",
     studentName: "Zack Dorsey",
     grade: "11th com",
     registrationDate: "2024-01-11",
-    appointmentDate: "",
+    appointmentDate: "2025-01-21",
     applicationDetails: applicationDetails,
   },
   {
@@ -196,5 +211,3 @@ export const mockAdmissionFormData = [
     registrationDate: "2024-01-11",
   },
 ];
-
-

@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Eye, ListFilterIcon } from "lucide-react";
 
 import { Label } from "@MEShadcnComponents/label";
-import { admissionForm } from "@MERedux/admission/admissionAction";
+import {
+  admissionForm,
+  documentVerificationList,
+} from "@MERedux/admission/admissionAction";
 
 import {
   setApplicationFormDetail,
@@ -12,9 +15,10 @@ import {
   setAdmissionScreenContainerType,
 } from "@MERedux/admission/admissionSlice";
 import {
+  variants,
   admissionScreenContainerType,
   admissionScreenApplicationStatus,
-  variants,
+  admissionScreenApplicationFormDetailStatus,
 } from "@MEUtils/enums";
 import {
   DropdownMenu,
@@ -36,20 +40,6 @@ const AdmissionScreenAGGridTable = () => {
     (state) => state.admission
   );
   const dispatch = useDispatch();
-
-  const filterParams = {
-    comparator: (filterDate, cellValue) => {
-      console.log("cellValue", cellValue);
-      if (!cellValue) {
-        return -1;
-      }
-
-      const cellDate = new Date(cellValue);
-      if (cellDate < filterDate) return -1;
-      if (cellDate > filterDate) return 1;
-      return 0;
-    },
-  };
 
   const [colDefs, setColDefs] = useState([
     {
@@ -126,6 +116,15 @@ const AdmissionScreenAGGridTable = () => {
   ]);
 
   const onViewAdmissionFormDetail = (data) => {
+    if (
+      data &&
+      data.data &&
+      data.data.appointmentDate &&
+      _.toLower(data.data.applicationStatus) ===
+        _.toLower(admissionScreenApplicationFormDetailStatus.PENDING)
+    ) {
+      dispatch(documentVerificationList());
+    }
     dispatch(setApplicationFormDetail(data.data));
     dispatch(
       setAdmissionScreenContainerType(
