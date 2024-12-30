@@ -1,12 +1,17 @@
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { formateStringWithLodash } from "@MEUtils/utilityFunctions";
 import { AccordionContent, AccordionItem } from "@MEShadcnComponents/accordion";
+import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
 
 import _ from "lodash";
 import PropTypes from "prop-types";
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 
-const AdmissionScreenFormDetailAccordionItem = ({item}) => {
+const AdmissionScreenFormDetailAccordionItem = ({ item }) => {
+  const { t, i18n } = useTranslation();
+
   return (
     <>
       <AccordionItem value={item.id} key={item.id} className="py-2">
@@ -24,9 +29,23 @@ const AdmissionScreenFormDetailAccordionItem = ({item}) => {
                 />
               </span>
               <span className="flex flex-col space-y-1">
-                <span>{_.startCase(item.title)}</span>
+                <span>
+                  {i18n.exists(item.title)
+                    ? formateStringWithLodash(t(item.title), _.startCase)
+                    : formateStringWithLodash(
+                        admissionHub.admissionFromDetailAccordionItemTitle,
+                        _.toUpper
+                      )}
+                </span>
                 {item.sub && (
-                  <span className="text-sm font-normal">{_.upperFirst(item.sub)}</span>
+                  <span className="text-sm font-normal">
+                    {i18n.exists(item.sub)
+                    ? formateStringWithLodash(t(item.sub), _.startCase)
+                    : formateStringWithLodash(
+                        admissionHub.admissionFromDetailAccordionItemSubtitle,
+                        _.toUpper
+                      )}
+                  </span>
                 )}
               </span>
             </span>
@@ -47,7 +66,7 @@ const AdmissionScreenFormDetailAccordionItem = ({item}) => {
 };
 
 AdmissionScreenFormDetailAccordionItem.prototype = {
-    item: PropTypes.any,
+  item: PropTypes.any,
 };
 
 export default AdmissionScreenFormDetailAccordionItem;

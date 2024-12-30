@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Accordion } from "@MEShadcnComponents/accordion";
+import { ScrollArea } from "@MEShadcnComponents/scroll-area";
 import { admissionScreenApplicationFormDetailStatus } from "@MEUtils/enums";
 
 import {
@@ -21,8 +22,8 @@ const AdmissionScreenFormDetailVerification = () => {
 
   return (
     <>
-      <div className="ml-2 pl-2">
-        <div className="mb-2">
+      <ScrollArea className="max-h-[70vh]">
+        <div className="ml-2 mb-2 pl-2 ">
           <Accordion
             type="single"
             collapsible
@@ -80,7 +81,7 @@ const AdmissionScreenFormDetailVerification = () => {
               ))}
           </Accordion>
         </div>
-      </div>
+      </ScrollArea>
     </>
   );
 };

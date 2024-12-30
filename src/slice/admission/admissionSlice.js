@@ -34,6 +34,7 @@ export const admissionSlice = createSlice({
     resetState: (state, _) => {
       state.tableData = defaultAdmissionFormData;
       state.documentVerificationList = defaultAdmissionVerificationDocuments;
+      state.applicationFormDetail= defaultAdmissionFormDetail;
       state.containerType = admissionScreenContainerType.AGGRIDTABLE;
       state.applicationStatus = admissionScreenApplicationStatus.ALL;
       state.tableDataLoader = false;

@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { AgGridReact } from "ag-grid-react";
-import { useDispatch, useSelector } from "react-redux";
-import { Eye, ListFilterIcon } from "lucide-react";
-
+import { useTranslation } from "react-i18next";
 import { Label } from "@MEShadcnComponents/label";
+import { Eye, ListFilterIcon } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
+
 import {
   admissionForm,
   documentVerificationList,
 } from "@MERedux/admission/admissionAction";
-
 import {
   setApplicationFormDetail,
   setApplicationStatusFilter,
@@ -32,18 +33,21 @@ import {
 
 import _ from "lodash";
 import moment from "moment/moment";
-import MEButton from "@MECommonComponents/button/meButton";
 import MEBadge from "@MECommonComponents/badge/meBadge";
+import MEButton from "@MECommonComponents/button/meButton";
 
 const AdmissionScreenAGGridTable = () => {
   const { tableData, applicationStatus } = useSelector(
     (state) => state.admission
   );
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
 
   const [colDefs, setColDefs] = useState([
     {
-      headerName: "Action",
+      headerName: i18n.exists("admissionTableActionColumnTitle")
+        ? _.startCase(t("admissionTableActionColumnTitle"))
+        : _.startCase(admissionHub.admissionTableActionColumnTitle),
       cellRenderer: (data) => (
         <MEButton
           size="icon"
@@ -59,13 +63,17 @@ const AdmissionScreenAGGridTable = () => {
       sortable: false,
     },
     {
-      headerName: "Application Number",
+      headerName: i18n.exists("admissionTableApplicationNumberColumnTitle")
+        ? _.startCase(t("admissionTableApplicationNumberColumnTitle"))
+        : _.startCase(admissionHub.admissionTableApplicationNumberColumnTitle),
       field: "applicationNumber",
       filter: true,
       width: 400,
     },
     {
-      headerName: "Application Status",
+      headerName: i18n.exists("admissionTableApplicationStatusColumnTitle")
+        ? _.startCase(t("admissionTableApplicationStatusColumnTitle"))
+        : _.startCase(admissionHub.admissionTableApplicationStatusColumnTitle),
       field: "applicationStatus",
       filter: true,
       width: 180,
@@ -74,7 +82,9 @@ const AdmissionScreenAGGridTable = () => {
       },
     },
     {
-      headerName: "Student Name",
+      headerName: i18n.exists("admissionTableStudentNameColumnTitle")
+        ? _.startCase(t("admissionTableStudentNameColumnTitle"))
+        : _.startCase(admissionHub.admissionTableStudentNameColumnTitle),
       field: "studentName",
       filter: true,
       width: 550,
@@ -83,7 +93,9 @@ const AdmissionScreenAGGridTable = () => {
       },
     },
     {
-      headerName: "Grade",
+      headerName: i18n.exists("admissionTableGradeColumnTitle")
+        ? _.startCase(t("admissionTableGradeColumnTitle"))
+        : _.startCase(admissionHub.admissionTableGradeColumnTitle),
       field: "grade",
       filter: true,
       width: 170,
@@ -92,7 +104,9 @@ const AdmissionScreenAGGridTable = () => {
       },
     },
     {
-      headerName: "Registration Date",
+      headerName: i18n.exists("admissionTableRegistrationDateColumnTitle")
+        ? _.startCase(t("admissionTableRegistrationDateColumnTitle"))
+        : _.startCase(admissionHub.admissionTableRegistrationDateColumnTitle),
       field: "registrationDate",
       width: 200,
       filter: "agDateColumnFilter",
@@ -103,7 +117,9 @@ const AdmissionScreenAGGridTable = () => {
       },
     },
     {
-      headerName: "Appointment Date",
+      headerName: i18n.exists("admissionTableAppointmentDateColumnTitle")
+        ? _.startCase(t("admissionTableAppointmentDateColumnTitle"))
+        : _.startCase(admissionHub.admissionTableAppointmentDateColumnTitle),
       field: "appointmentDate",
       width: 200,
       filter: "agDateColumnFilter",
@@ -142,7 +158,11 @@ const AdmissionScreenAGGridTable = () => {
     <>
       <div className="grid grid-flow-row grid-cols-2 mt-5 ml-1 mb-2">
         <div className="self-center">
-          <Label> Application Status </Label>
+          <Label>
+            {i18n.exists("admissionTableTitle")
+              ? _.startCase(t("admissionTableTitle"))
+              : _.startCase(admissionHub.admissionTableTitle)}{" "}
+          </Label>
           <MEBadge badgeVariant={variants.PRIMARY}>
             {_.upperCase(applicationStatus)}
           </MEBadge>
@@ -165,7 +185,11 @@ const AdmissionScreenAGGridTable = () => {
               </MEButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 mr-10">
-              <DropdownMenuLabel>Application Status</DropdownMenuLabel>
+              <DropdownMenuLabel>
+                {i18n.exists("admissionTableDropdownTitle")
+                  ? _.startCase(t("admissionTableDropdownTitle"))
+                  : _.startCase(admissionHub.admissionTableDropdownTitle)}
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 {_.map(admissionScreenApplicationStatus, (status) => (
@@ -184,7 +208,7 @@ const AdmissionScreenAGGridTable = () => {
         </div>
       </div>
 
-      <div className="ag-theme-alpine w-full h-[700px]">
+      <div className="ag-theme-alpine w-full h-[80vh]">
         <AgGridReact
           rowData={tableData}
           columnDefs={colDefs}

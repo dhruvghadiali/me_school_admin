@@ -1,5 +1,6 @@
 import { sidebarMenuName } from "@MEUtils/enums";
 import { routeName } from "@MEUtils/routeName";
+import _ from "lodash";
 
 export const indianNumberFormate = (value) => {
   const val = Math.abs(value);
@@ -11,6 +12,10 @@ export const indianNumberFormate = (value) => {
 
 export const isUndefinedOrNull = (value) => {
   return value === undefined || value === null;
+};
+
+export const formateStringWithLodash = (string, lodashFunction) => {
+  return string.replace(/\w+/g, lodashFunction ? lodashFunction : _.toLower);
 };
 
 export const setSidebarMenuNameBasedURL = (pathName) => {

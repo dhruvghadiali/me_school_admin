@@ -33,6 +33,142 @@ export const mockAdmissionVerificationDocuments = [
       { label: "check address in english and gujarati" },
     ],
   },
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
+
+  {
+    id: "1",
+    title: "student aadhar card",
+    status: "required",
+    rules: [
+      { label: "check student name in english and gujarati" },
+      { label: "check father name in english and gujarati" },
+      { label: "check surname in english and gujarati" },
+      { label: "check address in english and gujarati" },
+    ],
+  },
 ];
 
 export const mockAdmissionFormData = [

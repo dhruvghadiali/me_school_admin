@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { admissionScreenContainerType } from "@MEUtils/enums";
 import { resetState } from "@MERedux/admission/admissionSlice";
 import { admissionForm } from "@MERedux/admission/admissionAction";
@@ -23,10 +22,6 @@ const AdmissionScreen = () => {
     dispatch(admissionForm());
   }, []);
 
-  console.log(
-    "containerType == admissionScreenContainerType.AGGRIDTABLE",
-    containerType
-  );
   return (
     <>
       <AuthHoc>
