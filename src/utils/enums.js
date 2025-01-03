@@ -47,3 +47,8 @@ export const admissionScreenDocumentVerificationTypes = {
     REQUIRED: "required",
     OPTIONAL: "optional",
 }
+
+export const admissionScreenApplicationStatusDropdown = {
+    APPROVE: "approve",
+    REJECT: "reject",
+}

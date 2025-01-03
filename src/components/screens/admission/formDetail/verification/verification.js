@@ -8,7 +8,6 @@ import {
   documentVerification,
   rejectApplicationForm,
   approvedApplicationForm,
-  canceledApplicationForm,
 } from "@MEScreenComponents/admission/formDetail/accordionList";
 
 import _ from "lodash";
@@ -67,16 +66,6 @@ const AdmissionScreenFormDetailVerification = () => {
                   admissionScreenApplicationFormDetailStatus.REJECTED
                 ) &&
               rejectApplicationForm.map((item) => (
-                <AdmissionScreenFormDetailAccordionItem item={item} />
-              ))}
-
-            {applicationFormDetail &&
-              applicationFormDetail.appointmentDate &&
-              _.toLower(applicationFormDetail.applicationStatus) ===
-                _.toLower(
-                  admissionScreenApplicationFormDetailStatus.CANCELED
-                ) &&
-              canceledApplicationForm.map((item) => (
                 <AdmissionScreenFormDetailAccordionItem item={item} />
               ))}
           </Accordion>

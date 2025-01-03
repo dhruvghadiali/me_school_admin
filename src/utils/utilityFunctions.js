@@ -15,7 +15,7 @@ export const isUndefinedOrNull = (value) => {
 };
 
 export const formateStringWithLodash = (string, lodashFunction) => {
-  return string.replace(/\w+/g, lodashFunction ? lodashFunction : _.toLower);
+  return string ? string.replace(/\w+/g, lodashFunction ? lodashFunction : _.toLower) : "";
 };
 
 export const setSidebarMenuNameBasedURL = (pathName) => {

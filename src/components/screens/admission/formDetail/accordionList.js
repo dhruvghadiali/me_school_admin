@@ -1,5 +1,3 @@
-import { admissionScreenDocumentVerificationTypes } from "@MEUtils/enums";
-
 import {
   User2,
   Send,
@@ -12,21 +10,26 @@ import {
   ClipboardCheckIcon,
   ReceiptIndianRupeeIcon,
 } from "lucide-react";
+import {
+  admissionScreenDocumentVerificationTypes,
+  admissionScreenApplicationStatusDropdown,
+} from "@MEUtils/enums";
 
 import _ from "lodash";
-import ParentDetails from "@MEScreenComponents/admission/formDetail/history/parentDetails";
-import ApplicantDetails from "@MEScreenComponents/admission/formDetail/history/applicantDetails";
+import AdmissionScreenFormDetailParentsDetails from "@MEScreenComponents/admission/formDetail/history/parentsDetails";
+import AdmissionScreenFormDetailApplicantDetails from "@MEScreenComponents/admission/formDetail/history/applicantDetails";
 import AdmissionScreenFormDetailDocumentRemarkForm from "@MEScreenComponents/admission/formDetail/verification/remarkForm";
 import AdmissionScreenFormDetailScheduleAppointment from "@MEScreenComponents/admission/formDetail/verification/scheduleAppointment";
 import AdmissionScreenFormDetailDocumentVerification from "@MEScreenComponents/admission/formDetail/verification/documentVerification";
 import AdmissionScreenFormDetailApplicationStatusForm from "@MEScreenComponents/admission/formDetail/verification/applicationStatusForm";
+import AdmissionScreenFormDetailEmergencyContactDetails from "@MEScreenComponents/admission/formDetail/history/emergencyContactDetails";
 
 export const scheduleAppointment = [
   {
     id: "1",
     icon: CalendarClockIcon,
-    title: "schedule appointment",
-    sub: "easily set up appointments and keep your schedule on track with just a few clicks!",
+    title: "admissionFormDetailVerificationScheduleAppointmentTitle",
+    sub: "admissionFormDetailVerificationScheduleAppointmentSubtitle",
     content: <AdmissionScreenFormDetailScheduleAppointment />,
   },
 ];
@@ -35,8 +38,8 @@ export const documentVerification = [
   {
     id: "1",
     icon: ClipboardCheckIcon,
-    title: "required document",
-    sub: "the reliable way to verify required documents",
+    title: "admissionFormDetailVerificationRequiredDocumentTitle",
+    sub: "admissionFormDetailVerificationRequiredDocumentSubtitle",
     content: (
       <AdmissionScreenFormDetailDocumentVerification
         status={admissionScreenDocumentVerificationTypes.REQUIRED}
@@ -46,8 +49,8 @@ export const documentVerification = [
   {
     id: "2",
     icon: ClipboardIcon,
-    title: "optional document",
-    sub: "the reliable way to verify optional documents",
+    title: "admissionFormDetailVerificationOptionalDocumentTitle",
+    sub: "admissionFormDetailVerificationOptionalDocumentSubtitle",
     content: (
       <AdmissionScreenFormDetailDocumentVerification
         status={admissionScreenDocumentVerificationTypes.OPTIONAL}
@@ -57,20 +60,26 @@ export const documentVerification = [
   {
     id: "3",
     icon: ClipboardPenIcon,
-    title: "remark",
-    sub: "highlight important details with remarks",
+    title: "admissionFormDetailVerificationRemarkTitle",
+    sub: "admissionFormDetailVerificationRemarkSubtitle",
     content: <AdmissionScreenFormDetailDocumentRemarkForm />,
   },
   {
     id: "4",
     icon: Send,
-    title: "change application status",
-    sub: "update student application progress in real time",
+    title: "admissionFormDetailVerificationChangeApplicationStatusTitle",
+    sub: "admissionFormDetailVerificationChangeApplicationStatusSubtitle",
     content: (
       <AdmissionScreenFormDetailApplicationStatusForm
         items={[
-          { value: _.toLower("approve"), label: _.toUpper("approve") },
-          { value: _.toLower("reject"), label: _.toUpper("reject") },
+          {
+            value: _.toLower(admissionScreenApplicationStatusDropdown.APPROVE),
+            label: _.toUpper(admissionScreenApplicationStatusDropdown.APPROVE),
+          },
+          {
+            value: _.toLower(admissionScreenApplicationStatusDropdown.REJECT),
+            label: _.toUpper(admissionScreenApplicationStatusDropdown.REJECT),
+          },
         ]}
       />
     ),
@@ -81,18 +90,23 @@ export const rejectApplicationForm = [
   {
     id: "1",
     icon: ClipboardPenIcon,
-    title: "remark",
-    sub: "highlight important details with remarks",
+    title: "admissionFormDetailVerificationRemarkTitle",
+    sub: "admissionFormDetailVerificationRemarkSubtitle",
     content: <AdmissionScreenFormDetailDocumentRemarkForm />,
   },
   {
     id: "2",
     icon: Send,
-    title: "change application status",
-    sub: "update student application progress in real time",
+    title: "admissionFormDetailVerificationChangeApplicationStatusTitle",
+    sub: "admissionFormDetailVerificationChangeApplicationStatusSubtitle",
     content: (
       <AdmissionScreenFormDetailApplicationStatusForm
-        items={[{ value: _.toLower("approve"), label: _.toUpper("approve") }]}
+        items={[
+          {
+            value: _.toLower(admissionScreenApplicationStatusDropdown.APPROVE),
+            label: _.toUpper(admissionScreenApplicationStatusDropdown.APPROVE),
+          },
+        ]}
       />
     ),
   },
@@ -102,30 +116,25 @@ export const approvedApplicationForm = [
   {
     id: "1",
     icon: ClipboardPenIcon,
-    title: "remark",
-    sub: "highlight important details with remarks",
+    title: "admissionFormDetailVerificationRemarkTitle",
+    sub: "admissionFormDetailVerificationRemarkSubtitle",
     content: <AdmissionScreenFormDetailDocumentRemarkForm />,
   },
   {
     id: "2",
     icon: Send,
-    title: "change application status",
-    sub: "update student application progress in real time",
+    title: "admissionFormDetailVerificationChangeApplicationStatusTitle",
+    sub: "admissionFormDetailVerificationChangeApplicationStatusSubtitle",
     content: (
       <AdmissionScreenFormDetailApplicationStatusForm
-        items={[{ value: _.toLower("reject"), label: _.toUpper("reject") }]}
+        items={[
+          {
+            value: _.toLower(admissionScreenApplicationStatusDropdown.REJECT),
+            label: _.toUpper(admissionScreenApplicationStatusDropdown.REJECT),
+          },
+        ]}
       />
     ),
-  },
-];
-
-export const canceledApplicationForm = [
-  {
-    id: "1",
-    icon: ClipboardPenIcon,
-    title: "change application status",
-    sub: "easily set up appointments and keep your schedule on track with just a few clicks!",
-    content: <AdmissionScreenFormDetailScheduleAppointment />,
   },
 ];
 
@@ -135,52 +144,43 @@ export const formHistory = [
     icon: User2,
     title: "admissionFormDetailHistoryApplicantDetailsTitle",
     sub: "admissionFormDetailHistoryApplicantDetailsSubtitle",
-    content: <ApplicantDetails />,
+    content: <AdmissionScreenFormDetailApplicantDetails />,
   },
   {
     id: "2",
     icon: UsersRoundIcon,
     title: "admissionFormDetailHistoryParentsDetailsTitle",
     sub: "admissionFormDetailHistoryParentsDetailsSubtitle",
-    content: <ParentDetails />,
+    content: <AdmissionScreenFormDetailParentsDetails />,
   },
   {
     id: "3",
-    icon: ReceiptIndianRupeeIcon,
-    title: "Financial Background",
-    sub: "Add an extra layer of security to your account",
-    content:
-      "Protect your account with two-factor authentication. You can use authenticator apps like Google Authenticator or Authy, receive SMS codes, or use security keys like YubiKey. We recommend using an authenticator app for the most secure experience.",
-  },
-  {
-    id: "4",
     icon: PhoneCallIcon,
-    title: "Emergency Contacts",
-    sub: "We're here to help 24/7",
-    content:
-      "Our support team is available around the clock to assist you. For billing inquiries, technical issues, or general questions, you can reach us through live chat, email at support@example.com, or schedule a call with our technical team. Premium support is available for enterprise customers.",
+    title: "admissionFormDetailHistoryEmergencyContactsTitle",
+    sub: "admissionFormDetailHistoryEmergencyContactsSubtitle",
+    content: <AdmissionScreenFormDetailEmergencyContactDetails />,
   },
   {
     id: "5",
     icon: ClipboardPenIcon,
-    title: "Enrollment Details",
-    sub: "We're here to help 24/7",
+    title: "admissionFormDetailHistoryEnrollmentDetailsTitle",
+    sub: "admissionFormDetailHistoryEnrollmentDetailsSubtitle",
     content:
       "Our support team is available around the clock to assist you. For billing inquiries, technical issues, or general questions, you can reach us through live chat, email at support@example.com, or schedule a call with our technical team. Premium support is available for enterprise customers.",
   },
   {
     id: "6",
     icon: CalendarClockIcon,
-    title: "Admission Scheduling Details",
-    sub: "We're here to help 24/7",
+    title: "admissionFormDetailHistoryAdmissionSchedulingDetailsTitle",
+    sub: "admissionFormDetailHistoryAdmissionSchedulingDetailsSubtitle",
     content:
       "Our support team is available around the clock to assist you. For billing inquiries, technical issues, or general questions, you can reach us through live chat, email at support@example.com, or schedule a call with our technical team. Premium support is available for enterprise customers.",
   },
   {
     id: "7",
     icon: NotebookPenIcon,
-    title: "Remarks",
-    sub: "We're here to help 24/7",
+    title: "admissionFormDetailHistoryRemarksTitle",
+    sub: "admissionFormDetailHistoryRemarksSubtitle",
     content:
       "Our support team is available around the clock to assist you. For billing inquiries, technical issues, or general questions, you can reach us through live chat, email at support@example.com, or schedule a call with our technical team. Premium support is available for enterprise customers.",
   },
