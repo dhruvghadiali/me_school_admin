@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const variants = {
     PRIMARY: "primary",
     SECONDARY: "secondary",
@@ -31,6 +33,7 @@ export const admissionScreenContainerType = {
 export const admissionScreenApplicationStatus = {
     ALL: "all",
     NEW: "new",
+    APPOINTMENT: "daily appointments",
     APPROVED: "approved",
     REJECTED: "rejected",
     CANCELED: "canceled",

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Label } from "@MEShadcnComponents/label";
 import { Eye, ListFilterIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
+import { formateStringWithLodash } from "@MEUtils/utilityFunctions";
 import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
 
 import {
@@ -63,6 +64,19 @@ const AdmissionScreenAGGridTable = () => {
       sortable: false,
     },
     {
+      headerName: i18n.exists("admissionTableAppointmentDateColumnTitle")
+        ? _.startCase(t("admissionTableAppointmentDateColumnTitle"))
+        : _.startCase(admissionHub.admissionTableAppointmentDateColumnTitle),
+      field: "appointmentDate",
+      width: 200,
+      filter: "agDateColumnFilter",
+      cellRenderer: (data) => {
+        return data.value && moment(data.value).isValid()
+          ? moment(data.value).format("DD MMMM YYYY")
+          : "N/A";
+      },
+    },
+    {
       headerName: i18n.exists("admissionTableApplicationNumberColumnTitle")
         ? _.startCase(t("admissionTableApplicationNumberColumnTitle"))
         : _.startCase(admissionHub.admissionTableApplicationNumberColumnTitle),
@@ -108,19 +122,6 @@ const AdmissionScreenAGGridTable = () => {
         ? _.startCase(t("admissionTableRegistrationDateColumnTitle"))
         : _.startCase(admissionHub.admissionTableRegistrationDateColumnTitle),
       field: "registrationDate",
-      width: 200,
-      filter: "agDateColumnFilter",
-      cellRenderer: (data) => {
-        return data.value && moment(data.value).isValid()
-          ? moment(data.value).format("DD MMMM YYYY")
-          : "N/A";
-      },
-    },
-    {
-      headerName: i18n.exists("admissionTableAppointmentDateColumnTitle")
-        ? _.startCase(t("admissionTableAppointmentDateColumnTitle"))
-        : _.startCase(admissionHub.admissionTableAppointmentDateColumnTitle),
-      field: "appointmentDate",
       width: 200,
       filter: "agDateColumnFilter",
       cellRenderer: (data) => {
@@ -199,7 +200,7 @@ const AdmissionScreenAGGridTable = () => {
                     }`}
                     onClick={() => onFilterOptionChange(status)}
                   >
-                    {_.upperFirst(status)}
+                    {formateStringWithLodash(status, _.startCase)}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuGroup>

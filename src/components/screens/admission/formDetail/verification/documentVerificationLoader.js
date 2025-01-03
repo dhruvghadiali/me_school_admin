@@ -4,7 +4,7 @@ import _ from "lodash";
 const AdmissionScreenFormDetailDocumentVerificationLoader = () => {
   return (
     <>
-      {_.times(4, (index) => {
+      {_.times(5, (index) => {
         return (
           <div
             className="flex items-center space-x-4 mb-5 pb-5 border-b"

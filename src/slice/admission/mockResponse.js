@@ -63,9 +63,11 @@ const applicationDetails = {
     nationality: "indian",
     maritalStatus: "married",
     ParentsStillMarried: true,
-    qualification: "5th pass",
-    earningResources: "",
-    yearlyEarning: "",
+    qualification: "5th",
+    incomeSource: "",
+    employmentStatus: "", // Employed, Self-employed, Unemployed
+    employerName: "",
+    annualIncome: "",
     visionProblem: false,
     physicalHealthProblem: false,
     mentalHealthProblem: false,
@@ -80,6 +82,44 @@ const applicationDetails = {
       name: "abhi gandhi",
       relationShip: "friend",
       contactNumber: "+918578952474",
+    },
+  ],
+  previousSchool:{
+    schoolName: "s.v.e.m (g.m) school",
+    address: "44-b block-d sector224, diva road",
+    city: "ankleshwar",
+    state: "gujarat",
+    pincode: "393001",
+    grade: "5",
+    result: "78%",
+  },
+  admissionDetail:{
+    grade: "6",
+  },
+  remarks:[
+    {
+      remark: "application submitted from student at 01 December 2024",
+      createdAt: "2024-12-01",
+    },
+    {
+      remark: "appointment scheduled on 10 December 2024",
+      createdAt: "2024-12-05",
+    },
+    {
+      remark: "required document verified",
+      createdAt: "2024-12-10",
+    },
+    {
+      remark: "parents aadhar card and student aadhar card is invalid",
+      createdAt: "2024-12-10",
+    },
+    {
+      remark: "appointment scheduled on 15 December 2024",
+      createdAt: "2024-12-10",
+    },
+    {
+      remark: "students previous school proof not provided by parents",
+      createdAt: "2024-12-15",
     },
   ],
   documentVerification: [{ documentId: "1", isDocumentValidated: true }],
@@ -98,7 +138,7 @@ export const mockAdmissionVerificationDocuments = [
     ],
   },
   {
-    id: "1",
+    id: "2",
     title: "student aadhar card",
     status: "required",
     rules: [
@@ -241,8 +281,8 @@ export const mockAdmissionFormData = [
     applicationStatus: "pending",
     studentName: "moises rhodes",
     grade: "UKG",
-    registrationDate: "2024-01-11",
-    appointmentDate: "2025-01-21",
+    registrationDate: "2024-12-01",
+    appointmentDate: "2024-12-10",
     applicationDetails: applicationDetails,
   },
   {
@@ -256,7 +296,7 @@ export const mockAdmissionFormData = [
   },
   {
     applicationNumber: "AP-1234-ANK-123-10-12-2024",
-    applicationStatus: "approved",
+    applicationStatus: "canceled",
     studentName: "Zack Dorsey",
     grade: "11th com",
     registrationDate: "2024-01-11",

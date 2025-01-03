@@ -30,16 +30,12 @@ export const admissionHub = {
   admissionFormDetailHistoryEnrollmentDetailsTitle: "enrollment details",
   admissionFormDetailHistoryEnrollmentDetailsSubtitle:
     "every detail matters - the gateway to brilliance starts with thorough verification",
-  admissionFormDetailHistoryAdmissionSchedulingDetailsTitle:
-    "admission scheduling details",
-  admissionFormDetailHistoryAdmissionSchedulingDetailsSubtitle:
-    "appointment history: a comprehensive list of past interactions with applicants",
   admissionFormDetailHistoryRemarksTitle: "remarks",
   admissionFormDetailHistoryRemarksSubtitle:
     "view admission process comments - all admin remarks in one place for easy access",
   admissionFormDetailVerificationScheduleAppointmentTitle:
     "schedule appointment",
-  admissionFormDetailVerificationDocumentVerificationSubtitle:
+  admissionFormDetailVerificationScheduleAppointmentSubtitle:
     "easily set up appointments and keep your schedule on track with just a few clicks!",
   admissionFormDetailVerificationRequiredDocumentTitle: "required document",
   admissionFormDetailVerificationRequiredDocumentSubtitle:
@@ -111,4 +107,17 @@ export const admissionHub = {
   admissionFormDetailHistoryEmergencyContactPersonNameLabel: "name",
   admissionFormDetailHistoryEmergencyContactRelationshipLabel: "relationship",
   admissionFormDetailHistoryEmergencyContactNumberLabel: "contact number",
+  admissionFormDetailHistoryAdmissionDetails: "admission details",
+  admissionFormDetailHistoryPreviousSchoolDetails: "previous school details",
+  admissionFormDetailHistoryAdmissionDetailsGradeLabel: "grade",
+  admissionFormDetailHistoryPreviousSchoolNameLabel: "school name",
+  admissionFormDetailHistoryPreviousSchoolAddressLabel: "address",
+  admissionFormDetailHistoryPreviousSchoolCityLabel: "city",
+  admissionFormDetailHistoryPreviousSchoolStateLabel: "state",
+  admissionFormDetailHistoryPreviousSchoolPincodeLabel: "pincode",
+  admissionFormDetailHistoryPreviousSchoolGradeLabel: "grade",
+  admissionFormDetailHistoryPreviousSchoolResultLabel: "result",
+  admissionFormDetailHistoryRemarksTitleLabel: "title",
+  admissionFormDetailHistoryRemarksCreatedAtLabel: "date",
+  admissionFormDetailVerificationCanceledFormLabel: "right now no need to verify anything",
 };

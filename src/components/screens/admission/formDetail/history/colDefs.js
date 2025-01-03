@@ -308,3 +308,82 @@ export const emergencyContactsColDef = [
       admissionHub.admissionFormDetailHistoryEmergencyContactNumberLabel,
   },
 ];
+
+export const admissionDetailsColDef = [
+  {
+    key: "grade",
+    type: "string",
+    header: "admissionFormDetailHistoryAdmissionDetailsGradeLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryAdmissionDetailsGradeLabel,
+  },
+];
+
+export const previousSchoolDetailsColDef = [
+  {
+    key: "schoolName",
+    type: "string",
+    header: "admissionFormDetailHistoryPreviousSchoolNameLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryPreviousSchoolNameLabel,
+  },
+  {
+    key: "address",
+    type: "string",
+    header: "admissionFormDetailHistoryPreviousSchoolAddressLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryPreviousSchoolAddressLabel,
+  },
+  {
+    key: "city",
+    type: "string",
+    header: "admissionFormDetailHistoryPreviousSchoolCityLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryPreviousSchoolCityLabel,
+  },
+  {
+    key: "state",
+    type: "string",
+    header: "admissionFormDetailHistoryPreviousSchoolStateLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryPreviousSchoolStateLabel,
+  },
+  {
+    key: "pincode",
+    type: "string",
+    header: "admissionFormDetailHistoryPreviousSchoolPincodeLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryPreviousSchoolPincodeLabel,
+  },
+  {
+    key: "grade",
+    type: "string",
+    header: "admissionFormDetailHistoryPreviousSchoolGradeLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryPreviousSchoolGradeLabel,
+  },
+  {
+    key: "result",
+    type: "string",
+    header: "admissionFormDetailHistoryPreviousSchoolResultLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryPreviousSchoolResultLabel,
+  },
+];
+
+export const remarksColDef = [
+  {
+    key: "remark",
+    type: "string",
+    header: "admissionFormDetailHistoryRemarksTitleLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryRemarksTitleLabel,
+  },
+  {
+    key: "createdAt",
+    type: "date",
+    header: "admissionFormDetailHistoryRemarksCreatedAtLabel",
+    defaultHeader:
+      admissionHub.admissionFormDetailHistoryRemarksCreatedAtLabel,
+  },
+];

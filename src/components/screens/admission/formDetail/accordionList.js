@@ -8,7 +8,6 @@ import {
   ClipboardPenIcon,
   CalendarClockIcon,
   ClipboardCheckIcon,
-  ReceiptIndianRupeeIcon,
 } from "lucide-react";
 import {
   admissionScreenDocumentVerificationTypes,
@@ -16,13 +15,16 @@ import {
 } from "@MEUtils/enums";
 
 import _ from "lodash";
+import AdmissionScreenFormDetailRemarks from "@MEScreenComponents/admission/formDetail/history/remarks";
 import AdmissionScreenFormDetailParentsDetails from "@MEScreenComponents/admission/formDetail/history/parentsDetails";
 import AdmissionScreenFormDetailApplicantDetails from "@MEScreenComponents/admission/formDetail/history/applicantDetails";
+import AdmissionScreenFormDetailEnrollmentDetails from "@MEScreenComponents/admission/formDetail/history/enrollmentDetails";
+import AdmissionScreenFormDetailEmergencyContactDetails from "@MEScreenComponents/admission/formDetail/history/emergencyContactDetails";
+
 import AdmissionScreenFormDetailDocumentRemarkForm from "@MEScreenComponents/admission/formDetail/verification/remarkForm";
 import AdmissionScreenFormDetailScheduleAppointment from "@MEScreenComponents/admission/formDetail/verification/scheduleAppointment";
 import AdmissionScreenFormDetailDocumentVerification from "@MEScreenComponents/admission/formDetail/verification/documentVerification";
 import AdmissionScreenFormDetailApplicationStatusForm from "@MEScreenComponents/admission/formDetail/verification/applicationStatusForm";
-import AdmissionScreenFormDetailEmergencyContactDetails from "@MEScreenComponents/admission/formDetail/history/emergencyContactDetails";
 
 export const scheduleAppointment = [
   {
@@ -65,7 +67,14 @@ export const documentVerification = [
     content: <AdmissionScreenFormDetailDocumentRemarkForm />,
   },
   {
-    id: "4",
+    id: "5",
+    icon: CalendarClockIcon,
+    title: "admissionFormDetailVerificationScheduleAppointmentTitle",
+    sub: "admissionFormDetailVerificationScheduleAppointmentSubtitle",
+    content: <AdmissionScreenFormDetailScheduleAppointment />,
+  },
+  {
+    id: "6",
     icon: Send,
     title: "admissionFormDetailVerificationChangeApplicationStatusTitle",
     sub: "admissionFormDetailVerificationChangeApplicationStatusSubtitle",
@@ -165,23 +174,13 @@ export const formHistory = [
     icon: ClipboardPenIcon,
     title: "admissionFormDetailHistoryEnrollmentDetailsTitle",
     sub: "admissionFormDetailHistoryEnrollmentDetailsSubtitle",
-    content:
-      "Our support team is available around the clock to assist you. For billing inquiries, technical issues, or general questions, you can reach us through live chat, email at support@example.com, or schedule a call with our technical team. Premium support is available for enterprise customers.",
+    content: <AdmissionScreenFormDetailEnrollmentDetails/>
   },
   {
     id: "6",
-    icon: CalendarClockIcon,
-    title: "admissionFormDetailHistoryAdmissionSchedulingDetailsTitle",
-    sub: "admissionFormDetailHistoryAdmissionSchedulingDetailsSubtitle",
-    content:
-      "Our support team is available around the clock to assist you. For billing inquiries, technical issues, or general questions, you can reach us through live chat, email at support@example.com, or schedule a call with our technical team. Premium support is available for enterprise customers.",
-  },
-  {
-    id: "7",
     icon: NotebookPenIcon,
     title: "admissionFormDetailHistoryRemarksTitle",
     sub: "admissionFormDetailHistoryRemarksSubtitle",
-    content:
-      "Our support team is available around the clock to assist you. For billing inquiries, technical issues, or general questions, you can reach us through live chat, email at support@example.com, or schedule a call with our technical team. Premium support is available for enterprise customers.",
+    content: <AdmissionScreenFormDetailRemarks/>
   },
 ];

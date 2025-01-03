@@ -1,7 +1,11 @@
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { Label } from "@MEShadcnComponents/label";
 import { Accordion } from "@MEShadcnComponents/accordion";
 import { ScrollArea } from "@MEShadcnComponents/scroll-area";
+import { formateStringWithLodash } from "@MEUtils/utilityFunctions";
 import { admissionScreenApplicationFormDetailStatus } from "@MEUtils/enums";
+import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
 
 import {
   scheduleAppointment,
@@ -18,6 +22,7 @@ const AdmissionScreenFormDetailVerification = () => {
   const { applicationFormDetail, documentVerificationLoader } = useSelector(
     (state) => state.admission
   );
+  const { t, i18n } = useTranslation();
 
   return (
     <>
@@ -68,6 +73,27 @@ const AdmissionScreenFormDetailVerification = () => {
               rejectApplicationForm.map((item) => (
                 <AdmissionScreenFormDetailAccordionItem item={item} />
               ))}
+
+            {applicationFormDetail &&
+              applicationFormDetail.appointmentDate &&
+              _.toLower(applicationFormDetail.applicationStatus) ===
+                _.toLower(
+                  admissionScreenApplicationFormDetailStatus.CANCELED
+                ) && (
+                <div className=" h-[50vh] content-center justify-self-center">
+                  <Label className="text-lg">
+                    {i18n.exists(
+                      "admissionFormDetailVerificationCanceledFormLabel"
+                    )
+                      ? _.capitalize(
+                          t("admissionFormDetailVerificationCanceledFormLabel")
+                        )
+                      : _.capitalize(
+                          admissionHub.admissionFormDetailVerificationCanceledFormLabel
+                        )}
+                  </Label>
+                </div>
+              )}
           </Accordion>
         </div>
       </ScrollArea>
