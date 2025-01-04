@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const variants = {
     PRIMARY: "primary",
     SECONDARY: "secondary",
@@ -21,4 +23,35 @@ export const sidebarMenuName = {
     PROFILE: "profile",
     SETTINGS: "settings",
     LOGOUT: "logout",
+}
+
+export const admissionScreenContainerType = {
+    AGGRIDTABLE: "agGridTable",
+    FORMDETAILCARD: "formDetailCard"
+}
+
+export const admissionScreenApplicationStatus = {
+    ALL: "all",
+    NEW: "new",
+    APPOINTMENT: "daily appointments",
+    APPROVED: "approved",
+    REJECTED: "rejected",
+    CANCELED: "canceled",
+}
+
+export const admissionScreenApplicationFormDetailStatus = {
+    PENDING: "pending",
+    APPROVED: "approved",
+    REJECTED: "rejected",
+    CANCELED: "canceled",
+}
+
+export const admissionScreenDocumentVerificationTypes = {
+    REQUIRED: "required",
+    OPTIONAL: "optional",
+}
+
+export const admissionScreenApplicationStatusDropdown = {
+    APPROVE: "approve",
+    REJECT: "reject",
 }

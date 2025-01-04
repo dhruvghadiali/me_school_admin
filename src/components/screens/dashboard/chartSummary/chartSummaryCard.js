@@ -18,6 +18,7 @@ import {
 
 import _ from "lodash";
 import PropTypes from "prop-types";
+import MEButton from "@MECommonComponents/button/meButton";
 
 const DashboardScreenChartSummaryCard = (props) => {
   const {
@@ -44,7 +45,19 @@ const DashboardScreenChartSummaryCard = (props) => {
           <div className="content-center justify-self-end">
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <FilterIcon size={15} className="text-dark" />
+                <MEButton
+                  className="rounded-full bg-dark"
+                  variant="icon"
+                  size="icon"
+                  aria-label="Filter"
+                >
+                  <FilterIcon
+                    size={15}
+                    strokeWidth={2}
+                    aria-hidden="true"
+                    className="text-secondary"
+                  />
+                </MEButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="mr-2">
                 <DropdownMenuLabel className="text-dark text-xs font-semibold">
