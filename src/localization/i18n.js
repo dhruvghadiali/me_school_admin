@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 import { loginForm } from "@MELocalizationEn/login/loginTranslationEn";
 import { dashboardSummary } from "@MELocalizationEn/dashboard/dashboardTranslationEn";
 import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
+import { profile } from "@MELocalizationEn/profile/profileTranslationEn";
 import {
   sidebarMenuLabel,
   sidebar,
@@ -16,6 +17,7 @@ const resources = {
       ...sidebar,
       ...dashboardSummary,
       ...admissionHub,
+      ...profile,
     },
   },
 };
