@@ -14,6 +14,9 @@ export const isUndefinedOrNull = (value) => {
   return value === undefined || value === null;
 };
 
+export const isAPIServedSuccessfully = (response) =>
+  response.status === 200 || response.status === 201;
+
 export const formateStringWithLodash = (string, lodashFunction) => {
   return string ? string.replace(/\w+/g, lodashFunction ? lodashFunction : _.toLower) : "";
 };
@@ -31,4 +34,10 @@ export const setSidebarMenuNameBasedURL = (pathName) => {
     default:
       return sidebarMenuName.DASHBOARD;
   }
+};
+
+export const defaultAPIErrorResponse = {
+  data: [],
+  message: "Something went wrong - Client Side",
+  status: 500,
 };

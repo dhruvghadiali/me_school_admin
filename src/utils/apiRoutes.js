@@ -1,0 +1,1 @@
+export const signInAPIRoute = "/school-admin/signin";

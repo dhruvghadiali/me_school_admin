@@ -8,9 +8,11 @@ export const loginSlice = createSlice({
     isValidUser: false,
     loader: false,
     error: "",
+    user: {},
   },
   reducers: {
     resetState: (state, _) => {
+      state.user = {};
       state.isValidUser = false;
       state.loader = false;
       state.error = "";
@@ -19,18 +21,21 @@ export const loginSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(validateUser.pending, (state, _) => {
-        state.isValidUser = false;
+        state.user = {};
+        state.error = "";
         state.loader = true;
-        state.error = "";
+        state.isValidUser = false;
       })
-      .addCase(validateUser.fulfilled, (state, _) => {
-        state.isValidUser = true;
+      .addCase(validateUser.fulfilled, (state, action) => {
         state.loader = false;
-        state.error = "";
+        state.user = action.payload.user;
+        state.error = action.payload.error;
+        state.isValidUser = action.payload.isValidUser;
       })
       .addCase(validateUser.rejected, (state, action) => {
-        state.isValidUser = false;
+        state.user = {};
         state.loader = false;
+        state.isValidUser = false;
         state.error = action.payload || responseMessage.somethingWentWrong;
       });
   },

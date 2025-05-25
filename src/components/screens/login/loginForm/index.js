@@ -92,11 +92,11 @@ const LoginForm = () => {
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
     .min(5, validationMessage.usernameMin)
-    .max(10, validationMessage.usernameMax)
+    .max(100, validationMessage.usernameMax)
     .required(validationMessage.usernameRequired),
   password: Yup.string()
     .min(5, validationMessage.passwordMin)
-    .max(10, validationMessage.passwordMax)
+    .max(50, validationMessage.passwordMax)
     .required(validationMessage.required),
 });
 

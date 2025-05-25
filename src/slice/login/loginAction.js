@@ -1,28 +1,61 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
+import { signInAPIRoute } from "@MEUtils/apiRoutes";
+import { signInAPIResponse } from "@MEUtils/apiResponse";
+import {
+  defaultAPIErrorResponse,
+  isAPIServedSuccessfully,
+} from "@MEUtils/utilityFunctions";
+
+import axios from "axios";
+
 export const validateUser = createAsyncThunk(
   "login/validateUser",
-  async (_, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const response = await new Promise((resolve, reject) => {
-        /** API Call: Validating user is valid or not. */
+      let response;
+      let user = {};
 
-        setTimeout(async () => {
-          try {
-            const res = await fetch(
-              "https://jsonplaceholder.typicode.com/users"
-            );
-            if (!res.ok) {
-              throw new Error("Failed to fetch users");
-            }
-            resolve();
-          } catch (error) {
-            reject(error);
+      console.log("Base URL: ", process.env.REACT_APP_API_BASE_URL);
+      console.log("payload: ", payload);
+      response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}${signInAPIRoute}`,
+        payload
+      );
+
+      if (response) response = response.data;
+
+      if (isAPIServedSuccessfully(response)) {
+        if (response && response.data && response.data.length > 0) {
+          user = signInAPIResponse(response.data[0]);
+          if (user.isAccountVerified && user.isActive) {
+            localStorage.setItem("user", JSON.stringify(user));
+            return {
+              error: "",
+              user: user,
+              isValidUser: true,
+            };
+          } else {
+            return {
+              error: "",
+              user: {},
+              isValidUser: false,
+            };
           }
-        }, 2000); // 2 seconds delay
-      });
-
-      return response;
+        } else {
+          return {
+            user: user,
+            isValidUser: false,
+            error: response.message || defaultAPIErrorResponse.message,
+          };
+        }
+      } else {
+        return {
+          user: user,
+          isValidUser: false,
+          error: response.message || defaultAPIErrorResponse.message,
+        };
+      }
     } catch (error) {
       return rejectWithValue(error.message);
     }
