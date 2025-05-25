@@ -1,6 +1,4 @@
 import { Card, CardContent, CardHeader } from "@MEShadcnComponents/card";
-import { ScrollArea } from "@MEShadcnComponents/scroll-area";
-
 import AdmissionScreenFormDetailHeader from "@MEScreenComponents/admission/formDetail/formDetailHeader";
 import AdmissionScreenFormDetailHistory from "@MEScreenComponents/admission/formDetail/history/history";
 import AdmissionScreenFormDetailVerification from "@MEScreenComponents/admission/formDetail/verification/verification";
