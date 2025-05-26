@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { validateUser } from "@MERedux/login/loginAction";
+import { validateUser } from "@MERedux/signIn/signInAction";
 import { responseMessage } from "@MEUtils/responseMessage";
 
-export const loginSlice = createSlice({
-  name: "login",
+export const signInSlice = createSlice({
+  name: "signIn",
   initialState: {
     isValidUser: false,
     loader: false,
@@ -36,11 +36,11 @@ export const loginSlice = createSlice({
         state.user = {};
         state.loader = false;
         state.isValidUser = false;
-        state.error = action.payload || responseMessage.somethingWentWrong;
+        state.error = action.payload.error || responseMessage.somethingWentWrong;
       });
   },
 });
 
-export const { resetState } = loginSlice.actions;
+export const { resetState } = signInSlice.actions;
 
-export default loginSlice.reducer;
+export default signInSlice.reducer;

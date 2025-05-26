@@ -10,14 +10,12 @@ import {
 import axios from "axios";
 
 export const validateUser = createAsyncThunk(
-  "login/validateUser",
+  "signIn/validateUser",
   async (payload, { rejectWithValue }) => {
     try {
       let response;
       let user = {};
 
-      console.log("Base URL: ", process.env.REACT_APP_API_BASE_URL);
-      console.log("payload: ", payload);
       response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}${signInAPIRoute}`,
         payload
@@ -57,7 +55,16 @@ export const validateUser = createAsyncThunk(
         };
       }
     } catch (error) {
-      return rejectWithValue(error.message);
+      if (
+        error &&
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+
+        return rejectWithValue({ error: error.response.data.message });
+      }
+      return rejectWithValue({ error: error.message || defaultAPIErrorResponse.message });
     }
   }
 );

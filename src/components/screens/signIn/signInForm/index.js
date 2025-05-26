@@ -1,23 +1,24 @@
 import { useEffect } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
+import { CircleAlertIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { routeName } from "@MEUtils/routeName";
-import { validateUser } from "@MERedux/login/loginAction";
+import { validateUser } from "@MERedux/signIn/signInAction";
 import { variants, sidebarMenuName } from "@MEUtils/enums";
 import { validationMessage } from "@MEUtils/validationMessage";
-import { changeActiveMenu } from  "@MERedux/sidebar/sidebarSlice"; 
-import { loginForm } from "@MELocalizationEn/login/loginTranslationEn";
+import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
+import { signInForm } from "@MELocalizationEn/signIn/signInTranslationEn";
 
 import * as Yup from "yup";
 import MEInput from "@MECommonComponents/input/meInput";
 import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
-const LoginForm = () => {
-  const { loader, error, isValidUser } = useSelector((state) => state.login);
+const SignInForm = () => {
+  const { loader, error, isValidUser } = useSelector((state) => state.signIn);
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const LoginForm = () => {
       username: "",
       password: "",
     },
-    validationSchema: LoginSchema,
+    validationSchema: SignInSchema,
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
@@ -45,6 +46,13 @@ const LoginForm = () => {
 
   return (
     <>
+      <div className="py-3" />
+      {error && (
+        <div className="bg-danger mb-2 flex items-center  rounded-md">
+          <CircleAlertIcon className="text-accent ml-2" />
+          <p className="text-accent p-2 text-center">{error}</p>
+        </div>
+      )}
       <form onSubmit={formik.handleSubmit}>
         <MEInput
           id="username"
@@ -52,7 +60,7 @@ const LoginForm = () => {
           label={
             i18n.exists("usernameInputLabel")
               ? t("usernameInputLabel")
-              : loginForm.usernameInputLabel
+              : signInForm.usernameInputLabel
           }
           message={formik.errors.username}
           value={formik.values.username}
@@ -67,7 +75,7 @@ const LoginForm = () => {
           label={
             i18n.exists("passwordInputLabel")
               ? t("passwordInputLabel")
-              : loginForm.passwordInputLabel
+              : signInForm.passwordInputLabel
           }
           message={formik.errors.password}
           value={formik.values.password}
@@ -78,9 +86,9 @@ const LoginForm = () => {
         />
         <div className="py-2">
           <MEButton type="submit" buttonVariant={variants.SUCCESS}>
-            {i18n.exists("loginButtonLabel")
-              ? t("loginButtonLabel")
-              : loginForm.loginButtonLabel}
+            {i18n.exists("signInButtonLabel")
+              ? t("signInButtonLabel")
+              : signInForm.signInButtonLabel}
             {loader && <MELoaderIcon />}
           </MEButton>
         </div>
@@ -89,7 +97,7 @@ const LoginForm = () => {
   );
 };
 
-const LoginSchema = Yup.object().shape({
+const SignInSchema = Yup.object().shape({
   username: Yup.string()
     .min(5, validationMessage.usernameMin)
     .max(100, validationMessage.usernameMax)
@@ -100,6 +108,6 @@ const LoginSchema = Yup.object().shape({
     .required(validationMessage.required),
 });
 
-LoginForm.propTypes = {};
+SignInForm.propTypes = {};
 
-export default LoginForm;
+export default SignInForm;

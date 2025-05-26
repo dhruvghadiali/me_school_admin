@@ -1,6 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import { loginForm } from "@MELocalizationEn/login/loginTranslationEn";
+import { signInForm } from "@MELocalizationEn/signIn/signInTranslationEn";
 import { dashboardSummary } from "@MELocalizationEn/dashboard/dashboardTranslationEn";
 import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
 import { profile } from "@MELocalizationEn/profile/profileTranslationEn";
@@ -12,7 +12,7 @@ import {
 const resources = {
   en: {
     translation: {
-      ...loginForm,
+      ...signInForm,
       ...sidebarMenuLabel,
       ...sidebar,
       ...dashboardSummary,

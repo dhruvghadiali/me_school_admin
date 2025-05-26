@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
 import { sidebarMenuName } from "@MEUtils/enums";
-import { resetState } from "@MERedux/login/loginSlice";
+import { resetState } from "@MERedux/signIn/signInSlice";
 import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
 import { sidebarMenu, footerMenu } from "@MECommonComponents/sidebar/sidebarMenu";
 import {

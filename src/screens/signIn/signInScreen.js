@@ -1,15 +1,15 @@
 import AuthHoc from "@MECommonComponents/authHoc/authHoc";
-import LoginForm from "@MEScreenComponents/login/loginForm";
-import LoginFormHeader from "@MEScreenComponents/login/loginFormHeader";
+import SignInForm from "@MEScreenComponents/signIn/signInForm";
+import SignInFormHeader from "@MEScreenComponents/signIn/signInFormHeader";
 
-const LoginScreen = () => {
+const SignInScreen = () => {
   return (
     <>
       <AuthHoc>
         <div className="flex items-center justify-center h-screen">
           <div className="w-1/4">
-            <LoginFormHeader/>
-            <LoginForm/>
+            <SignInFormHeader/>
+            <SignInForm/>
           </div>
         </div>
       </AuthHoc>
@@ -17,4 +17,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default SignInScreen;
