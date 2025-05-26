@@ -64,9 +64,9 @@ const SignInForm = () => {
           }
           message={formik.errors.username}
           value={formik.values.username}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
           onChange={formik.handleChange}
         />
         <MEInput
@@ -79,9 +79,9 @@ const SignInForm = () => {
           }
           message={formik.errors.password}
           value={formik.values.password}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
           onChange={formik.handleChange}
         />
         <div className="py-2">

@@ -29,9 +29,9 @@ const AdmissionScreenFormDetailDocumentRemarkForm = () => {
           label={"remark"}
           message={formik.errors.remark}
           value={formik.values.remark}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
           onChange={formik.handleChange}
         />
         <div className="py-2">

@@ -27,15 +27,15 @@ const MESelect = (props) => {
     selectedValue,
     selectVariant,
     selectedVariant,
-    labelVariant,
-    messageVariant,
+    labelvariant,
+    messagevariant,
     onValueChange,
   } = props;
 
   return (
     <>
       <div className="pr-5 space-y-2">
-        <Label className={selectLabelClassNameByVariant(labelVariant)}>
+        <Label className={selectLabelClassNameByVariant(labelvariant)}>
           {label} {required && <span className="text-danger">*</span>}
         </Label>
         <Select onValueChange={(value) => onValueChange(value)} value={selectedValue}>
@@ -59,7 +59,7 @@ const MESelect = (props) => {
         </Select>
         <p
           className={`mt-2 text-xs ${selectMessageClassNameByVariant(
-            messageVariant
+            messagevariant
           )}`}
           role="alert"
           aria-live="polite"
@@ -80,8 +80,8 @@ MESelect.propTypes = {
   selectedValue: PropTypes.string,
   selectVariant: PropTypes.string,
   selectedVariant: PropTypes.string,
-  labelVariant: PropTypes.string,
-  messageVariant: PropTypes.string,
+  labelvariant: PropTypes.string,
+  messagevariant: PropTypes.string,
   onValueChange: PropTypes.func,
 };
 

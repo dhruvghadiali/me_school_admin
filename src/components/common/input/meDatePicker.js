@@ -26,9 +26,9 @@ const MEDatePicker = (props) => {
     displayDateFormate,
     fromDate,
     message,
-    inputVariant,
-    labelVariant,
-    messageVariant,
+    inputvariant,
+    labelvariant,
+    messagevariant,
     onSelect,
   } = props;
 
@@ -36,7 +36,7 @@ const MEDatePicker = (props) => {
 
   return (
     <div className="space-y-2">
-      <Label className={inputMessageClassNameByVariant(labelVariant)}>
+      <Label className={inputMessageClassNameByVariant(labelvariant)}>
         {label} {required && <span className="text-danger">*</span>}
       </Label>
       <div className="relative">
@@ -45,7 +45,7 @@ const MEDatePicker = (props) => {
             <Button
               disabled={disabled}
               onClick={() => setOpen(true)}
-              className={`${datePickerInputClassNameByVariant(inputVariant)} }`}
+              className={`${datePickerInputClassNameByVariant(inputvariant)} }`}
             >
               <div className="w-full ">
                 {selectedDate && moment(selectedDate).isValid()
@@ -84,7 +84,7 @@ const MEDatePicker = (props) => {
         </Popover>
         <p
           className={`mt-2 text-xs ${inputMessageClassNameByVariant(
-            messageVariant
+            messagevariant
           )}`}
           role="alert"
           aria-live="polite"
@@ -104,9 +104,9 @@ MEDatePicker.propTypes = {
   displayDateFormate: PropTypes.string,
   fromDate: PropTypes.string,
   message: PropTypes.string,
-  inputVariant: PropTypes.string,
-  labelVariant: PropTypes.string,
-  messageVariant: PropTypes.string,
+  inputvariant: PropTypes.string,
+  labelvariant: PropTypes.string,
+  messagevariant: PropTypes.string,
   onSelect: PropTypes.func,
 };
 

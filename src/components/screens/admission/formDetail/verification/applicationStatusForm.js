@@ -34,8 +34,8 @@ const AdmissionScreenFormDetailApplicationStatusForm = ({items}) => {
           message={formik.errors.status}
           selectVariant={variants.DARK}
           selectedVariant={variants.PRIMARY}
-          labelVariant={variants.DARK}
-          messageVariant={variants.WARNING}
+          labelvariant={variants.DARK}
+          messagevariant={variants.WARNING}
           onValueChange={(value) => formik.setFieldValue("status", value)}
         />
 

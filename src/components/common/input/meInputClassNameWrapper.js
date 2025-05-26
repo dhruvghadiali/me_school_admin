@@ -1,7 +1,7 @@
 import { variants } from "@MEUtils/enums";  
 
-export const inputClassNameByVariant = (inputVariant) => {
-  switch (inputVariant) {
+export const inputClassNameByVariant = (inputvariant) => {
+  switch (inputvariant) {
     case variants.PRIMARY:
       return "border-primary/80 text-primary focus-visible:border-primary/80 focus-visible:ring-primary/20";
     case variants.SECONDARY:
@@ -19,8 +19,8 @@ export const inputClassNameByVariant = (inputVariant) => {
   }
 };
 
-export const datePickerInputClassNameByVariant = (inputVariant) => {
-  switch (inputVariant) {
+export const datePickerInputClassNameByVariant = (inputvariant) => {
+  switch (inputvariant) {
     case variants.PRIMARY:
       return "border border-primary/80 bg-transparent shadow-sm hover:bg-transparent hover:text-accent-foreground w-full justify-start text-left font-normal";
     case variants.SECONDARY:
@@ -38,8 +38,8 @@ export const datePickerInputClassNameByVariant = (inputVariant) => {
   }
 };
 
-export const inputMessageClassNameByVariant = (messageVariant) => {
-  switch (messageVariant) {
+export const inputMessageClassNameByVariant = (messagevariant) => {
+  switch (messagevariant) {
     case variants.PRIMARY:
       return "text-primary";
     case variants.SECONDARY:
@@ -57,8 +57,8 @@ export const inputMessageClassNameByVariant = (messageVariant) => {
   }
 };
 
-export const inputLabelClassNameByVariant = (labelVariant) => {
-    switch (labelVariant) {
+export const inputLabelClassNameByVariant = (labelvariant) => {
+    switch (labelvariant) {
       case variants.PRIMARY:
         return "text-primary";
       case variants.SECONDARY:

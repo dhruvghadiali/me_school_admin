@@ -101,8 +101,8 @@ const AdmissionScreenFormDetailDocumentVerification = ({ status }) => {
                       )}
                       selectVariant={variants.DARK}
                       selectedVariant={variants.PRIMARY}
-                      labelVariant={variants.DARK}
-                      messageVariant={variants.WARNING}
+                      labelvariant={variants.DARK}
+                      messagevariant={variants.WARNING}
                       onValueChange={(value) =>
                         onValueChange(value, document.id)
                       }
