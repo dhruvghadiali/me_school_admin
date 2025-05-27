@@ -23,7 +23,7 @@ export const formateStringWithLodash = (string, lodashFunction) => {
 
 export const setSidebarMenuNameBasedURL = (pathName) => {
   switch (pathName) {
-    case routeName.dashboard:
+    case routeName.dashboard || routeName.root:
       return sidebarMenuName.DASHBOARD;
     case routeName.admission:
       return sidebarMenuName.ADMISSION;

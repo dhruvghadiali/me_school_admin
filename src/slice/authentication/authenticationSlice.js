@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { validateUser } from "@MERedux/signIn/signInAction";
+import { validateUser } from "@/slice/authentication/authenticationAction";
 import { responseMessage } from "@MEUtils/responseMessage";
 
-export const signInSlice = createSlice({
-  name: "signIn",
+export const authenticationSlice = createSlice({
+  name: "authentication",
   initialState: {
     isValidUser: false,
     loader: false,
@@ -11,12 +11,15 @@ export const signInSlice = createSlice({
     user: {},
   },
   reducers: {
-    resetState: (state, _) => {
-      state.user = {};
-      state.isValidUser = false;
-      state.loader = false;
-      state.error = "";
+    setUserDetails: (state, action) => {
+      state.user = action.payload;
     },
+    signOutUser: (state, _) => {
+      state.user = {};
+      state.loader = false;
+      state.isValidUser = false;
+      localStorage.clear();
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -41,6 +44,6 @@ export const signInSlice = createSlice({
   },
 });
 
-export const { resetState } = signInSlice.actions;
+export const { setUserDetails, signOutUser } = authenticationSlice.actions;
 
-export default signInSlice.reducer;
+export default authenticationSlice.reducer;

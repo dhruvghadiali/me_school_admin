@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const variants = {
+const variants = {
     PRIMARY: "primary",
     SECONDARY: "secondary",
     DANGER: "danger",
@@ -9,7 +9,7 @@ export const variants = {
     DARK: "dark",
 };
 
-export const variantColor = {
+const variantColor = {
     PRIMARY: "#3b98ba",
     DANGER: "#ab4459",
     WARNING: "#d17615",
@@ -17,7 +17,7 @@ export const variantColor = {
     DARK: "#1b1b1d",
 };
 
-export const sidebarMenuName = {
+const sidebarMenuName = {
     DASHBOARD: "dashboard",
     ADMISSION: "admission",
     PROFILE: "profile",
@@ -25,12 +25,12 @@ export const sidebarMenuName = {
     LOGOUT: "logout",
 }
 
-export const admissionScreenContainerType = {
+const admissionScreenContainerType = {
     AGGRIDTABLE: "agGridTable",
     FORMDETAILCARD: "formDetailCard"
 }
 
-export const admissionScreenApplicationStatus = {
+const admissionScreenApplicationStatus = {
     ALL: "all",
     NEW: "new",
     APPOINTMENT: "daily appointments",
@@ -39,19 +39,52 @@ export const admissionScreenApplicationStatus = {
     CANCELED: "canceled",
 }
 
-export const admissionScreenApplicationFormDetailStatus = {
+const admissionScreenApplicationFormDetailStatus = {
     PENDING: "pending",
     APPROVED: "approved",
     REJECTED: "rejected",
     CANCELED: "canceled",
 }
 
-export const admissionScreenDocumentVerificationTypes = {
+const admissionScreenDocumentVerificationTypes = {
     REQUIRED: "required",
     OPTIONAL: "optional",
 }
 
-export const admissionScreenApplicationStatusDropdown = {
+const admissionScreenApplicationStatusDropdown = {
     APPROVE: "approve",
     REJECT: "reject",
+}
+
+const appEnv = {
+  SIT: "sit",
+  UAT: "uat",
+  MOCK: "mock",
+  DEV: "development",
+  PROD: "production",
+};
+
+const apiStatusCode = {
+  200: 200,
+  201: 201,
+  400: 400,
+  401: 401,
+  403: 403,
+  404: 404,
+  409: 409,
+  500: 500,
+  503: 503,
+};
+
+export {
+    variants,
+    variantColor,
+    sidebarMenuName,
+    admissionScreenContainerType,
+    admissionScreenApplicationStatus,
+    admissionScreenApplicationFormDetailStatus,
+    admissionScreenDocumentVerificationTypes,
+    admissionScreenApplicationStatusDropdown,
+    appEnv,
+    apiStatusCode,
 }

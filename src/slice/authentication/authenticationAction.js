@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 
 export const validateUser = createAsyncThunk(
-  "signIn/validateUser",
+  "authentication/validateUser",
   async (payload, { rejectWithValue }) => {
     try {
       let response;

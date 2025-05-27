@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { routeName } from "@MEUtils/routeName";
-import { validateUser } from "@MERedux/signIn/signInAction";
+import { validateUser } from "@/slice/authentication/authenticationAction";
 import { variants, sidebarMenuName } from "@MEUtils/enums";
 import { validationMessage } from "@MEUtils/validationMessage";
 import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
@@ -18,7 +18,7 @@ import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const SignInForm = () => {
-  const { loader, error, isValidUser } = useSelector((state) => state.signIn);
+  const { loader, error, isValidUser } = useSelector((state) => state.authentication);
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

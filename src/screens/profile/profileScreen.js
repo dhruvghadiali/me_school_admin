@@ -1,5 +1,4 @@
-import AuthHoc from "@MECommonComponents/authHoc/authHoc";
-import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 import ProfileScreenHeader from "@MEScreenComponents/profile/header/header";
 import ProfileScreenSchoolDetail from "@MEScreenComponents/profile/profileDetail/schoolDetail";
 
@@ -11,12 +10,10 @@ import ProfileScreenSchoolDetail from "@MEScreenComponents/profile/profileDetail
 const ProfileScreen = () => {
   return (
     <>
-      <AuthHoc>
-        <MESidebar>
-          <ProfileScreenHeader />
-          <ProfileScreenSchoolDetail/>
-        </MESidebar>
-      </AuthHoc>
+      <MEAuthHoc>
+        <ProfileScreenHeader />
+        <ProfileScreenSchoolDetail />
+      </MEAuthHoc>
     </>
   );
 };

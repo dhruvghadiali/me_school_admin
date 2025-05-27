@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
 import { sidebarMenuName } from "@MEUtils/enums";
-import { resetState } from "@MERedux/signIn/signInSlice";
+import { signOutUser } from "@/slice/authentication/authenticationSlice";
 import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
 import { sidebarMenu, footerMenu } from "@MECommonComponents/sidebar/sidebarMenu";
 import {
@@ -37,7 +37,7 @@ const MESidebar = ({ children }) => {
 
   const onClick = (item) => {
     if (item.title === sidebarMenuName.LOGOUT) {
-      dispatch(resetState());
+      dispatch(signOutUser());
     } else {
       dispatch(changeActiveMenu(item.title));
     }
