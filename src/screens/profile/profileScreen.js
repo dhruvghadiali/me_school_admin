@@ -5,7 +5,7 @@ import ProfileScreenSchoolDetail from "@MEScreenComponents/profile/profileDetail
 /**
  * This screen will displayed basic school information and facilities provided by school
  * Basic Info:
- * Name, address, city, state, pincode, ownership, year of establishment, campus size, affiliation code, school registration number, eduction boards
+ * Name, address, city, state, pincode, ownership, year of establishment, campus size, affiliation code, school registration number, education boards
  */
 const ProfileScreen = () => {
   return (

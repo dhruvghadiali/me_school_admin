@@ -16,7 +16,6 @@ const AdmissionScreenFormDetailDocumentRemarkForm = () => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log("values", values);
     },
   });
 

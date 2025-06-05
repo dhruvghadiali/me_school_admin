@@ -14,11 +14,15 @@ export const isUndefinedOrNull = (value) => {
   return value === undefined || value === null;
 };
 
+export const isAuthorizedUser = (response) => response.status !== 401;
+
 export const isAPIServedSuccessfully = (response) =>
   response.status === 200 || response.status === 201;
 
 export const formateStringWithLodash = (string, lodashFunction) => {
-  return string ? string.replace(/\w+/g, lodashFunction ? lodashFunction : _.toLower) : "";
+  return string
+    ? string.replace(/\w+/g, lodashFunction ? lodashFunction : _.toLower)
+    : "";
 };
 
 export const setSidebarMenuNameBasedURL = (pathName) => {
@@ -31,6 +35,8 @@ export const setSidebarMenuNameBasedURL = (pathName) => {
       return sidebarMenuName.PROFILE;
     case routeName.settings:
       return sidebarMenuName.SETTINGS;
+    case routeName.academicClass:
+      return sidebarMenuName.ACADEMIC_CLASS;
     default:
       return sidebarMenuName.DASHBOARD;
   }
@@ -40,4 +46,8 @@ export const defaultAPIErrorResponse = {
   data: [],
   message: "Something went wrong - Client Side",
   status: 500,
+};
+
+export const setUpAxiosInstanceConfig = (state, dispatch) => {
+  return { state: state, dispatch: dispatch };
 };

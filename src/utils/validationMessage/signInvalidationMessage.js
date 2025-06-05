@@ -1,4 +1,4 @@
-export const validationMessage = {
+export const signInvalidationMessage = {
     "usernameMin":"Minimum 5 characters required",
     "usernameMax":"Maximum 10 characters allowed",
     "usernameRequired": "Username is required",

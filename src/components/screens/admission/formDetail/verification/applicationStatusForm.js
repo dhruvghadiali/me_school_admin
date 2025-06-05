@@ -18,7 +18,6 @@ const AdmissionScreenFormDetailApplicationStatusForm = ({items}) => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log("values", values);
     },
   });
 

@@ -10,21 +10,18 @@ const SettingsScreen = () => {
       <MEAuthHoc>
         <h1> Settings Screen </h1>
         <MEButton onClick={() => {
-          console.log("Change Language");
           i18n.changeLanguage("en");
         }}>
           EN Change Language
         </MEButton>
 
         <MEButton onClick={() => {
-          console.log("Change Language");
           i18n.changeLanguage("fr");
         }}>
           FR Change Language
         </MEButton>
 
         <MEButton onClick={() => {
-          console.log("Change Language");
           i18n.changeLanguage("de");
         }}>
           DE Change Language

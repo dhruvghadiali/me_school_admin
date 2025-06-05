@@ -13,6 +13,7 @@ export const authenticationSlice = createSlice({
   reducers: {
     setUserDetails: (state, action) => {
       state.user = action.payload;
+      state.validateUser = true;
     },
     signOutUser: (state, _) => {
       state.user = {};

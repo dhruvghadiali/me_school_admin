@@ -20,6 +20,7 @@ const variantColor = {
 const sidebarMenuName = {
     DASHBOARD: "dashboard",
     ADMISSION: "admission",
+    ACADEMIC_CLASS: "academicClass",
     PROFILE: "profile",
     SETTINGS: "settings",
     LOGOUT: "logout",

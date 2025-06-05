@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router";
 
-import { appEnv } from "@MEUtils/enums";
 import { routeName } from "@MEUtils/routeName";
 import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
 import { setSidebarMenuNameBasedURL } from "@MEUtils/utilityFunctions";
@@ -10,7 +9,6 @@ import { signOutUser, setUserDetails } from "@/slice/authentication/authenticati
 
 import PropTypes from "prop-types";
 
-import MEEnvHoc from "@MECommonComponents/hoc/meEnvHoc";
 import MESidebar from "@MECommonComponents/sidebar/meSidebar";
 
 const MEAuthHoc = ({ children }) => {
@@ -22,7 +20,6 @@ const MEAuthHoc = ({ children }) => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log("MEAuthHoc User:", user);
 
     if (!user) {
       dispatch(signOutUser({}));

@@ -43,8 +43,9 @@ const MESelect = (props) => {
             <SelectValue placeholder={_.upperFirst(placeholder)} />
           </SelectTrigger>
           <SelectContent>
-            {_.map(items, (item) => (
+            {_.map(items, (item, index) => (
               <SelectItem
+                key={index}
                 value={item.value}
                 className={`${
                   _.toLower(selectedValue) === _.toLower(item.value)

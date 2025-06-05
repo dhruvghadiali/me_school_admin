@@ -71,7 +71,7 @@ const MESidebar = ({ children }) => {
                       >
                         <item.icon />
                         <span>
-                          {_.upperFirst(
+                          {_.startCase(
                             i18n.exists(item.title)
                               ? t(item.title)
                               : sidebarMenuLabel[item.title]

@@ -39,7 +39,6 @@ const SignInForm = () => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log("values", values);
       dispatch(validateUser(values));
     },
   });
