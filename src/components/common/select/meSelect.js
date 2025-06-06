@@ -38,25 +38,30 @@ const MESelect = (props) => {
         <Label className={selectLabelClassNameByVariant(labelvariant)}>
           {label} {required && <span className="text-danger">*</span>}
         </Label>
-        <Select onValueChange={(value) => onValueChange(value)} value={selectedValue}>
+        <Select
+          onValueChange={(value) => onValueChange(value)}
+          value={selectedValue}
+        >
           <SelectTrigger className={selectClassNameByVariant(selectVariant)}>
             <SelectValue placeholder={_.upperFirst(placeholder)} />
           </SelectTrigger>
-          <SelectContent>
-            {_.map(items, (item, index) => (
-              <SelectItem
-                key={index}
-                value={item.value}
-                className={`${
-                  _.toLower(selectedValue) === _.toLower(item.value)
-                    ? selectedValueClassNameByVariant(selectedVariant)
-                    : ""
-                }`}
-              >
-                {_.upperFirst(item.label)}
-              </SelectItem>
-            ))}
-          </SelectContent>
+          {items && items.length > 0 && (
+            <SelectContent>
+              {_.map(items, (item, index) => (
+                <SelectItem
+                  key={index}
+                  value={item.value}
+                  className={`${
+                    _.toLower(selectedValue) === _.toLower(item.value)
+                      ? selectedValueClassNameByVariant(selectedVariant)
+                      : ""
+                  }`}
+                >
+                  {_.upperFirst(item.label)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          )}
         </Select>
         <p
           className={`mt-2 text-xs ${selectMessageClassNameByVariant(

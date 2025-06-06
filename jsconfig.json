@@ -14,7 +14,7 @@
             "@MEShadcnComponents/*": [
                 "./src/components/ui/*"
             ],
-            "@MELocalizationEn/*": [
+            "@MELocalization/*": [
                 "./src/localization/*"
             ],
             "@MEScreens/*": [

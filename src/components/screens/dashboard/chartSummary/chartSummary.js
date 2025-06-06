@@ -4,7 +4,7 @@ import {
   setApplicationFormSummaryBarChartColor,
   setClassLevelSummaryActiveMenu,
 } from "@MERedux/dashboard/dashboardSlice";
-import { dashboardSummary } from "@MELocalizationEn/dashboard/dashboardTranslationEn";
+import { dashboardSummary } from "@MELocalization/dashboard/dashboardTranslationEn";
 
 import _ from "lodash";
 import { useTranslation } from "react-i18next";

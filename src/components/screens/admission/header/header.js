@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
+import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
 
 import _ from "lodash";
 

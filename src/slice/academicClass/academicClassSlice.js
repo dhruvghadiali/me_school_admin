@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  addAcademicClasses,
   getAcademicClasses,
   onChangeEductionBoard,
+  deleteAcademicClasses,
   getDefaultAcademicClasses,
-  addAcademicClasses,
 } from "@/slice/academicClass/academicClassAction";
 
 export const academicClassSlice = createSlice({
@@ -89,6 +90,18 @@ export const academicClassSlice = createSlice({
         state.academicClassFormLoader = false;
       })
       .addCase(addAcademicClasses.rejected, (state, action) => {
+        state.academicClassFormError = action.payload.error;
+        state.academicClassFormLoader = false;
+      })
+      .addCase(deleteAcademicClasses.pending, (state, _) => {
+        state.academicClassFormError = "";
+        state.academicClassFormLoader = true;
+      })
+      .addCase(deleteAcademicClasses.fulfilled, (state, action) => {
+        state.academicClassFormError = action.payload.error;
+        state.academicClassFormLoader = false;
+      })
+      .addCase(deleteAcademicClasses.rejected, (state, action) => {
         state.academicClassFormError = action.payload.error;
         state.academicClassFormLoader = false;
       });

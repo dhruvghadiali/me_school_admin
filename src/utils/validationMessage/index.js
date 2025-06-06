@@ -1,7 +1,2 @@
-import { academicClassValidationMessage } from "@MEUtils/validationMessage/academicClassValidationMessage";
-import { signInvalidationMessage } from "@MEUtils/validationMessage/signInvalidationMessage";
-
-export const validationMessage = {
-  ...academicClassValidationMessage,
-  ...signInvalidationMessage,
-};
+export * from "@MEUtils/validationMessage/academicClassValidationMessage";
+export * from "@MEUtils/validationMessage/signInvalidationMessage";

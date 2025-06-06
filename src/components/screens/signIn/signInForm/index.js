@@ -6,11 +6,18 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
 import { routeName } from "@MEUtils/routeName";
-import { validateUser } from "@/slice/authentication/authenticationAction";
 import { variants, sidebarMenuName } from "@MEUtils/enums";
-import { validationMessage } from "@MEUtils/validationMessage";
 import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
-import { signInForm } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { signInForm } from "@MELocalization/signIn/signInTranslationEn";
+import { validateUser } from "@/slice/authentication/authenticationAction";
+import {
+  passwordMax,
+  passwordMin,
+  passwordRequired,
+  usernameMax,
+  usernameMin,
+  usernameRequired,
+} from "@MEUtils/validationMessage";
 
 import * as Yup from "yup";
 import MEInput from "@MECommonComponents/input/meInput";
@@ -18,7 +25,9 @@ import MEButton from "@MECommonComponents/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const SignInForm = () => {
-  const { loader, error, isValidUser } = useSelector((state) => state.authentication);
+  const { loader, error, isValidUser } = useSelector(
+    (state) => state.authentication
+  );
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -98,13 +107,13 @@ const SignInForm = () => {
 
 const SignInSchema = Yup.object().shape({
   username: Yup.string()
-    .min(5, validationMessage.usernameMin)
-    .max(100, validationMessage.usernameMax)
-    .required(validationMessage.usernameRequired),
+    .min(5, usernameMin)
+    .max(100, usernameMax)
+    .required(usernameRequired),
   password: Yup.string()
-    .min(5, validationMessage.passwordMin)
-    .max(50, validationMessage.passwordMax)
-    .required(validationMessage.required),
+    .min(5, passwordMin)
+    .max(50, passwordMax)
+    .required(passwordRequired),
 });
 
 SignInForm.propTypes = {};

@@ -242,9 +242,36 @@ const addAcademicClasses = createAsyncThunk(
   }
 );
 
+const deleteAcademicClasses = createAsyncThunk(
+  "academicClass/deleteAcademicClasses",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      await axiosInstance.delete(
+        `${schoolAcademicClassesAPIRoute}/${payload}`,
+        axiosInstanceConfig
+      );
+
+      dispatch(getAcademicClasses());
+        return {
+          error:"",
+        };
+    } catch (error) {
+      return rejectWithValue({
+        error: error && error.message ? error.message : "",
+      });
+    }
+  }
+);
+
 export {
+  addAcademicClasses,
   getAcademicClasses,
   onChangeEductionBoard,
+  deleteAcademicClasses,
   getDefaultAcademicClasses,
-  addAcademicClasses,
 };

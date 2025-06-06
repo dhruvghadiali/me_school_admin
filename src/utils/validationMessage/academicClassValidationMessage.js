@@ -1,3 +1,3 @@
-export const academicClassValidationMessage = {
-    "academicClassSelectionRequired": "academic class selection is required",
-}
+const academicClassSelectionRequired = "academic class selection is required";
+
+export { academicClassSelectionRequired };

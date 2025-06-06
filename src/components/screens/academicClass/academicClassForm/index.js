@@ -1,11 +1,17 @@
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 import { CircleAlertIcon } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
-import { validationMessage } from "@MEUtils/validationMessage";
+import { addNewAcademicClassAPIPayload } from "@MEUtils/apiPayload";
+import { academicClassSelectionRequired } from "@MEUtils/validationMessage";
 import { addAcademicClasses } from "@MERedux/academicClass/academicClassAction";
-import { addNewAcademicClassAPIPayload } from "@MEUtils/apiPayload/academicClassAPIPayload";
+import {
+  academicClassSelectionLabel,
+  academicClassSubmitButtonText,
+  academicClassSelectionPlaceholder,
+} from "@MELocalization/en";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -23,6 +29,7 @@ const AcademicClassForm = () => {
     selectedEducationBoard,
     school,
   } = useSelector((state) => state.academicClass);
+  const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -58,16 +65,26 @@ const AcademicClassForm = () => {
       <form onSubmit={formik.handleSubmit}>
         <MESelect
           id="academicClass"
-          label="selected academic class"
+          label={
+            i18n.exists("academicClassSelectionLabel")
+              ? _.upperFirst(t("academicClassSelectionLabel"))
+              : _.upperFirst(academicClassSelectionLabel)
+          }
           items={_.filter(
             defaultAcademicClasses,
-            (item) =>
+            (defaultAcademicClass) =>
               !_.includes(
-                academicClasses.map((item) => item.academicClass),
-                item.label
+                academicClasses.map((academicClass) =>
+                  _.toLower(academicClass.academicClass)
+                ),
+                _.toLower(defaultAcademicClass.label)
               )
           )}
-          placeholder="Select Academic Class"
+          placeholder={
+            i18n.exists("academicClassSelectionPlaceholder")
+              ? _.upperFirst(t("academicClassSelectionPlaceholder"))
+              : _.upperFirst(academicClassSelectionPlaceholder)
+          }
           selectedValue={formik.values.academicClass}
           message={formik.errors.academicClass}
           selectVariant={variants.DARK}
@@ -80,7 +97,9 @@ const AcademicClassForm = () => {
         />
         <div className="py-2">
           <MEButton type="submit" buttonVariant={variants.SUCCESS}>
-            Submit
+            {i18n.exists("academicClassSubmitButtonText")
+              ? _.upperCase(t("academicClassSubmitButtonText"))
+              : _.upperCase(academicClassSubmitButtonText)}
             {academicClassFormLoader && <MELoaderIcon />}
           </MEButton>
         </div>
@@ -90,9 +109,7 @@ const AcademicClassForm = () => {
 };
 
 const AcademicClassSchema = Yup.object().shape({
-  academicClass: Yup.string().required(
-    validationMessage.academicClassSelectionRequired
-  ),
+  academicClass: Yup.string().required(academicClassSelectionRequired),
 });
 
 AcademicClassForm.propTypes = {};

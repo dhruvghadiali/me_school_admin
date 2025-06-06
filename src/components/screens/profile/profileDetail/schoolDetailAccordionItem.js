@@ -2,7 +2,7 @@ import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formateStringWithLodash } from "@MEUtils/utilityFunctions";
 import { AccordionContent, AccordionItem } from "@MEShadcnComponents/accordion";
-import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
+import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
 
 import _ from "lodash";
 import PropTypes from "prop-types";

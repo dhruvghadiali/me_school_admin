@@ -1,14 +1,15 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import { profile } from "@MELocalizationEn/profile/profileTranslationEn";
-import { signInForm } from "@MELocalizationEn/signIn/signInTranslationEn";
-import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
-import { dashboardSummary } from "@MELocalizationEn/dashboard/dashboardTranslationEn";
-import { academicClass } from "@MELocalizationEn/academicClass/academicClassTranslationEn";
+import { profile } from "@MELocalization/profile/profileTranslationEn";
+import { signInForm } from "@MELocalization/signIn/signInTranslationEn";
+import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
+import { dashboardSummary } from "@MELocalization/dashboard/dashboardTranslationEn";
 import {
   sidebarMenuLabel,
   sidebar,
-} from "@MELocalizationEn//sidebar/sidebarTranslationEn";
+} from "@MELocalization/sidebar/sidebarTranslationEn";
+
+import * as localizationEn from "@MELocalization/en";
 
 const resources = {
   en: {
@@ -17,9 +18,9 @@ const resources = {
       ...sidebar,
       ...signInForm,
       ...admissionHub,
-      ...academicClass,
       ...sidebarMenuLabel,
       ...dashboardSummary,
+      ...localizationEn,
     },
   },
 };

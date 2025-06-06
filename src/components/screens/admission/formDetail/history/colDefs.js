@@ -1,4 +1,4 @@
-import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
+import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
 
 export const applicantColDef = [
   {

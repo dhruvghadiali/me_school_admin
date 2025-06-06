@@ -23,7 +23,7 @@ import {
 import {
   sidebarMenuLabel,
   sidebar,
-} from "@MELocalizationEn/sidebar/sidebarTranslationEn";
+} from "@MELocalization/sidebar/sidebarTranslationEn";
 
 import MEButton from "@MECommonComponents/button/meButton";
 import PropTypes from "prop-types";

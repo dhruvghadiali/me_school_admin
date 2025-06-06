@@ -5,7 +5,7 @@ import { Accordion } from "@MEShadcnComponents/accordion";
 import { ScrollArea } from "@MEShadcnComponents/scroll-area";
 import { formateStringWithLodash } from "@MEUtils/utilityFunctions";
 import { admissionScreenApplicationFormDetailStatus } from "@MEUtils/enums";
-import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
+import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
 
 import {
   scheduleAppointment,

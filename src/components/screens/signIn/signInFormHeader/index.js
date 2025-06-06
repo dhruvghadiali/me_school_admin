@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { signInForm } from "@MELocalizationEn/signIn/signInTranslationEn";
+import { signInForm } from "@MELocalization/signIn/signInTranslationEn";
 
 const SignInFormHeader = () => {
   const { t, i18n } = useTranslation();

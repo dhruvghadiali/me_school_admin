@@ -49,10 +49,10 @@ const AdmissionScreenFormDetailApplicationStatusForm = ({items}) => {
 };
 
 const applicationStatusSchema = Yup.object().shape({
-  status: Yup.string()
-    .min(5, validationMessage.usernameMin)
-    .max(25, validationMessage.usernameMax)
-    .required(validationMessage.usernameRequired),
+  // status: Yup.string()
+  //   .min(5, validationMessage.usernameMin)
+  //   .max(25, validationMessage.usernameMax)
+  //   .required(validationMessage.usernameRequired),
 });
 
 AdmissionScreenFormDetailApplicationStatusForm.prototype = {

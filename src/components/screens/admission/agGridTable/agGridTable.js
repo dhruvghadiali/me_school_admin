@@ -5,7 +5,7 @@ import { Label } from "@MEShadcnComponents/label";
 import { Eye, ListFilterIcon } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { formateStringWithLodash } from "@MEUtils/utilityFunctions";
-import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
+import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
 
 import {
   admissionForm,
