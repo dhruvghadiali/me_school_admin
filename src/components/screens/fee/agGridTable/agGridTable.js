@@ -27,24 +27,22 @@ import MESelect from "@MECommonComponents/select/meSelect";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 import AcademicClassSheet from "@MEScreenComponents/academicClass/academicClassSheet/academicClassSheet";
 
-const AcademicClassScreenAGGridTable = () => {
-  const { selectedEducationBoard, educationBoards, academicClasses } =
-    useSelector((state) => state.academicClass);
+const FeeScreenAGGridTable = () => {
+  // const { selectedEducationBoard, educationBoards, academicClasses } =
+  //   useSelector((state) => state.academicClass);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
   const onDeleteConfirm = (data) => {
-    if (data && data.data && data.data.id) {
-      dispatch(deleteAcademicClasses(data.data.id));
-    }
+    // if (data && data.data && data.data.id) {
+    //   dispatch(deleteAcademicClasses(data.data.id));
+    // }
   };
 
   const colDefs = [
     {
-      headerName: i18n.exists("academicClassActionColumnTitle")
-        ? _.upperFirst(t("academicClassActionColumnTitle"))
-        : _.upperFirst(academicClassActionColumnTitle),
+      headerName: "Action",
       cellRenderer: (data) => (
         <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
           <Button size="icon" variant="link" className="text-danger">
@@ -57,12 +55,34 @@ const AcademicClassScreenAGGridTable = () => {
       sortable: false,
     },
     {
-      headerName: i18n.exists("academicClassColumnTitle")
-        ? _.upperFirst(t("academicClassColumnTitle"))
-        : _.upperFirst(academicClassColumnTitle),
+      headerName: "Fee Type",
       field: "academicClass",
       filter: true,
-      flex: 1,
+      width: 500,
+    },
+    {
+      headerName: "Monthly Fee",
+      field: "academicClass",
+      filter: true,
+      width: 150,
+    },
+    {
+      headerName: "Quarterly Fee",
+      field: "academicClass",
+      filter: true,
+      width: 150,
+    },
+    {
+      headerName: "Half Yearly Fee",
+      field: "academicClass",
+      filter: true,
+      width: 150,
+    },
+    {
+      headerName: "Yearly Fee",
+      field: "academicClass",
+      filter: true,
+      width: 150,
     },
     {
       headerName: i18n.exists("academicClassCreatedByColumnTitle")
@@ -120,24 +140,42 @@ const AcademicClassScreenAGGridTable = () => {
     <>
       <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
         <div className="md:self-center md:justify-self-start">
-          <MESelect
-            label={
-              i18n.exists("eductionBoardSelectionLabel")
-                ? _.upperFirst(t("eductionBoardSelectionLabel"))
-                : _.upperFirst(eductionBoardSelectionLabel)
-            }
-            placeholder={
-              i18n.exists("eductionBoardSelectionPlaceholder")
-                ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
-                : _.upperFirst(eductionBoardSelectionPlaceholder)
-            }
-            items={educationBoards}
-            selectedValue={selectedEducationBoard}
-            selectVariant={variants.DARK}
-            selectedVariant={variants.PRIMARY}
-            labelvariant={variants.DARK}
-            onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
-          />
+          <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
+            <MESelect
+              label={
+                i18n.exists("eductionBoardSelectionLabel")
+                  ? _.upperFirst(t("eductionBoardSelectionLabel"))
+                  : _.upperFirst(eductionBoardSelectionLabel)
+              }
+              placeholder={
+                i18n.exists("eductionBoardSelectionPlaceholder")
+                  ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
+                  : _.upperFirst(eductionBoardSelectionPlaceholder)
+              }
+              items={[]}
+              selectedValue={""}
+              selectVariant={variants.DARK}
+              selectedVariant={variants.PRIMARY}
+              labelvariant={variants.DARK}
+              onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
+            />
+            <MESelect
+              label={
+                "Select Academic Class"
+              }
+              placeholder={
+                i18n.exists("eductionBoardSelectionPlaceholder")
+                  ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
+                  : _.upperFirst(eductionBoardSelectionPlaceholder)
+              }
+              items={[]}
+              selectedValue={""}
+              selectVariant={variants.DARK}
+              selectedVariant={variants.PRIMARY}
+              labelvariant={variants.DARK}
+              onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
+            />
+          </div>
         </div>
         <div className="md:justify-self-end md:self-center md:mt-0 md:mb-0 mb-5 mt-6">
           <AcademicClassSheet />
@@ -145,16 +183,12 @@ const AcademicClassScreenAGGridTable = () => {
       </div>
 
       <div className="ag-theme-alpine w-full h-[75vh]">
-        <AgGridReact
-          rowData={academicClasses}
-          columnDefs={colDefs}
-          pagination={true}
-        />
+        <AgGridReact rowData={[]} columnDefs={colDefs} pagination={true} />
       </div>
     </>
   );
 };
 
-AcademicClassScreenAGGridTable.propTypes = {};
+FeeScreenAGGridTable.propTypes = {};
 
-export default AcademicClassScreenAGGridTable;
+export default FeeScreenAGGridTable;

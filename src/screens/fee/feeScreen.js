@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   getAcademicClasses,
-  getDefaultAcademicClasses,
 } from "@MERedux/academicClass/academicClassAction";
 
 import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 import FeeScreenHeader from "@MEScreenComponents/fee/header/header";
-import AcademicClassScreenAGGridTable from "@MEScreenComponents/academicClass/agGridTable/agGridTable";
+import FeeScreenAGGridTable from "@MEScreenComponents/fee/agGridTable/agGridTable";
 import FeeScreenAGGridLoader from "@MEScreenComponents/fee/agGridTable/agGridLoader";
 
 const FeeScreen = () => {
@@ -25,12 +24,11 @@ const FeeScreen = () => {
       <MEAuthHoc>
         <div className="mr-10">
           <FeeScreenHeader />
-          <FeeScreenAGGridLoader />
           {/* {academicClassLoader ? (
             <FeeScreenAGGridLoader />
-          ) : (
-            <AcademicClassScreenAGGridTable />
-          )} */}
+          ) : ( */}
+            <FeeScreenAGGridTable />
+          {/* )} */}
         </div>
       </MEAuthHoc>
     </>
