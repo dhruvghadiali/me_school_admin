@@ -37,6 +37,8 @@ export const setSidebarMenuNameBasedURL = (pathName) => {
       return sidebarMenuName.SETTINGS;
     case routeName.academicClass:
       return sidebarMenuName.ACADEMIC_CLASS;
+    case routeName.fees:
+      return sidebarMenuName.FEES;
     default:
       return sidebarMenuName.DASHBOARD;
   }

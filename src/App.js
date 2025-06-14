@@ -1,6 +1,7 @@
 import { routeName } from "@MEUtils/routeName";
 import { BrowserRouter, Routes, Route, Navigate  } from "react-router";
 
+import FeeScreen from "@MEScreens/fee/feeScreen";
 import SignInScreen from "@MEScreens/signIn/signInScreen";
 import ProfileScreen from "@MEScreens/profile/profileScreen";
 import SettingsScreen from "@MEScreens/settings/settingsScreen";
@@ -19,6 +20,7 @@ function App() {
         <Route path={routeName.admission} element={<AdmissionScreen />} />
         <Route path={routeName.schoolProfile} element={<ProfileScreen />} />
         <Route path={routeName.academicClass} element={<AcademicClassScreen />} />
+        <Route path={routeName.fees} element={<FeeScreen />} />
         <Route path="*" element={<Navigate to={routeName.dashboard} replace />} />
       </Routes>
     </BrowserRouter>

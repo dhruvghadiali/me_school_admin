@@ -4,6 +4,7 @@ export const routeName = {
     dashboard: "/dashboard",
     admission: "/admission",
     academicClass: "/academic-class",
+    fees: "/fees",
     schoolProfile: "/school-profile",
     settings: "/settings"
 }

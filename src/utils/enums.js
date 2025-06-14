@@ -21,6 +21,7 @@ const sidebarMenuName = {
     DASHBOARD: "dashboard",
     ADMISSION: "admission",
     ACADEMIC_CLASS: "academicClass",
+    FEES: "fees",
     PROFILE: "profile",
     SETTINGS: "settings",
     LOGOUT: "logout",
