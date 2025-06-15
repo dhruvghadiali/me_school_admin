@@ -13,11 +13,14 @@ import {
   setEductionBoard,
   setSelectedAcademicClass,
 } from "@MERedux/fee/feeSlice";
+import { getFees } from "@MERedux/fee/feeAction";
 import {
   academicClassColumnTitle,
   eductionBoardSelectionLabel,
+  academicClassSelectionLabel,
   academicClassActionColumnTitle,
   eductionBoardSelectionPlaceholder,
+  academicClassSelectionPlaceholder,
   academicClassCreatedByColumnTitle,
   academicClassCreatedAtColumnTitle,
   academicClassUpdatedAtColumnTitle,
@@ -28,8 +31,8 @@ import _ from "lodash";
 import moment from "moment/moment";
 
 import MESelect from "@MECommonComponents/select/meSelect";
+import FeeSheet from "@MEScreenComponents/fee/feeSheet/feeSheet";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
-import AcademicClassSheet from "@MEScreenComponents/academicClass/academicClassSheet/academicClassSheet";
 
 const FeeScreenAGGridTable = () => {
   const {
@@ -46,6 +49,11 @@ const FeeScreenAGGridTable = () => {
     //   dispatch(deleteAcademicClasses(data.data.id));
     // }
   };
+
+  const onAcademicClassChange = (value) => {
+    dispatch(setSelectedAcademicClass(value));
+    dispatch(getFees({ academicClass: value }));
+  }
 
   const colDefs = [
     {
@@ -171,11 +179,15 @@ const FeeScreenAGGridTable = () => {
 
             <div className="w-60">
               <MESelect
-                label={"Select Academic Class"}
+                label={
+                  i18n.exists("academicClassSelectionLabel")
+                    ? _.upperFirst(t("academicClassSelectionLabel"))
+                    : _.upperFirst(academicClassSelectionLabel)
+                }
                 placeholder={
-                  i18n.exists("eductionBoardSelectionPlaceholder")
-                    ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
-                    : _.upperFirst(eductionBoardSelectionPlaceholder)
+                  i18n.exists("academicClassSelectionPlaceholder")
+                    ? _.upperFirst(t("academicClassSelectionPlaceholder"))
+                    : _.upperFirst(academicClassSelectionPlaceholder)
                 }
                 items={
                   _.find(
@@ -187,15 +199,13 @@ const FeeScreenAGGridTable = () => {
                 selectVariant={variants.DARK}
                 selectedVariant={variants.PRIMARY}
                 labelvariant={variants.DARK}
-                onValueChange={(value) =>
-                  dispatch(setSelectedAcademicClass(value))
-                }
+                onValueChange={(value) => onAcademicClassChange(value)}
               />
             </div>
           </div>
         </div>
         <div className="md:justify-self-end md:self-center md:mt-0 md:mb-0 mb-5 mt-6">
-          <AcademicClassSheet />
+          <FeeSheet />
         </div>
       </div>
 

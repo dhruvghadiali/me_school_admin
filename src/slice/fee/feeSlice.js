@@ -4,28 +4,15 @@ import { getAcademicClasses, addFee } from "@/slice/fee/feeAction";
 export const feeSlice = createSlice({
   name: "fee",
   initialState: {
-    eductionBoardsWithAcademicClasses: [],
+    feeError: "",
+    feeFormError: "",
     selectedEductionBoard: "",
     selectedAcademicClass: "",
-    feeLoader: false,
-    feeError: "",
-    //   isAcademicClassFormSheetOpen: false,
-    //   academicClassLoader: false,
     feeFormLoader: false,
-    feeFormError: "",
-    // academicClassFormError: "",
-    // school: "",
-    // selectedEducationBoard: "",
-    // educationBoards: [],
-    // academicClasses: [],
-    // defaultAcademicClasses: [],
+    feeLoader: false,
+    eductionBoardsWithAcademicClasses: [],
   },
   reducers: {
-    // manageAcademicClassFormSheetStatus: (state, action) => {
-    //   state.isAcademicClassFormSheetOpen = action.payload;
-    //   state.academicClassFormError = "";
-    //   state.academicClassFormLoader = false;
-    // },
     setEductionBoard: (state, action) => {
       state.selectedEductionBoard = action.payload;
       state.selectedAcademicClass = "";
