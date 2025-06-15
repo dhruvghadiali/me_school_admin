@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  getAcademicClasses,
-} from "@MERedux/academicClass/academicClassAction";
+import { getAcademicClasses } from "@MERedux/fee/feeAction";
 
 import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 import FeeScreenHeader from "@MEScreenComponents/fee/header/header";
@@ -12,23 +10,18 @@ import FeeScreenAGGridLoader from "@MEScreenComponents/fee/agGridTable/agGridLoa
 
 const FeeScreen = () => {
   const dispatch = useDispatch();
-  // const { academicClassLoader } = useSelector((state) => state.academicClass);
+  const { feeLoader } = useSelector((state) => state.fee);
 
   useEffect(() => {
-    // dispatch(getAcademicClasses());
-    // dispatch(getDefaultAcademicClasses());
+    dispatch(getAcademicClasses());
   }, []);
 
   return (
     <>
       <MEAuthHoc>
         <div className="mr-10">
-          <FeeScreenHeader />
-          {/* {academicClassLoader ? (
-            <FeeScreenAGGridLoader />
-          ) : ( */}
-            <FeeScreenAGGridTable />
-          {/* )} */}
+          <FeeScreenHeader/>
+          {feeLoader ? <FeeScreenAGGridLoader /> : <FeeScreenAGGridTable />}
         </div>
       </MEAuthHoc>
     </>

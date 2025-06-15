@@ -1,9 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addFee } from "@/slice/fee/feeAction";
+import { getAcademicClasses, addFee } from "@/slice/fee/feeAction";
 
 export const feeSlice = createSlice({
   name: "fee",
   initialState: {
+    eductionBoardsWithAcademicClasses: [],
+    selectedEductionBoard: "",
+    selectedAcademicClass: "",
+    feeLoader: false,
+    feeError: "",
     //   isAcademicClassFormSheetOpen: false,
     //   academicClassLoader: false,
     feeFormLoader: false,
@@ -21,9 +26,32 @@ export const feeSlice = createSlice({
     //   state.academicClassFormError = "";
     //   state.academicClassFormLoader = false;
     // },
+    setEductionBoard: (state, action) => {
+      state.selectedEductionBoard = action.payload;
+      state.selectedAcademicClass = "";
+    },
+    setSelectedAcademicClass: (state, action) => {
+      state.selectedAcademicClass = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getAcademicClasses.pending, (state, _) => {
+        state.feeLoader = true;
+        state.feeError = "";
+        state.eductionBoardsWithAcademicClasses = [];
+      })
+      .addCase(getAcademicClasses.fulfilled, (state, action) => {
+        state.feeLoader = false;
+        state.feeError = action.payload.error;
+        state.eductionBoardsWithAcademicClasses =
+          action.payload.eductionBoardsWithAcademicClasses;
+      })
+      .addCase(getAcademicClasses.rejected, (state, action) => {
+        state.feeLoader = false;
+        state.feeError = action.payload.error;
+        state.eductionBoardsWithAcademicClasses = [];
+      })
       .addCase(addFee.pending, (state, _) => {
         state.feeFormLoader = true;
         state.feeFormError = "";
@@ -39,6 +67,6 @@ export const feeSlice = createSlice({
   },
 });
 
-export const {} = feeSlice.actions;
+export const { setEductionBoard, setSelectedAcademicClass } = feeSlice.actions;
 
 export default feeSlice.reducer;

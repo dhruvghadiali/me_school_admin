@@ -10,6 +10,10 @@ import {
   deleteAcademicClasses,
 } from "@MERedux/academicClass/academicClassAction";
 import {
+  setEductionBoard,
+  setSelectedAcademicClass,
+} from "@MERedux/fee/feeSlice";
+import {
   academicClassColumnTitle,
   eductionBoardSelectionLabel,
   academicClassActionColumnTitle,
@@ -28,8 +32,11 @@ import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDial
 import AcademicClassSheet from "@MEScreenComponents/academicClass/academicClassSheet/academicClassSheet";
 
 const FeeScreenAGGridTable = () => {
-  // const { selectedEducationBoard, educationBoards, academicClasses } =
-  //   useSelector((state) => state.academicClass);
+  const {
+    eductionBoardsWithAcademicClasses,
+    selectedEductionBoard,
+    selectedAcademicClass,
+  } = useSelector((state) => state.fee);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
@@ -141,40 +148,50 @@ const FeeScreenAGGridTable = () => {
       <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
         <div className="md:self-center md:justify-self-start">
           <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
-            <MESelect
-              label={
-                i18n.exists("eductionBoardSelectionLabel")
-                  ? _.upperFirst(t("eductionBoardSelectionLabel"))
-                  : _.upperFirst(eductionBoardSelectionLabel)
-              }
-              placeholder={
-                i18n.exists("eductionBoardSelectionPlaceholder")
-                  ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
-                  : _.upperFirst(eductionBoardSelectionPlaceholder)
-              }
-              items={[]}
-              selectedValue={""}
-              selectVariant={variants.DARK}
-              selectedVariant={variants.PRIMARY}
-              labelvariant={variants.DARK}
-              onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
-            />
-            <MESelect
-              label={
-                "Select Academic Class"
-              }
-              placeholder={
-                i18n.exists("eductionBoardSelectionPlaceholder")
-                  ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
-                  : _.upperFirst(eductionBoardSelectionPlaceholder)
-              }
-              items={[]}
-              selectedValue={""}
-              selectVariant={variants.DARK}
-              selectedVariant={variants.PRIMARY}
-              labelvariant={variants.DARK}
-              onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
-            />
+            <div className="w-60">
+              <MESelect
+                label={
+                  i18n.exists("eductionBoardSelectionLabel")
+                    ? _.upperFirst(t("eductionBoardSelectionLabel"))
+                    : _.upperFirst(eductionBoardSelectionLabel)
+                }
+                placeholder={
+                  i18n.exists("eductionBoardSelectionPlaceholder")
+                    ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
+                    : _.upperFirst(eductionBoardSelectionPlaceholder)
+                }
+                items={eductionBoardsWithAcademicClasses}
+                selectedValue={selectedEductionBoard}
+                selectVariant={variants.DARK}
+                selectedVariant={variants.PRIMARY}
+                labelvariant={variants.DARK}
+                onValueChange={(value) => dispatch(setEductionBoard(value))}
+              />
+            </div>
+
+            <div className="w-60">
+              <MESelect
+                label={"Select Academic Class"}
+                placeholder={
+                  i18n.exists("eductionBoardSelectionPlaceholder")
+                    ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
+                    : _.upperFirst(eductionBoardSelectionPlaceholder)
+                }
+                items={
+                  _.find(
+                    eductionBoardsWithAcademicClasses,
+                    (item) => item.value === selectedEductionBoard
+                  )?.children || []
+                }
+                selectedValue={selectedAcademicClass}
+                selectVariant={variants.DARK}
+                selectedVariant={variants.PRIMARY}
+                labelvariant={variants.DARK}
+                onValueChange={(value) =>
+                  dispatch(setSelectedAcademicClass(value))
+                }
+              />
+            </div>
           </div>
         </div>
         <div className="md:justify-self-end md:self-center md:mt-0 md:mb-0 mb-5 mt-6">

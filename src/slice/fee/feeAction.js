@@ -1,9 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
+import { eductionBoardsWithAcademicClassesAPIResponse } from "@MEUtils/apiResponse";
 import {
-} from "@MEUtils/apiResponse";
-import {
-  feesAPIRoute
+  feesAPIRoute,
+  schoolAcademicClassesAPIRoute,
 } from "@MEUtils/apiRoutes";
 import {
   defaultAPIErrorResponse,
@@ -13,6 +13,51 @@ import {
 import _ from "lodash";
 
 import axiosInstance from "@MEUtils/axiosInstance";
+
+const getAcademicClasses = createAsyncThunk(
+  "fee/getAcademicClasses",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      let school = "";
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      if (
+        getState() &&
+        getState().authentication &&
+        getState().authentication.user &&
+        getState().authentication.user.school &&
+        getState().authentication.user.school.id
+      ) {
+        school = getState().authentication.user.school.id;
+        console.log("school", school);
+      }
+
+      const response = await axiosInstance.get(
+        `${schoolAcademicClassesAPIRoute}/${school}`,
+        axiosInstanceConfig
+      );
+
+      if (response && response.data && response.data.length > 0) {
+        return {
+          eductionBoardsWithAcademicClasses: eductionBoardsWithAcademicClassesAPIResponse(response.data),
+          error: "",
+        };
+      } else {
+        return {
+          eductionBoardsWithAcademicClasses: [],
+          error: response && response.message ? response.message : "",
+        };
+      }
+    } catch (error) {
+      return rejectWithValue({
+        error: error && error.message ? error.message : "",
+      });
+    }
+  }
+);
 
 const addFee = createAsyncThunk(
   "fee/addFee",
@@ -53,6 +98,4 @@ const addFee = createAsyncThunk(
   }
 );
 
-export {
-  addFee,
-};
+export { addFee, getAcademicClasses };
