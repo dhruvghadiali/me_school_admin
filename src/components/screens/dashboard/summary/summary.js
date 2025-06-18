@@ -6,7 +6,7 @@ import {
   isUndefinedOrNull,
   indianNumberFormate,
 } from "@MEUtils/utilityFunctions";
-import { dashboardSummary } from "@MELocalizationEn/dashboard/dashboardTranslationEn";
+import { dashboardSummary } from "@MELocalization/dashboard/dashboardTranslationEn";
 
 import _ from "lodash";
 import HomeScreenSummaryCard from "@MEScreenComponents/dashboard/summary/summaryCard";

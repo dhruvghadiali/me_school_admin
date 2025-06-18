@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { summary } from "@MERedux/dashboard/dashboardAction";
 import { resetState } from "@MERedux/dashboard/dashboardSlice";
 
-import AuthHoc from "@MECommonComponents/authHoc/authHoc";
-import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 import DashboardScreenHeader from "@MEScreenComponents/dashboard/header/header";
 import DashboardScreenSummary from "@MEScreenComponents/dashboard/summary/summary";
 import DashboardScreenChartSummary from "@MEScreenComponents/dashboard/chartSummary/chartSummary";
@@ -22,13 +21,11 @@ const DashboardScreen = () => {
 
   return (
     <>
-      <AuthHoc>
-        <MESidebar>
-          <DashboardScreenHeader />
-          {loader ? <DashboardScreenSummaryLoader /> : <DashboardScreenSummary />}
-          {loader ? <DashboardScreenChartSummaryLoader/> : <DashboardScreenChartSummary /> }
-        </MESidebar>
-      </AuthHoc>
+      <MEAuthHoc>
+        <DashboardScreenHeader />
+        {loader ? <DashboardScreenSummaryLoader /> : <DashboardScreenSummary />}
+        {loader ? <DashboardScreenChartSummaryLoader /> : <DashboardScreenChartSummary />}
+      </MEAuthHoc>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { variants } from "@MEUtils/enums";  
 
-export const selectClassNameByVariant = (inputVariant) => {
-  switch (inputVariant) {
+export const selectClassNameByVariant = (inputvariant) => {
+  switch (inputvariant) {
     case variants.PRIMARY:
       return "text-primary border-primary/80 focus-visible:border-primary/80 focus-visible:ring-primary/20 focus:ring-0";
     case variants.SECONDARY:
@@ -19,8 +19,8 @@ export const selectClassNameByVariant = (inputVariant) => {
   }
 };
 
-export const selectedValueClassNameByVariant = (inputVariant) => {
-  switch (inputVariant) {
+export const selectedValueClassNameByVariant = (inputvariant) => {
+  switch (inputvariant) {
     case variants.PRIMARY:
       return "focus:bg-primary focus:text-dark text-primary";
     case variants.SECONDARY:
@@ -38,8 +38,8 @@ export const selectedValueClassNameByVariant = (inputVariant) => {
   }
 };
 
-export const selectMessageClassNameByVariant = (messageVariant) => {
-  switch (messageVariant) {
+export const selectMessageClassNameByVariant = (messagevariant) => {
+  switch (messagevariant) {
     case variants.PRIMARY:
       return "text-primary";
     case variants.SECONDARY:
@@ -57,8 +57,8 @@ export const selectMessageClassNameByVariant = (messageVariant) => {
   }
 };
 
-export const selectLabelClassNameByVariant = (labelVariant) => {
-    switch (labelVariant) {
+export const selectLabelClassNameByVariant = (labelvariant) => {
+    switch (labelvariant) {
       case variants.PRIMARY:
         return "text-primary";
       case variants.SECONDARY:

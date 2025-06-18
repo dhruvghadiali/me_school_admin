@@ -18,7 +18,6 @@ const AdmissionScreenFormDetailApplicationStatusForm = ({items}) => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log("values", values);
     },
   });
 
@@ -33,9 +32,9 @@ const AdmissionScreenFormDetailApplicationStatusForm = ({items}) => {
           selectedValue={formik.values.status}
           message={formik.errors.status}
           selectVariant={variants.DARK}
-          selectedVariant={variants.PRIMARY}
-          labelVariant={variants.DARK}
-          messageVariant={variants.WARNING}
+          selectedVariant={variants.DARK}
+          labelvariant={variants.DARK}
+          messagevariant={variants.WARNING}
           onValueChange={(value) => formik.setFieldValue("status", value)}
         />
 
@@ -50,10 +49,10 @@ const AdmissionScreenFormDetailApplicationStatusForm = ({items}) => {
 };
 
 const applicationStatusSchema = Yup.object().shape({
-  status: Yup.string()
-    .min(5, validationMessage.usernameMin)
-    .max(25, validationMessage.usernameMax)
-    .required(validationMessage.usernameRequired),
+  // status: Yup.string()
+  //   .min(5, validationMessage.usernameMin)
+  //   .max(25, validationMessage.usernameMax)
+  //   .required(validationMessage.usernameRequired),
 });
 
 AdmissionScreenFormDetailApplicationStatusForm.prototype = {

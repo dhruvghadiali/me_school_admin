@@ -1,19 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { thunk } from "redux-thunk";
 
-import loginSlice from "@MERedux/login/loginSlice";
+import feeSlice from "@/slice/fee/feeSlice";
 import sidebarSlice from "@MERedux/sidebar/sidebarSlice";
+import loggerMiddleware from "@MERedux/middleware/logger";
 import dashboardSlice from "@MERedux/dashboard/dashboardSlice";
 import admissionSlice from "@MERedux/admission/admissionSlice";
-import loggerMiddleware from "@MERedux/middleware/logger";
+import academicClassSlice from "@MERedux/academicClass/academicClassSlice";
+import authenticationSlice from "@/slice/authentication/authenticationSlice";
 
-export default configureStore({
+const store = configureStore({
   reducer: {
-    login: loginSlice,
+    fee: feeSlice,
     sidebar: sidebarSlice,
     dashboard: dashboardSlice,
     admission: admissionSlice,
+    academicClass: academicClassSlice,
+    authentication: authenticationSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(thunk).concat(loggerMiddleware),
 });
+
+export default store;

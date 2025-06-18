@@ -16,7 +16,6 @@ const AdmissionScreenFormDetailDocumentRemarkForm = () => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log("values", values);
     },
   });
 
@@ -29,9 +28,9 @@ const AdmissionScreenFormDetailDocumentRemarkForm = () => {
           label={"remark"}
           message={formik.errors.remark}
           value={formik.values.remark}
-          labelVariant={variants.DARK}
-          inputVariant={variants.DARK}
-          messageVariant={variants.DANGER}
+          labelvariant={variants.DARK}
+          inputvariant={variants.DARK}
+          messagevariant={variants.DANGER}
           onChange={formik.handleChange}
         />
         <div className="py-2">
@@ -45,10 +44,10 @@ const AdmissionScreenFormDetailDocumentRemarkForm = () => {
 };
 
 const remarkSchema = Yup.object().shape({
-  remark: Yup.string()
-    .min(5, validationMessage.usernameMin)
-    .max(25, validationMessage.usernameMax)
-    .required(validationMessage.usernameRequired),
+  // remark: Yup.string()
+  //   .min(5, validationMessage.usernameMin)
+  //   .max(25, validationMessage.usernameMax)
+  //   .required(validationMessage.usernameRequired),
 });
 
 AdmissionScreenFormDetailDocumentRemarkForm.propTypes = {};

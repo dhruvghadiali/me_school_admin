@@ -23,43 +23,51 @@ const MESelect = (props) => {
     label,
     items,
     message,
+    disabled,
     placeholder,
-    selectedValue,
-    selectVariant,
-    selectedVariant,
-    labelVariant,
-    messageVariant,
+    labelvariant,
     onValueChange,
+    selectVariant,
+    selectedValue,
+    messagevariant,
+    selectedVariant,
   } = props;
 
   return (
     <>
-      <div className="pr-5 space-y-2">
-        <Label className={selectLabelClassNameByVariant(labelVariant)}>
+      <div className="space-y-2">
+        <Label className={selectLabelClassNameByVariant(labelvariant)}>
           {label} {required && <span className="text-danger">*</span>}
         </Label>
-        <Select onValueChange={(value) => onValueChange(value)} value={selectedValue}>
+        <Select
+          onValueChange={(value) => onValueChange(value)}
+          value={selectedValue}
+          disabled={disabled}
+        >
           <SelectTrigger className={selectClassNameByVariant(selectVariant)}>
             <SelectValue placeholder={_.upperFirst(placeholder)} />
           </SelectTrigger>
-          <SelectContent>
-            {_.map(items, (item) => (
-              <SelectItem
-                value={item.value}
-                className={`${
-                  _.toLower(selectedValue) === _.toLower(item.value)
-                    ? selectedValueClassNameByVariant(selectedVariant)
-                    : ""
-                }`}
-              >
-                {_.upperFirst(item.label)}
-              </SelectItem>
-            ))}
-          </SelectContent>
+          {items && items.length > 0 && (
+            <SelectContent>
+              {_.map(items, (item, index) => (
+                <SelectItem
+                  key={index}
+                  value={item.value}
+                  className={`${
+                    _.toLower(selectedValue) === _.toLower(item.value)
+                      ? selectedValueClassNameByVariant(selectedVariant)
+                      : ""
+                  }`}
+                >
+                  {_.upperFirst(item.label)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          )}
         </Select>
         <p
           className={`mt-2 text-xs ${selectMessageClassNameByVariant(
-            messageVariant
+            messagevariant
           )}`}
           role="alert"
           aria-live="polite"
@@ -80,8 +88,8 @@ MESelect.propTypes = {
   selectedValue: PropTypes.string,
   selectVariant: PropTypes.string,
   selectedVariant: PropTypes.string,
-  labelVariant: PropTypes.string,
-  messageVariant: PropTypes.string,
+  labelvariant: PropTypes.string,
+  messagevariant: PropTypes.string,
   onValueChange: PropTypes.func,
 };
 

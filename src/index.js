@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import '@MEStyles/globals.css';
-import '@MELocalizationEn/i18n';
+import '@MELocalization/i18n';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

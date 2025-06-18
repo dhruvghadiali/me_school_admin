@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { formateStringWithLodash } from "@MEUtils/utilityFunctions";
 import { CardTitle, CardDescription } from "@MEShadcnComponents/card";
-import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
+import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
 import { defaultAdmissionFormDetail } from "@MERedux/admission/admissionDefaultStateValues";
 
 import {

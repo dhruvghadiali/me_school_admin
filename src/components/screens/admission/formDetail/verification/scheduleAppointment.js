@@ -19,7 +19,6 @@ const AdmissionScreenFormDetailScheduleAppointment = () => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log("values", values, applicationFormDetail);
     },
   });
 
@@ -33,9 +32,9 @@ const AdmissionScreenFormDetailScheduleAppointment = () => {
             label={_.startCase("select appointment date")}
             message={formik.errors.appointmentDate}
             selectedDate={formik.values.appointmentDate}
-            messageVariant={variants.DANGER}
-            inputVariant={variants.DARK}
-            labelVariant={variants.DARK}
+            messagevariant={variants.DANGER}
+            inputvariant={variants.DARK}
+            labelvariant={variants.DARK}
             onSelect={(date) => {
               formik.setFieldValue("appointmentDate", date);
             }}

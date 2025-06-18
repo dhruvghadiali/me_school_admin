@@ -1,23 +1,26 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import { loginForm } from "@MELocalizationEn/login/loginTranslationEn";
-import { dashboardSummary } from "@MELocalizationEn/dashboard/dashboardTranslationEn";
-import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
-import { profile } from "@MELocalizationEn/profile/profileTranslationEn";
+import { profile } from "@MELocalization/profile/profileTranslationEn";
+import { signInForm } from "@MELocalization/signIn/signInTranslationEn";
+import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
+import { dashboardSummary } from "@MELocalization/dashboard/dashboardTranslationEn";
 import {
   sidebarMenuLabel,
   sidebar,
-} from "@MELocalizationEn//sidebar/sidebarTranslationEn";
+} from "@MELocalization/sidebar/sidebarTranslationEn";
+
+import * as localizationEn from "@MELocalization/en";
 
 const resources = {
   en: {
     translation: {
-      ...loginForm,
-      ...sidebarMenuLabel,
-      ...sidebar,
-      ...dashboardSummary,
-      ...admissionHub,
       ...profile,
+      ...sidebar,
+      ...signInForm,
+      ...admissionHub,
+      ...sidebarMenuLabel,
+      ...dashboardSummary,
+      ...localizationEn,
     },
   },
 };

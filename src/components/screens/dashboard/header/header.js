@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { dashboardSummary } from "@MELocalizationEn/dashboard/dashboardTranslationEn";
+import { dashboardSummary } from "@MELocalization/dashboard/dashboardTranslationEn";
 
 import _ from "lodash";
 

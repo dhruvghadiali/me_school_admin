@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Label } from "@MEShadcnComponents/label";
 import { Separator } from "@MEShadcnComponents/separator";
 import { formateStringWithLodash } from "@MEUtils/utilityFunctions";
-import { admissionHub } from "@MELocalizationEn/admission/admissionTranslationEn";
+import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
 import { parentsColDefs } from "@MEScreenComponents/admission/formDetail/history/colDefs";
 
 import _ from "lodash";

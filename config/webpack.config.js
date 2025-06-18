@@ -316,7 +316,7 @@ module.exports = function (webpackEnv) {
         '@MEScreenComponents': path.resolve('src/components/screens'), 
         '@MECommonComponents': path.resolve('src/components/common'), 
         '@MEShadcnComponents': path.resolve('src/components/ui'), 
-        '@MELocalizationEn': path.resolve('src/localization'), 
+        '@MELocalization': path.resolve('src/localization'), 
         '@MEScreens': path.resolve('src/screens'), 
         '@MERedux': path.resolve('src/slice'), 
         '@MEStyles': path.resolve('src/styles'),

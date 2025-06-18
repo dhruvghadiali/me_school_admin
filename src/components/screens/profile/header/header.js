@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { profile } from "@MELocalizationEn/profile/profileTranslationEn";
+import { profile } from "@MELocalization/profile/profileTranslationEn";
 
 import _ from "lodash";
 
