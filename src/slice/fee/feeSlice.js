@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  getAcademicClasses,
   addFee,
-  getFeeTypes,
   getFees,
+  updateFee,
+  getFeeTypes,
+  getAcademicClasses,
 } from "@/slice/fee/feeAction";
 
 export const feeSlice = createSlice({
@@ -97,6 +98,18 @@ export const feeSlice = createSlice({
         state.feeFormError = action.payload.error;
       })
       .addCase(addFee.rejected, (state, action) => {
+        state.feeFormLoader = false;
+        state.feeFormError = action.payload.error;
+      })
+      .addCase(updateFee.pending, (state) => {
+        state.feeFormLoader = true;
+        state.feeFormError = "";
+      })
+      .addCase(updateFee.fulfilled, (state, action) => {
+        state.feeFormLoader = false;
+        state.feeFormError = action.payload.error;
+      })
+      .addCase(updateFee.rejected, (state, action) => {
         state.feeFormLoader = false;
         state.feeFormError = action.payload.error;
       });

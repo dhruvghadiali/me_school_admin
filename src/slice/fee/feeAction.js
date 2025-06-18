@@ -161,4 +161,37 @@ const addFee = createAsyncThunk(
   }
 );
 
-export { addFee, getFees, getFeeTypes, getAcademicClasses };
+const updateFee = createAsyncThunk(
+  "fee/updateFee",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      const response = await axiosInstance.put(
+        `${feesAPIRoute}/${payload.id}`,
+        payload.data,
+        axiosInstanceConfig
+      );
+
+      if (response && response.data && response.data.length > 0) {
+        dispatch(getFees({ academicClass: payload.data.school_academic_class }));
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error: response && response.message ? response.message : "",
+        };
+      }
+    } catch (error) {
+      return rejectWithValue({
+        error: error && error.message ? error.message : "",
+      });
+    }
+  }
+);
+
+export { addFee, getFees, getFeeTypes, getAcademicClasses, updateFee };

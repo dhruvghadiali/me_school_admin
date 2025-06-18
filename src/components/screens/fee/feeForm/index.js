@@ -4,8 +4,8 @@ import { CircleAlertIcon } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
-import { addFeeAPIPayload } from "@MEUtils/apiPayload";
-import { addFee } from "@MERedux/fee/feeAction";
+import { addFee, updateFee } from "@MERedux/fee/feeAction";
+import { addFeeAPIPayload, updateFeeAPIPayload } from "@MEUtils/apiPayload";
 import { academicClassSelectionRequired } from "@MEUtils/validationMessage";
 import {
   feeTypeSelectionLabel,
@@ -51,10 +51,9 @@ const FeeForm = () => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      // feeFormData.id
-      //   ? console.log("Edit Fee", values)
-      //   : dispatch(addFee(addFeeAPIPayload(values)));
-      dispatch(addFee(addFeeAPIPayload(values)));
+      feeFormData.id
+        ? dispatch(updateFee(updateFeeAPIPayload(values, feeFormData.id)))
+        : dispatch(addFee(addFeeAPIPayload(values)));
     },
   });
 
