@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAcademicClasses, addFee } from "@/slice/fee/feeAction";
+import { getAcademicClasses, addFee, getFeeTypes, getFees } from "@/slice/fee/feeAction";
 
 export const feeSlice = createSlice({
   name: "fee",
@@ -8,22 +8,30 @@ export const feeSlice = createSlice({
     feeFormError: "",
     selectedEductionBoard: "",
     selectedAcademicClass: "",
+    isFeeFormSheetOpen: false,
     feeFormLoader: false,
     feeLoader: false,
+    fees: [],
+    feeTypes: [],
     eductionBoardsWithAcademicClasses: [],
   },
   reducers: {
+     manageFeeFormSheetStatus: (state, action) => {
+      state.isFeeFormSheetOpen = action.payload;
+      state.academicClassFormError = "";
+      state.academicClassFormLoader = false;
+    },
     setEductionBoard: (state, action) => {
       state.selectedEductionBoard = action.payload;
       state.selectedAcademicClass = "";
     },
     setSelectedAcademicClass: (state, action) => {
       state.selectedAcademicClass = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getAcademicClasses.pending, (state, _) => {
+      .addCase(getAcademicClasses.pending, (state) => {
         state.feeLoader = true;
         state.feeError = "";
         state.eductionBoardsWithAcademicClasses = [];
@@ -39,7 +47,34 @@ export const feeSlice = createSlice({
         state.feeError = action.payload.error;
         state.eductionBoardsWithAcademicClasses = [];
       })
-      .addCase(addFee.pending, (state, _) => {
+      .addCase(getFeeTypes.pending, (state) => {
+        state.feeTypes = [];
+      })
+      .addCase(getFeeTypes.fulfilled, (state, action) => {
+        state.feeTypes = action.payload.feeTypes;
+      })
+      .addCase(getFeeTypes.rejected, (state, action) => {
+        state.feeTypes = [];
+      })
+      .addCase(getFees.pending, (state) => {
+        state.feeError = "";
+        state.academicClassFormError = "";
+        state.feeLoader = true;
+        state.isFeeFormSheetOpen = false;
+        state.academicClassFormLoader = false;
+        state.fees = [];
+      })
+      .addCase(getFees.fulfilled, (state, action) => {
+        state.feeLoader = false;
+        state.feeError = action.payload.error;
+        state.fees = action.payload.fees || [];
+      })
+      .addCase(getFees.rejected, (state, action) => {
+        state.feeLoader = false;
+        state.feeError = action.payload.error;
+        state.fees = [];
+      })
+      .addCase(addFee.pending, (state) => {
         state.feeFormLoader = true;
         state.feeFormError = "";
       })
@@ -54,6 +89,6 @@ export const feeSlice = createSlice({
   },
 });
 
-export const { setEductionBoard, setSelectedAcademicClass } = feeSlice.actions;
+export const { setEductionBoard, setSelectedAcademicClass, manageFeeFormSheetStatus } = feeSlice.actions;
 
 export default feeSlice.reducer;

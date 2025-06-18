@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Trash2, Edit } from "lucide-react";
 import { AgGridReact } from "ag-grid-react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,9 +36,10 @@ import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDial
 
 const FeeScreenAGGridTable = () => {
   const {
-    eductionBoardsWithAcademicClasses,
+    fees,
     selectedEductionBoard,
     selectedAcademicClass,
+    eductionBoardsWithAcademicClasses,
   } = useSelector((state) => state.fee);
   const { t, i18n } = useTranslation();
 
@@ -53,49 +54,73 @@ const FeeScreenAGGridTable = () => {
   const onAcademicClassChange = (value) => {
     dispatch(setSelectedAcademicClass(value));
     dispatch(getFees({ academicClass: value }));
-  }
+  };
+
+  const pinnedBottomRowData = [
+    {
+      monthlyFee: _.reduce(fees, (sum, row) => sum + row.monthlyFee, 0),
+      quarterlyFee: _.reduce(fees, (sum, row) => sum + row.quarterlyFee, 0),
+      halfYearlyFee: _.reduce(fees, (sum, row) => sum + row.halfYearlyFee, 0),
+      yearlyFee: _.reduce(fees, (sum, row) => sum + row.yearlyFee, 0),
+    },
+  ];
 
   const colDefs = [
     {
       headerName: "Action",
-      cellRenderer: (data) => (
-        <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
-          <Button size="icon" variant="link" className="text-danger">
-            <Trash2 />
-          </Button>
-        </MEDeleteAlertDialog>
-      ),
+      field: "action",
+      cellRenderer: (data) => {
+        if (data.node.rowPinned === "bottom") {
+          return "Total";
+        }
+
+        return (
+          <div>
+            <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
+              <Button size="icon" variant="link" className="text-dark">
+                <Edit />
+              </Button>
+            </MEDeleteAlertDialog>
+            <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
+              <Button size="icon" variant="link" className="text-danger">
+                <Trash2 />
+              </Button>
+            </MEDeleteAlertDialog>
+          </div>
+        );
+      },
       width: 100,
       filter: false,
       sortable: false,
     },
     {
       headerName: "Fee Type",
-      field: "academicClass",
+      field: "feeType",
       filter: true,
       width: 500,
     },
     {
       headerName: "Monthly Fee",
-      field: "academicClass",
+      field: "monthlyFee",
       filter: true,
       width: 150,
+      aggFunc: "sum",
     },
     {
       headerName: "Quarterly Fee",
-      field: "academicClass",
+      field: "quarterlyFee",
       filter: true,
       width: 150,
     },
     {
       headerName: "Half Yearly Fee",
-      field: "academicClass",
+      field: "halfYearlyFee",
       filter: true,
       width: 150,
     },
     {
       headerName: "Yearly Fee",
-      field: "academicClass",
+      field: "yearlyFee",
       filter: true,
       width: 150,
     },
@@ -156,7 +181,7 @@ const FeeScreenAGGridTable = () => {
       <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
         <div className="md:self-center md:justify-self-start">
           <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
-            <div className="w-60">
+            <div className="w-60 pr-2">
               <MESelect
                 label={
                   i18n.exists("eductionBoardSelectionLabel")
@@ -177,7 +202,7 @@ const FeeScreenAGGridTable = () => {
               />
             </div>
 
-            <div className="w-60">
+            <div className="w-60 pl-2">
               <MESelect
                 label={
                   i18n.exists("academicClassSelectionLabel")
@@ -210,7 +235,18 @@ const FeeScreenAGGridTable = () => {
       </div>
 
       <div className="ag-theme-alpine w-full h-[75vh]">
-        <AgGridReact rowData={[]} columnDefs={colDefs} pagination={true} />
+        <AgGridReact
+          rowData={fees}
+          columnDefs={colDefs}
+          pagination={true}
+          getRowStyle={(params) => {
+            if (params.node.rowPinned === "bottom") {
+              return { fontWeight: "bold", backgroundColor: "#f0f0f0" };
+            }
+            return {};
+          }}
+          pinnedBottomRowData={fees.length > 0 ? pinnedBottomRowData : []}
+        />
       </div>
     </>
   );

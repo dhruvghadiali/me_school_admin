@@ -1,8 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { eductionBoardsWithAcademicClassesAPIResponse } from "@MEUtils/apiResponse";
+import {
+  feesAPIResponse,
+  feeTypesAPIResponse,
+  eductionBoardsWithAcademicClassesAPIResponse,
+} from "@MEUtils/apiResponse";
 import {
   feesAPIRoute,
+  feeTypesAPIRoute,
   schoolAcademicClassesAPIRoute,
 } from "@MEUtils/apiRoutes";
 import {
@@ -41,7 +46,8 @@ const getAcademicClasses = createAsyncThunk(
 
       if (response && response.data && response.data.length > 0) {
         return {
-          eductionBoardsWithAcademicClasses: eductionBoardsWithAcademicClassesAPIResponse(response.data),
+          eductionBoardsWithAcademicClasses:
+            eductionBoardsWithAcademicClassesAPIResponse(response.data),
           error: "",
         };
       } else {
@@ -54,6 +60,37 @@ const getAcademicClasses = createAsyncThunk(
       return rejectWithValue({
         error: error && error.message ? error.message : "",
       });
+    }
+  }
+);
+
+const getFeeTypes = createAsyncThunk(
+  "fee/getFeeTypes",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      const response = await axiosInstance.get(
+        `${feeTypesAPIRoute}`,
+        axiosInstanceConfig
+      );
+
+      if (response && response.data && response.data.length > 0) {
+        return {
+          feeTypes: _.map(response.data, (feeType) =>
+            feeTypesAPIResponse(feeType)
+          ),
+        };
+      } else {
+        return {
+          feeTypes: [],
+        };
+      }
+    } catch (error) {
+      return rejectWithValue({});
     }
   }
 );
@@ -72,21 +109,16 @@ const getFees = createAsyncThunk(
         axiosInstanceConfig
       );
 
-      console.log("response", response);
-
-      // if (response && response.data && response.data.length > 0) {
-      //   return {
-      //     eductionBoardsWithAcademicClasses: eductionBoardsWithAcademicClassesAPIResponse(response.data),
-      //     error: "",
-      //   };
-      // } else {
-      //   return {
-      //     eductionBoardsWithAcademicClasses: [],
-      //     error: response && response.message ? response.message : "",
-      //   };
-      // }
-      return {
-        error: "",
+      if (response && response.data && response.data.length > 0) {
+        return {
+          fees: _.map(response.data, (fee) => feesAPIResponse(fee)),
+          error: "",
+        };
+      } else {
+        return {
+          fees: [],
+          error: response && response.message ? response.message : "",
+        };
       }
     } catch (error) {
       return rejectWithValue({
@@ -111,22 +143,16 @@ const addFee = createAsyncThunk(
         axiosInstanceConfig
       );
 
-      console.log("response", response);
-      // if (response && response.data && response.data.length > 0) {
-      //   dispatch(getAcademicClasses());
-      //   return {
-      //     error:"",
-      //   };
-      // } else {
-      //   return {
-      //     error:
-      //       response && response.message ? response.message : "",
-      //   };
-      // }
-
-      return {
-        error: "",
-      };
+      if (response && response.data && response.data.length > 0) {
+        dispatch(getFees({ academicClass: payload.school_academic_class }));
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error: response && response.message ? response.message : "",
+        };
+      }
     } catch (error) {
       return rejectWithValue({
         error: error && error.message ? error.message : "",
@@ -135,4 +161,4 @@ const addFee = createAsyncThunk(
   }
 );
 
-export { addFee, getFees, getAcademicClasses };
+export { addFee, getFees, getFeeTypes, getAcademicClasses };

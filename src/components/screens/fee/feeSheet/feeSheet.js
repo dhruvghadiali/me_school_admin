@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
-import { manageAcademicClassFormSheetStatus } from "@MERedux/academicClass/academicClassSlice";
+import { manageFeeFormSheetStatus } from "@MERedux/fee/feeSlice";
 import {
   Sheet,
   SheetContent,
@@ -21,10 +21,10 @@ import {
 import _ from "lodash";
 
 import MEButton from "@MECommonComponents/button/meButton";
-import AcademicClassForm from "@MEScreenComponents/academicClass/academicClassForm";
+import FeeForm from "@MEScreenComponents/fee/feeForm";
 
 const FeeSheet = () => {
-  const { isAcademicClassFormSheetOpen } = useSelector(
+  const { isFeeFormSheetOpen } = useSelector(
     (state) => state.academicClass
   );
   const { t, i18n } = useTranslation();
@@ -32,12 +32,12 @@ const FeeSheet = () => {
   const dispatch = useDispatch();
 
   const onClick = (status) =>
-    dispatch(manageAcademicClassFormSheetStatus(status));
+    dispatch(manageFeeFormSheetStatus(status));
 
   return (
     <>
       <Sheet
-        open={isAcademicClassFormSheetOpen}
+        open={isFeeFormSheetOpen}
         onOpenChange={(open) => onClick(open)}
       >
         <SheetTrigger>
@@ -48,20 +48,22 @@ const FeeSheet = () => {
               : _.upperFirst(addFeeButtonText)}
           </MEButton>
         </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
+        <SheetContent side="right" className="!w-[30vw] !max-w-none p-4">
+           <SheetHeader>
             <SheetTitle>
               {i18n.exists("addFeeSheetTitle")
                 ? _.upperFirst(t("addFeeSheetTitle"))
                 : _.upperFirst(addFeeSheetTitle)}
             </SheetTitle>
-            <SheetDescription>
+             <SheetDescription>
               {i18n.exists("addFeeSheetDescription")
                 ? _.upperFirst(t("addFeeSheetDescription"))
                 : _.upperFirst(addFeeSheetDescription)}
-              <AcademicClassForm />
             </SheetDescription>
-          </SheetHeader>
+           </SheetHeader>
+          <div className="h-full overflow-y-auto ">
+            <FeeForm />
+          </div>
         </SheetContent>
       </Sheet>
     </>

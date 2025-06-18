@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getAcademicClasses } from "@MERedux/fee/feeAction";
+import { getAcademicClasses, getFeeTypes } from "@MERedux/fee/feeAction";
 
 import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 import FeeScreenHeader from "@MEScreenComponents/fee/header/header";
@@ -13,6 +13,7 @@ const FeeScreen = () => {
   const { feeLoader } = useSelector((state) => state.fee);
 
   useEffect(() => {
+    dispatch(getFeeTypes());
     dispatch(getAcademicClasses());
   }, []);
 

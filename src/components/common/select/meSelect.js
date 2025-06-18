@@ -23,24 +23,26 @@ const MESelect = (props) => {
     label,
     items,
     message,
+    disabled,
     placeholder,
-    selectedValue,
-    selectVariant,
-    selectedVariant,
     labelvariant,
-    messagevariant,
     onValueChange,
+    selectVariant,
+    selectedValue,
+    messagevariant,
+    selectedVariant,
   } = props;
 
   return (
     <>
-      <div className="pr-5 space-y-2">
+      <div className="space-y-2">
         <Label className={selectLabelClassNameByVariant(labelvariant)}>
           {label} {required && <span className="text-danger">*</span>}
         </Label>
         <Select
           onValueChange={(value) => onValueChange(value)}
           value={selectedValue}
+          disabled={disabled}
         >
           <SelectTrigger className={selectClassNameByVariant(selectVariant)}>
             <SelectValue placeholder={_.upperFirst(placeholder)} />

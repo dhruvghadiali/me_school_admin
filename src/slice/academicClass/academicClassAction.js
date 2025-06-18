@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import {
-  schoolAcademicClassAPIResponse,
   academicClassAPIResponse,
+  schoolAcademicClassAPIResponse,
 } from "@MEUtils/apiResponse";
 import {
   academicClassesAPIRoute,
@@ -79,9 +79,9 @@ const getAcademicClassesInfo = async ({
       return {
         academicClassError:
           response && response.message ? response.message : "",
-        academicClasses: response.data.map((academicClass) =>
+        academicClasses: _.sortBy(_.map(response.data, (academicClass) =>
           schoolAcademicClassAPIResponse(academicClass)
-        ),
+        ),['academicClass']),
       };
     } else {
       return {

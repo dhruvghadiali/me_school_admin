@@ -1,4 +1,5 @@
-export const feesAPIRoute = `/school-admin/school-fees`;
-export const signInAPIRoute = `/school-admin/signin`;
-export const academicClassesAPIRoute = `/school-admin/academic-classes`;
-export const schoolAcademicClassesAPIRoute = `/school-admin/school-academic-classes`;
+export const signInAPIRoute = `/signin`;
+export const feesAPIRoute = `/school-fees`;
+export const feeTypesAPIRoute = `/fee-types`;
+export const academicClassesAPIRoute = `/academic-classes`;
+export const schoolAcademicClassesAPIRoute = `/school-academic-classes`;

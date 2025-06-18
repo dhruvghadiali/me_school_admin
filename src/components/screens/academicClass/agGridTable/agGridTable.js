@@ -120,24 +120,26 @@ const AcademicClassScreenAGGridTable = () => {
     <>
       <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
         <div className="md:self-center md:justify-self-start">
-          <MESelect
-            label={
-              i18n.exists("eductionBoardSelectionLabel")
-                ? _.upperFirst(t("eductionBoardSelectionLabel"))
-                : _.upperFirst(eductionBoardSelectionLabel)
-            }
-            placeholder={
-              i18n.exists("eductionBoardSelectionPlaceholder")
-                ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
-                : _.upperFirst(eductionBoardSelectionPlaceholder)
-            }
-            items={educationBoards}
-            selectedValue={selectedEducationBoard}
-            selectVariant={variants.DARK}
-            selectedVariant={variants.PRIMARY}
-            labelvariant={variants.DARK}
-            onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
-          />
+          <div className="w-60">
+            <MESelect
+              label={
+                i18n.exists("eductionBoardSelectionLabel")
+                  ? _.upperFirst(t("eductionBoardSelectionLabel"))
+                  : _.upperFirst(eductionBoardSelectionLabel)
+              }
+              placeholder={
+                i18n.exists("eductionBoardSelectionPlaceholder")
+                  ? _.upperFirst(t("eductionBoardSelectionPlaceholder"))
+                  : _.upperFirst(eductionBoardSelectionPlaceholder)
+              }
+              items={educationBoards}
+              selectedValue={selectedEducationBoard}
+              selectVariant={variants.DARK}
+              selectedVariant={variants.PRIMARY}
+              labelvariant={variants.DARK}
+              onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
+            />
+          </div>
         </div>
         <div className="md:justify-self-end md:self-center md:mt-0 md:mb-0 mb-5 mt-6">
           <AcademicClassSheet />
