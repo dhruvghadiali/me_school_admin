@@ -22,6 +22,7 @@ export const feeSlice = createSlice({
       state.academicClassFormLoader = false;
     },
     setEductionBoard: (state, action) => {
+      state.fees = [];
       state.selectedEductionBoard = action.payload;
       state.selectedAcademicClass = "";
     },

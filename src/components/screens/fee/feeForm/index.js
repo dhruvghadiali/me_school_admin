@@ -132,7 +132,7 @@ const FeeForm = () => {
           labelvariant={variants.DARK}
           selectVariant={variants.DARK}
           messagevariant={variants.DANGER}
-          selectedVariant={variants.PRIMARY}
+          selectedVariant={variants.DARK}
           message={formik.errors.academicClass}
           selectedValue={formik.values.academicClass}
           onValueChange={(value) => {}}
@@ -161,7 +161,7 @@ const FeeForm = () => {
           labelvariant={variants.DARK}
           selectVariant={variants.DARK}
           messagevariant={variants.DANGER}
-          selectedVariant={variants.PRIMARY}
+          selectedVariant={variants.DARK}
           message={formik.errors.feeType}
           selectedValue={formik.values.feeType}
           onValueChange={(value) => formik.setFieldValue("feeType", value)}

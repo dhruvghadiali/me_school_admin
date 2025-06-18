@@ -111,7 +111,7 @@ const getFees = createAsyncThunk(
 
       if (response && response.data && response.data.length > 0) {
         return {
-          fees: _.map(response.data, (fee) => feesAPIResponse(fee)),
+          fees: _.sortBy(_.map(response.data, (fee) => feesAPIResponse(fee)),['feeType']),
           error: "",
         };
       } else {

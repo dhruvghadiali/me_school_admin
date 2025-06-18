@@ -135,7 +135,7 @@ const AcademicClassScreenAGGridTable = () => {
               items={educationBoards}
               selectedValue={selectedEducationBoard}
               selectVariant={variants.DARK}
-              selectedVariant={variants.PRIMARY}
+              selectedVariant={variants.DARK}
               labelvariant={variants.DARK}
               onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
             />

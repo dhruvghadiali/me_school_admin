@@ -196,7 +196,7 @@ const FeeScreenAGGridTable = () => {
                 items={eductionBoardsWithAcademicClasses}
                 selectedValue={selectedEductionBoard}
                 selectVariant={variants.DARK}
-                selectedVariant={variants.PRIMARY}
+                selectedVariant={variants.DARK}
                 labelvariant={variants.DARK}
                 onValueChange={(value) => dispatch(setEductionBoard(value))}
               />
@@ -222,7 +222,7 @@ const FeeScreenAGGridTable = () => {
                 }
                 selectedValue={selectedAcademicClass}
                 selectVariant={variants.DARK}
-                selectedVariant={variants.PRIMARY}
+                selectedVariant={variants.DARK}
                 labelvariant={variants.DARK}
                 onValueChange={(value) => onAcademicClassChange(value)}
               />

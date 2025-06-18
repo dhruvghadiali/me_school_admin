@@ -88,7 +88,7 @@ const AcademicClassForm = () => {
           selectedValue={formik.values.academicClass}
           message={formik.errors.academicClass}
           selectVariant={variants.DARK}
-          selectedVariant={variants.PRIMARY}
+          selectedVariant={variants.DARK}
           labelvariant={variants.DARK}
           messagevariant={variants.DANGER}
           onValueChange={(value) =>
