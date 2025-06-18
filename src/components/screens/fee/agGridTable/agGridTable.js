@@ -10,8 +10,10 @@ import {
   deleteAcademicClasses,
 } from "@MERedux/academicClass/academicClassAction";
 import {
+  setFeeFormData,
   setEductionBoard,
   setSelectedAcademicClass,
+  manageFeeFormSheetStatus,
 } from "@MERedux/fee/feeSlice";
 import { getFees } from "@MERedux/fee/feeAction";
 import {
@@ -32,7 +34,9 @@ import moment from "moment/moment";
 
 import MESelect from "@MECommonComponents/select/meSelect";
 import FeeSheet from "@MEScreenComponents/fee/feeSheet/feeSheet";
+import FeeLogSheet from "@MEScreenComponents/fee/feeLogSheet/feeLogSheet";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
+import MEEditAlertDialog from "@MECommonComponents/alertDialog/editAlertDialog";
 
 const FeeScreenAGGridTable = () => {
   const {
@@ -49,6 +53,13 @@ const FeeScreenAGGridTable = () => {
     // if (data && data.data && data.data.id) {
     //   dispatch(deleteAcademicClasses(data.data.id));
     // }
+  };
+
+  const onEditConfirm = (data) => {
+    dispatch(
+      setFeeFormData({...data.data, academicClass: selectedAcademicClass,})
+    );
+    dispatch(manageFeeFormSheetStatus(true));
   };
 
   const onAcademicClassChange = (value) => {
@@ -76,11 +87,11 @@ const FeeScreenAGGridTable = () => {
 
         return (
           <div>
-            <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
+            <MEEditAlertDialog onConfirm={() => onEditConfirm(data)}>
               <Button size="icon" variant="link" className="text-dark">
                 <Edit />
               </Button>
-            </MEDeleteAlertDialog>
+            </MEEditAlertDialog>
             <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
               <Button size="icon" variant="link" className="text-danger">
                 <Trash2 />
@@ -89,7 +100,7 @@ const FeeScreenAGGridTable = () => {
           </div>
         );
       },
-      width: 100,
+      width: 150,
       filter: false,
       sortable: false,
     },
@@ -178,10 +189,10 @@ const FeeScreenAGGridTable = () => {
 
   return (
     <>
-      <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
-        <div className="md:self-center md:justify-self-start">
-          <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
-            <div className="w-60 pr-2">
+      <div className="lg:grid lg:grid-flow-row lg:grid-cols-2 mt-5 ml-1 mb-2">
+        <div className="lg:self-center lg:justify-self-start">
+          <div className="lg:grid lg:grid-flow-row lg:grid-cols-2 mt-5 ml-1 mb-2">
+            <div className="xl:w-60 lg:pr-2">
               <MESelect
                 label={
                   i18n.exists("eductionBoardSelectionLabel")
@@ -202,7 +213,7 @@ const FeeScreenAGGridTable = () => {
               />
             </div>
 
-            <div className="w-60 pl-2">
+            <div className="xl:w-60 lg:pl-2">
               <MESelect
                 label={
                   i18n.exists("academicClassSelectionLabel")
@@ -229,8 +240,15 @@ const FeeScreenAGGridTable = () => {
             </div>
           </div>
         </div>
-        <div className="md:justify-self-end md:self-center md:mt-0 md:mb-0 mb-5 mt-6">
-          <FeeSheet />
+        <div className="justify-self-end self-center lg:mt-0 lg:mb-0 mb-5 mt-6 ">
+          <div className="grid grid-flow-row grid-cols-2 mt-5 ml-1 mb-2">
+            <div className="w-30 pr-2 mb-2">
+              <FeeLogSheet />
+            </div>
+            <div className="w-30 pl-2">
+              <FeeSheet />
+            </div>
+          </div>
         </div>
       </div>
 

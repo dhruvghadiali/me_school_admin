@@ -31,7 +31,7 @@ const FeeForm = () => {
     feeFormError,
     feeFormLoader,
     selectedEductionBoard,
-    selectedAcademicClass,
+    feeFormData,
     eductionBoardsWithAcademicClasses,
   } = useSelector((state) => state.fee);
   const { t, i18n } = useTranslation();
@@ -40,17 +40,20 @@ const FeeForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      academicClass: selectedAcademicClass,
-      feeType: "",
-      monthlyFee: 0,
-      quarterlyFee: 0,
-      halfYearlyFee: 0,
-      yearlyFee: 0,
+      academicClass: feeFormData.academicClass,
+      feeType: feeFormData.feeTypeValue,
+      monthlyFee: feeFormData.monthlyFee,
+      quarterlyFee: feeFormData.quarterlyFee,
+      halfYearlyFee: feeFormData.halfYearlyFee,
+      yearlyFee: feeFormData.yearlyFee,
     },
     validationSchema: FeeSchema,
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
+      // feeFormData.id
+      //   ? console.log("Edit Fee", values)
+      //   : dispatch(addFee(addFeeAPIPayload(values)));
       dispatch(addFee(addFeeAPIPayload(values)));
     },
   });
@@ -150,14 +153,21 @@ const FeeForm = () => {
               ? _.upperFirst(t("feeTypeSelectionPlaceholder"))
               : _.upperFirst(feeTypeSelectionPlaceholder)
           }
-          items={_.filter(
-            feeTypes,
-            (feeType) =>
-              !_.includes(
-                _.map(fees, (fee) => _.toLower(fee.feeType)),
-                _.toLower(feeType.label)
-              )
-          )}
+          items={[
+            ..._.filter(
+              feeTypes,
+              (feeType) =>
+                !_.includes(
+                  _.map(fees, (fee) => _.toLower(fee.feeType)),
+                  _.toLower(feeType.label)
+                )
+            ),
+            feeFormData.id && {
+              label: feeFormData.feeTypeLabel,
+              value: feeFormData.feeTypeValue,
+            },
+          ]}
+          disabled={feeFormData.id ? true : false}
           labelvariant={variants.DARK}
           selectVariant={variants.DARK}
           messagevariant={variants.DANGER}

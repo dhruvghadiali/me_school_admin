@@ -1,4 +1,4 @@
-import { CircleAlertIcon } from "lucide-react";
+import { Edit } from "lucide-react";
 
 import {
   AlertDialog,
@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@MEShadcnComponents/alert-dialog";
 
-const MEDeleteAlertDialog = (props) => {
+const MEEditAlertDialog = (props) => {
   const { children, onConfirm } = props;
   return (
     <AlertDialog>
@@ -20,23 +20,23 @@ const MEDeleteAlertDialog = (props) => {
       <AlertDialogContent>
         <div className="flex flex-col gap-2 max-sm:items-center sm:flex-row sm:gap-4">
           <div
-            className="flex size-9 shrink-0 items-center justify-center rounded-full border border-danger"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full border border-dark"
             aria-hidden="true"
           >
-            <CircleAlertIcon className="text-danger" size={16} />
+            <Edit className="text-dark" size={16} />
           </div>
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-danger">
+            <AlertDialogTitle className="text-dark">
               Are you sure?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Do you really want to delete these record? This process cannot be undone.
+              Do you really want to edit these record?
             </AlertDialogDescription>
           </AlertDialogHeader>
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction className="bg-danger hover:bg-danger text-secondary" onClick={onConfirm}>
+          <AlertDialogAction className="bg-dark hover:bg-dark text-secondary" onClick={onConfirm}>
             Confirm
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -45,6 +45,6 @@ const MEDeleteAlertDialog = (props) => {
   );
 };
 
-MEDeleteAlertDialog.propTypes = {};
+MEEditAlertDialog.propTypes = {};
 
-export default MEDeleteAlertDialog;
+export default MEEditAlertDialog;

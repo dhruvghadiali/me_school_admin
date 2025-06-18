@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
-import { manageFeeFormSheetStatus } from "@MERedux/fee/feeSlice";
+import { manageFeeFormSheetStatus, setFeeFormData } from "@MERedux/fee/feeSlice";
 import {
   Sheet,
   SheetContent,
@@ -15,7 +15,9 @@ import {
 import {
   addFeeButtonText,
   addFeeSheetTitle,
+  editFeeSheetTitle,
   addFeeSheetDescription,
+  editFeeSheetDescription,
 } from "@MELocalization/en";
 
 import _ from "lodash";
@@ -24,22 +26,27 @@ import MEButton from "@MECommonComponents/button/meButton";
 import FeeForm from "@MEScreenComponents/fee/feeForm";
 
 const FeeSheet = () => {
-  const { isFeeFormSheetOpen } = useSelector(
-    (state) => state.academicClass
-  );
+  const { isFeeFormSheetOpen, feeFormData, selectedAcademicClass } = useSelector((state) => state.fee);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
-  const onClick = (status) =>
+  const onClick = (status) => {
     dispatch(manageFeeFormSheetStatus(status));
+    dispatch(setFeeFormData({
+      id: "",
+      academicClass: selectedAcademicClass,
+      feeTypeValue: "",
+      monthlyFee: 0,
+      quarterlyFee: 0,
+      halfYearlyFee: 0,
+      yearlyFee: 0,
+    }));
+  };
 
   return (
     <>
-      <Sheet
-        open={isFeeFormSheetOpen}
-        onOpenChange={(open) => onClick(open)}
-      >
+      <Sheet open={isFeeFormSheetOpen} onOpenChange={(open) => onClick(open)}>
         <SheetTrigger>
           <MEButton buttonVariant={variants.DARK} onClick={() => onClick(true)}>
             <Plus />
@@ -49,18 +56,26 @@ const FeeSheet = () => {
           </MEButton>
         </SheetTrigger>
         <SheetContent side="right" className="!w-[30vw] !max-w-none p-4">
-           <SheetHeader>
+          <SheetHeader>
             <SheetTitle>
-              {i18n.exists("addFeeSheetTitle")
+              {feeFormData.id
+                ? i18n.exists("editFeeSheetTitle")
+                  ? _.upperFirst(t("editFeeSheetTitle"))
+                  : _.upperFirst(editFeeSheetTitle)
+                : i18n.exists("addFeeSheetTitle")
                 ? _.upperFirst(t("addFeeSheetTitle"))
                 : _.upperFirst(addFeeSheetTitle)}
             </SheetTitle>
-             <SheetDescription>
-              {i18n.exists("addFeeSheetDescription")
+            <SheetDescription>
+              {feeFormData.id
+                ? i18n.exists("editFeeSheetDescription")
+                  ? _.upperFirst(t("editFeeSheetDescription"))
+                  : _.upperFirst(editFeeSheetDescription)
+                : i18n.exists("addFeeSheetDescription")
                 ? _.upperFirst(t("addFeeSheetDescription"))
                 : _.upperFirst(addFeeSheetDescription)}
             </SheetDescription>
-           </SheetHeader>
+          </SheetHeader>
           <div className="h-full overflow-y-auto ">
             <FeeForm />
           </div>

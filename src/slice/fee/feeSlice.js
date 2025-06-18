@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAcademicClasses, addFee, getFeeTypes, getFees } from "@/slice/fee/feeAction";
+import {
+  getAcademicClasses,
+  addFee,
+  getFeeTypes,
+  getFees,
+} from "@/slice/fee/feeAction";
 
 export const feeSlice = createSlice({
   name: "fee",
@@ -8,18 +13,26 @@ export const feeSlice = createSlice({
     feeFormError: "",
     selectedEductionBoard: "",
     selectedAcademicClass: "",
+    isFeeLogFormSheetOpen: false,
     isFeeFormSheetOpen: false,
     feeFormLoader: false,
     feeLoader: false,
+    feeFormData: {},
     fees: [],
     feeTypes: [],
     eductionBoardsWithAcademicClasses: [],
   },
   reducers: {
-     manageFeeFormSheetStatus: (state, action) => {
+    manageFeeFormSheetStatus: (state, action) => {
       state.isFeeFormSheetOpen = action.payload;
-      state.academicClassFormError = "";
-      state.academicClassFormLoader = false;
+      state.feeFormError = "";
+      state.feeFormLoader = false;
+    },
+    manageFeeLogFormSheetStatus: (state, action) => {
+      state.isFeeLogFormSheetOpen = action.payload;
+    },
+    setFeeFormData: (state, action) => {
+      state.feeFormData = action.payload;
     },
     setEductionBoard: (state, action) => {
       state.fees = [];
@@ -59,10 +72,10 @@ export const feeSlice = createSlice({
       })
       .addCase(getFees.pending, (state) => {
         state.feeError = "";
-        state.academicClassFormError = "";
+        state.feeFormError = "";
         state.feeLoader = true;
         state.isFeeFormSheetOpen = false;
-        state.academicClassFormLoader = false;
+        state.feeFormLoader = false;
         state.fees = [];
       })
       .addCase(getFees.fulfilled, (state, action) => {
@@ -90,6 +103,12 @@ export const feeSlice = createSlice({
   },
 });
 
-export const { setEductionBoard, setSelectedAcademicClass, manageFeeFormSheetStatus } = feeSlice.actions;
+export const {
+  setFeeFormData,
+  setEductionBoard,
+  manageFeeFormSheetStatus,
+  setSelectedAcademicClass,
+  manageFeeLogFormSheetStatus,
+} = feeSlice.actions;
 
 export default feeSlice.reducer;

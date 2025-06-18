@@ -31,7 +31,15 @@ const feeTypesAPIResponse = (data) => {
 
 const feesAPIResponse = (data) => {
   return {
-    feeType: data && data.fee_type && data.fee_type.fee_type ? _.upperFirst(data.fee_type.fee_type) : "",
+    id: data && data.id ? data.id : "",
+    feeType:
+      data && data.fee_type && data.fee_type.fee_type
+        ? _.upperFirst(data.fee_type.fee_type)
+        : "",
+    feeTypeValue:
+      data && data.fee_type && data.fee_type.id ? data.fee_type.id : "",
+    feeTypeLabel:
+      data && data.fee_type && data.fee_type.fee_type ? data.fee_type.fee_type : "",
     monthlyFee: data && data.monthly_fee ? data.monthly_fee : 0,
     quarterlyFee: data && data.quarterly_fee ? data.quarterly_fee : 0,
     halfYearlyFee: data && data.half_yearly_fee ? data.half_yearly_fee : 0,
