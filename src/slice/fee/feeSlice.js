@@ -3,6 +3,7 @@ import {
   addFee,
   getFees,
   updateFee,
+  deleteFee,
   getFeeTypes,
   getAcademicClasses,
 } from "@/slice/fee/feeAction";
@@ -110,6 +111,18 @@ export const feeSlice = createSlice({
         state.feeFormError = action.payload.error;
       })
       .addCase(updateFee.rejected, (state, action) => {
+        state.feeFormLoader = false;
+        state.feeFormError = action.payload.error;
+      })
+      .addCase(deleteFee.pending, (state) => {
+        state.feeFormLoader = true;
+        state.feeFormError = "";
+      })
+      .addCase(deleteFee.fulfilled, (state, action) => {
+        state.feeFormLoader = false;
+        state.feeFormError = action.payload.error;
+      })
+      .addCase(deleteFee.rejected, (state, action) => {
         state.feeFormLoader = false;
         state.feeFormError = action.payload.error;
       });

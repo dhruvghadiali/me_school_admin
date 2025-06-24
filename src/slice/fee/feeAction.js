@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
+import { setUpAxiosInstanceConfig } from "@MEUtils/utilityFunctions";
+
 import {
   feesAPIResponse,
   feeTypesAPIResponse,
@@ -10,10 +12,6 @@ import {
   feeTypesAPIRoute,
   schoolAcademicClassesAPIRoute,
 } from "@MEUtils/apiRoutes";
-import {
-  defaultAPIErrorResponse,
-  setUpAxiosInstanceConfig,
-} from "@MEUtils/utilityFunctions";
 
 import _ from "lodash";
 
@@ -111,7 +109,10 @@ const getFees = createAsyncThunk(
 
       if (response && response.data && response.data.length > 0) {
         return {
-          fees: _.sortBy(_.map(response.data, (fee) => feesAPIResponse(fee)),['feeType']),
+          fees: _.sortBy(
+            _.map(response.data, (fee) => feesAPIResponse(fee)),
+            ["feeType"]
+          ),
           error: "",
         };
       } else {
@@ -177,7 +178,9 @@ const updateFee = createAsyncThunk(
       );
 
       if (response && response.data && response.data.length > 0) {
-        dispatch(getFees({ academicClass: payload.data.school_academic_class }));
+        dispatch(
+          getFees({ academicClass: payload.data.school_academic_class })
+        );
         return {
           error: "",
         };
@@ -194,4 +197,37 @@ const updateFee = createAsyncThunk(
   }
 );
 
-export { addFee, getFees, getFeeTypes, getAcademicClasses, updateFee };
+const deleteFee = createAsyncThunk(
+  "academicClass/deleteFee",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      await axiosInstance.delete(
+        `${feesAPIRoute}/${payload.id}`,
+        axiosInstanceConfig
+      );
+
+      dispatch(getFees({ academicClass: payload.academicClass }));
+      return {
+        error: "",
+      };
+    } catch (error) {
+      return rejectWithValue({
+        error: error && error.message ? error.message : "",
+      });
+    }
+  }
+);
+
+export {
+  addFee,
+  getFees,
+  getFeeTypes,
+  getAcademicClasses,
+  updateFee,
+  deleteFee,
+};

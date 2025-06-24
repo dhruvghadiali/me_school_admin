@@ -5,22 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
-import {
-  onChangeEductionBoard,
-  deleteAcademicClasses,
-} from "@MERedux/academicClass/academicClassAction";
+import { deleteFee, getFees } from "@MERedux/fee/feeAction";
+
 import {
   setFeeFormData,
   setEductionBoard,
   setSelectedAcademicClass,
   manageFeeFormSheetStatus,
 } from "@MERedux/fee/feeSlice";
-import { getFees } from "@MERedux/fee/feeAction";
 import {
-  academicClassColumnTitle,
   eductionBoardSelectionLabel,
   academicClassSelectionLabel,
-  academicClassActionColumnTitle,
   eductionBoardSelectionPlaceholder,
   academicClassSelectionPlaceholder,
   academicClassCreatedByColumnTitle,
@@ -35,8 +30,8 @@ import moment from "moment/moment";
 import MESelect from "@MECommonComponents/select/meSelect";
 import FeeSheet from "@MEScreenComponents/fee/feeSheet/feeSheet";
 import FeeLogSheet from "@MEScreenComponents/fee/feeLogSheet/feeLogSheet";
-import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 import MEEditAlertDialog from "@MECommonComponents/alertDialog/editAlertDialog";
+import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 
 const FeeScreenAGGridTable = () => {
   const {
@@ -50,14 +45,14 @@ const FeeScreenAGGridTable = () => {
   const dispatch = useDispatch();
 
   const onDeleteConfirm = (data) => {
-    // if (data && data.data && data.data.id) {
-    //   dispatch(deleteAcademicClasses(data.data.id));
-    // }
+    if (data && data.data && data.data.id) {
+      dispatch(deleteFee({id: data.data.id, academicClass: selectedAcademicClass}));
+    }
   };
 
   const onEditConfirm = (data) => {
     dispatch(
-      setFeeFormData({...data.data, academicClass: selectedAcademicClass,})
+      setFeeFormData({ ...data.data, academicClass: selectedAcademicClass })
     );
     dispatch(manageFeeFormSheetStatus(true));
   };
@@ -84,7 +79,6 @@ const FeeScreenAGGridTable = () => {
         if (data.node.rowPinned === "bottom") {
           return "Total";
         }
-
         return (
           <div>
             <MEEditAlertDialog onConfirm={() => onEditConfirm(data)}>
@@ -212,7 +206,6 @@ const FeeScreenAGGridTable = () => {
                 onValueChange={(value) => dispatch(setEductionBoard(value))}
               />
             </div>
-
             <div className="xl:w-60 lg:pl-2">
               <MESelect
                 label={
