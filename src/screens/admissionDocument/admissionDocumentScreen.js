@@ -6,7 +6,7 @@
 import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 import AdmissionDocumentScreenHeader from "@MEScreenComponents/admissionDocument/header";
 // import FeeScreenAGGridTable from "@MEScreenComponents/fee/agGridTable/agGridTable";
-// import FeeScreenAGGridLoader from "@MEScreenComponents/fee/agGridTable/agGridLoader";
+import AdmissionDocumentScreenAGGridLoader from "@MEScreenComponents/admissionDocument/agGridTable/agGridLoader";
 
 const AdmissionDocumentScreen = () => {
   // const dispatch = useDispatch();
@@ -22,7 +22,8 @@ const AdmissionDocumentScreen = () => {
       <MEAuthHoc>
         <div className="mr-10">
            <AdmissionDocumentScreenHeader/>
-          {/* {feeLoader ? <FeeScreenAGGridLoader /> : <FeeScreenAGGridTable />} */}
+           <AdmissionDocumentScreenAGGridLoader/>
+          {/* {feeLoader ? <AdmissionDocumentScreenAGGridLoader /> : <FeeScreenAGGridTable />} */}
         </div>
       </MEAuthHoc>
     </>
