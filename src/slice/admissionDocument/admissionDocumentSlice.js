@@ -8,13 +8,22 @@ export const admissionDocumentSlice = createSlice({
   name: "admissionDocument",
   initialState: {
     admissionDocumentLoader: false,
+    schoolAdmissionFormLoader: false,
+    isSchoolAdmissionFormSheetOpen: false,
     selectedEductionBoard: "",
     selectedAcademicClass: "",
     admissionDocumentError: "",
+    schoolAdmissionFormError: "",
     admissionDocuments: [],
     eductionBoardsWithAcademicClasses: [],
+    schoolAdmissionFormData:{}
   },
   reducers: {
+    manageSchoolAdmissionFormSheetStatus: (state, action) => {
+      state.isSchoolAdmissionFormSheetOpen = action.payload;
+      state.schoolAdmissionFormError = "";
+      state.schoolAdmissionFormLoader = false;
+    },
     setEductionBoard: (state, action) => {
       state.schoolAdmissionDocuments = [];
       state.selectedEductionBoard = action.payload;
@@ -22,6 +31,9 @@ export const admissionDocumentSlice = createSlice({
     },
     setSelectedAcademicClass: (state, action) => {
       state.selectedAcademicClass = action.payload;
+    },
+    setSchoolAdmissionFormData: (state, action) => {
+      state.schoolAdmissionFormData = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -60,6 +72,11 @@ export const admissionDocumentSlice = createSlice({
   },
 });
 
-export const { setEductionBoard, setSelectedAcademicClass } = admissionDocumentSlice.actions;
+export const {
+  setEductionBoard,
+  setSelectedAcademicClass,
+  setSchoolAdmissionFormData,
+  manageSchoolAdmissionFormSheetStatus,
+} = admissionDocumentSlice.actions;
 
 export default admissionDocumentSlice.reducer;

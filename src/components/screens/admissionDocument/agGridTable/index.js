@@ -30,8 +30,7 @@ import _ from "lodash";
 import moment from "moment/moment";
 
 import MESelect from "@MECommonComponents/select/meSelect";
-import FeeSheet from "@MEScreenComponents/fee/feeSheet/feeSheet";
-import FeeLogSheet from "@MEScreenComponents/fee/feeLogSheet/feeLogSheet";
+import AdmissionDocumentSheet from "@MEScreenComponents/admissionDocument/admissionDocumentSheet";
 import MEEditAlertDialog from "@MECommonComponents/alertDialog/editAlertDialog";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 
@@ -228,10 +227,7 @@ const SchoolAdmissionAGGridTable = () => {
           </div>
         </div>
         <div className="justify-self-end self-center lg:mt-0 lg:mb-0 mb-5 mt-6 ">
-          <div className="grid grid-flow-row grid-cols-2 mt-5 ml-1 mb-2">
-            <div className="w-30 pr-2 mb-2">{/* <FeeLogSheet /> */}</div>
-            <div className="w-30 pl-2">{/* <FeeSheet /> */}</div>
-          </div>
+          <div className="w-30 pl-2"><AdmissionDocumentSheet /></div>
         </div>
       </div>
 
