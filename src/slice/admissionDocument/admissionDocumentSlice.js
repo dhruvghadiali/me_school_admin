@@ -1,15 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAcademicClasses, getAdmissionDocuments, } from "@/slice/admissionDocument/admissionDocumentAction";
+import {
+  getAcademicClasses,
+  getAdmissionDocuments,
+} from "@/slice/admissionDocument/admissionDocumentAction";
 
 export const admissionDocumentSlice = createSlice({
   name: "admissionDocument",
   initialState: {
     admissionDocumentLoader: false,
+    selectedEductionBoard: "",
+    selectedAcademicClass: "",
     admissionDocumentError: "",
     admissionDocuments: [],
     eductionBoardsWithAcademicClasses: [],
   },
-  reducers: {},
+  reducers: {
+    setEductionBoard: (state, action) => {
+      state.schoolAdmissionDocuments = [];
+      state.selectedEductionBoard = action.payload;
+      state.selectedAcademicClass = "";
+    },
+    setSelectedAcademicClass: (state, action) => {
+      state.selectedAcademicClass = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAcademicClasses.pending, (state) => {
@@ -46,6 +60,6 @@ export const admissionDocumentSlice = createSlice({
   },
 });
 
-export const {} = admissionDocumentSlice.actions;
+export const { setEductionBoard, setSelectedAcademicClass } = admissionDocumentSlice.actions;
 
 export default admissionDocumentSlice.reducer;

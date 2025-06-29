@@ -5,7 +5,7 @@ import { getAcademicClasses, getAdmissionDocuments } from "@MERedux/admissionDoc
 
 import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 import AdmissionDocumentScreenHeader from "@MEScreenComponents/admissionDocument/header";
-// import FeeScreenAGGridTable from "@MEScreenComponents/fee/agGridTable/agGridTable";
+import SchoolAdmissionAGGridTable from "@MEScreenComponents/admissionDocument/agGridTable";
 import AdmissionDocumentScreenAGGridLoader from "@MEScreenComponents/admissionDocument/agGridTable/agGridLoader";
 
 const AdmissionDocumentScreen = () => {
@@ -22,7 +22,7 @@ const AdmissionDocumentScreen = () => {
       <MEAuthHoc>
         <div className="mr-10">
           <AdmissionDocumentScreenHeader />
-          {admissionDocumentLoader ? <AdmissionDocumentScreenAGGridLoader /> : <div/>}
+          {admissionDocumentLoader ? <AdmissionDocumentScreenAGGridLoader /> : <SchoolAdmissionAGGridTable/>}
         </div>
       </MEAuthHoc>
     </>
