@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
-import { deleteFee, getFees } from "@MERedux/fee/feeAction";
+import { getSchoolAdmissionDocuments } from "@MERedux/admissionDocument/admissionDocumentAction";
 
 import {
   setEductionBoard,
@@ -38,6 +38,7 @@ const SchoolAdmissionAGGridTable = () => {
   const {
     selectedAcademicClass,
     selectedEductionBoard,
+    schoolAdmissionDocuments,
     eductionBoardsWithAcademicClasses,
   } = useSelector((state) => state.admissionDocument);
   const { t, i18n } = useTranslation();
@@ -59,7 +60,7 @@ const SchoolAdmissionAGGridTable = () => {
 
   const onAcademicClassChange = (value) => {
     dispatch(setSelectedAcademicClass(value));
-    // dispatch(getFees({ academicClass: value }));
+    dispatch(getSchoolAdmissionDocuments({ academicClass: value }));
   };
 
   // const pinnedBottomRowData = [
@@ -101,7 +102,7 @@ const SchoolAdmissionAGGridTable = () => {
       headerName: i18n.exists("admissionDocumentDocumentNameColumnTitle")
         ? _.upperFirst(t("admissionDocumentDocumentNameColumnTitle"))
         : _.upperFirst(admissionDocumentDocumentNameColumnTitle),
-      field: "feeType",
+      field: "admissionDocument",
       filter: true,
       width: 500,
     },
@@ -109,7 +110,7 @@ const SchoolAdmissionAGGridTable = () => {
       headerName: i18n.exists("admissionDocumentIsRequiredColumnTitle")
         ? _.upperFirst(t("admissionDocumentIsRequiredColumnTitle"))
         : _.upperFirst(admissionDocumentIsRequiredColumnTitle),
-      field: "monthlyFee",
+      field: "isRequired",
       filter: true,
       width: 150,
       aggFunc: "sum",
@@ -118,7 +119,7 @@ const SchoolAdmissionAGGridTable = () => {
       headerName: i18n.exists("admissionDocumentNotesColumnTitle")
         ? _.upperFirst(t("admissionDocumentNotesColumnTitle"))
         : _.upperFirst(admissionDocumentNotesColumnTitle),
-      field: "quarterlyFee",
+      field: "notes",
       filter: true,
       width: 500,
     },
@@ -227,12 +228,18 @@ const SchoolAdmissionAGGridTable = () => {
           </div>
         </div>
         <div className="justify-self-end self-center lg:mt-0 lg:mb-0 mb-5 mt-6 ">
-          <div className="w-30 pl-2"><AdmissionDocumentSheet /></div>
+          <div className="w-30 pl-2">
+            <AdmissionDocumentSheet />
+          </div>
         </div>
       </div>
 
       <div className="ag-theme-alpine w-full h-[75vh]">
-        <AgGridReact rowData={[]} columnDefs={colDefs} pagination={true} />
+        <AgGridReact
+          rowData={schoolAdmissionDocuments}
+          columnDefs={colDefs}
+          pagination={true}
+        />
       </div>
     </>
   );

@@ -7,8 +7,9 @@ import {
   schoolAdmissionDocumentsAPIRoute,
 } from "@MEUtils/apiRoutes";
 import {
-  eductionBoardsWithAcademicClassesAPIResponse,
   admissionDocumentAPIResponse,
+  admissionDocumentsAPIResponse,
+  eductionBoardsWithAcademicClassesAPIResponse,
 } from "@MEUtils/apiResponse";
 
 import _ from "lodash";
@@ -96,6 +97,41 @@ const getAdmissionDocuments = createAsyncThunk(
   }
 );
 
+const getSchoolAdmissionDocuments = createAsyncThunk(
+  "admissionDocument/getSchoolAdmissionDocuments",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      const response = await axiosInstance.get(
+        `${schoolAdmissionDocumentsAPIRoute}/${payload.academicClass}`,
+        axiosInstanceConfig
+      );
+
+      if (response && response.data && response.data.length > 0) {
+        return {
+          schoolAdmissionDocuments: admissionDocumentsAPIResponse(
+            response.data
+          ),
+          error: "",
+        };
+      } else {
+        return {
+          schoolAdmissionDocuments: [],
+          error: response && response.message ? response.message : "",
+        };
+      }
+    } catch (error) {
+      return rejectWithValue({
+        error: error && error.message ? error.message : "",
+      });
+    }
+  }
+);
+
 const addAdmissionDocument = createAsyncThunk(
   "admissionDocument/addAdmissionDocument",
   async (payload, { getState, rejectWithValue, dispatch }) => {
@@ -112,7 +148,11 @@ const addAdmissionDocument = createAsyncThunk(
       );
 
       if (response && response.data && response.data.length > 0) {
-        // dispatch(getFees({ academicClass: payload.school_academic_class }));
+        dispatch(
+          getSchoolAdmissionDocuments({
+            academicClass: payload.school_academic_class,
+          })
+        );
         return {
           error: "",
         };
@@ -130,4 +170,9 @@ const addAdmissionDocument = createAsyncThunk(
   }
 );
 
-export { getAcademicClasses, getAdmissionDocuments, addAdmissionDocument };
+export {
+  getAcademicClasses,
+  getAdmissionDocuments,
+  addAdmissionDocument,
+  getSchoolAdmissionDocuments,
+};

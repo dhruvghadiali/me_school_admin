@@ -3,6 +3,7 @@ import {
   getAcademicClasses,
   addAdmissionDocument,
   getAdmissionDocuments,
+  getSchoolAdmissionDocuments,
 } from "@/slice/admissionDocument/admissionDocumentAction";
 
 export const admissionDocumentSlice = createSlice({
@@ -18,7 +19,7 @@ export const admissionDocumentSlice = createSlice({
     admissionDocuments: [],
     schoolAdmissionDocuments: [],
     eductionBoardsWithAcademicClasses: [],
-    schoolAdmissionFormData:{}
+    schoolAdmissionFormData: {},
   },
   reducers: {
     manageSchoolAdmissionFormSheetStatus: (state, action) => {
@@ -70,6 +71,25 @@ export const admissionDocumentSlice = createSlice({
         state.admissionDocumentLoader = false;
         state.admissionDocumentError = action.payload.error;
         state.admissionDocuments = [];
+      })
+      .addCase(getSchoolAdmissionDocuments.pending, (state) => {
+        state.admissionDocumentLoader = true;
+        state.admissionDocumentFormLoader = false;
+        state.isSchoolAdmissionFormSheetOpen = false;
+        state.admissionDocumentError = "";
+        state.admissionDocumentFormError = "";
+        state.schoolAdmissionDocuments = [];
+      })
+      .addCase(getSchoolAdmissionDocuments.fulfilled, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.schoolAdmissionDocuments =
+          action.payload.schoolAdmissionDocuments;
+        state.admissionDocumentError = action.payload.error;
+      })
+      .addCase(getSchoolAdmissionDocuments.rejected, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
+        state.schoolAdmissionDocuments = [];
       })
       .addCase(addAdmissionDocument.pending, (state) => {
         state.admissionDocumentFormLoader = true;
