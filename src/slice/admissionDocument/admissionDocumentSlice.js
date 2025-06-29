@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   getAcademicClasses,
+  addAdmissionDocument,
   getAdmissionDocuments,
 } from "@/slice/admissionDocument/admissionDocumentAction";
 
@@ -8,20 +9,21 @@ export const admissionDocumentSlice = createSlice({
   name: "admissionDocument",
   initialState: {
     admissionDocumentLoader: false,
-    schoolAdmissionFormLoader: false,
+    admissionDocumentFormLoader: false,
     isSchoolAdmissionFormSheetOpen: false,
     selectedEductionBoard: "",
     selectedAcademicClass: "",
     admissionDocumentError: "",
-    schoolAdmissionFormError: "",
+    admissionDocumentFormError: "",
     admissionDocuments: [],
+    schoolAdmissionDocuments: [],
     eductionBoardsWithAcademicClasses: [],
     schoolAdmissionFormData:{}
   },
   reducers: {
     manageSchoolAdmissionFormSheetStatus: (state, action) => {
       state.isSchoolAdmissionFormSheetOpen = action.payload;
-      state.schoolAdmissionFormError = "";
+      state.admissionDocumentFormError = "";
       state.schoolAdmissionFormLoader = false;
     },
     setEductionBoard: (state, action) => {
@@ -68,6 +70,18 @@ export const admissionDocumentSlice = createSlice({
         state.admissionDocumentLoader = false;
         state.admissionDocumentError = action.payload.error;
         state.admissionDocuments = [];
+      })
+      .addCase(addAdmissionDocument.pending, (state) => {
+        state.admissionDocumentFormLoader = true;
+        state.admissionDocumentFormError = "";
+      })
+      .addCase(addAdmissionDocument.fulfilled, (state, action) => {
+        state.admissionDocumentFormLoader = false;
+        state.admissionDocumentFormError = action.payload.error;
+      })
+      .addCase(addAdmissionDocument.rejected, (state, action) => {
+        state.admissionDocumentFormLoader = false;
+        state.admissionDocumentFormError = action.payload.error;
       });
   },
 });

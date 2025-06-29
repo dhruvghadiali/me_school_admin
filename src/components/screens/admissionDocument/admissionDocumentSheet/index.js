@@ -26,7 +26,7 @@ import {
 import _ from "lodash";
 
 import MEButton from "@MECommonComponents/button/meButton";
-// import FeeForm from "@MEScreenComponents/fee/feeForm";
+import AdmissionDocumentForm from "@MEScreenComponents/admissionDocument/admissionDocumentForm";
 
 const AdmissionDocumentSheet = () => {
   const {
@@ -44,8 +44,8 @@ const AdmissionDocumentSheet = () => {
       setSchoolAdmissionFormData({
         id: "",
         academicClass: selectedAcademicClass,
-        document: "",
-        isRequired: false,
+        admissionDocument: "",
+        isRequired: true,
         notes: "",
       })
     );
@@ -86,7 +86,7 @@ const AdmissionDocumentSheet = () => {
                 : _.upperFirst(addAdmissionDocumentSheetDescription)}
             </SheetDescription>
           </SheetHeader>
-          <div className="h-full overflow-y-auto ">{/* <FeeForm /> */}</div>
+          <div className="h-full overflow-y-auto "><AdmissionDocumentForm /></div>
         </SheetContent>
       </Sheet>
     </>

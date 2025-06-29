@@ -2,8 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { setUpAxiosInstanceConfig } from "@MEUtils/utilityFunctions";
 import {
-  schoolAcademicClassesAPIRoute,
   admissionDocumentsAPIRoute,
+  schoolAcademicClassesAPIRoute,
+  schoolAdmissionDocumentsAPIRoute,
 } from "@MEUtils/apiRoutes";
 import {
   eductionBoardsWithAcademicClassesAPIResponse,
@@ -95,4 +96,38 @@ const getAdmissionDocuments = createAsyncThunk(
   }
 );
 
-export { getAcademicClasses, getAdmissionDocuments };
+const addAdmissionDocument = createAsyncThunk(
+  "admissionDocument/addAdmissionDocument",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      const response = await axiosInstance.post(
+        `${schoolAdmissionDocumentsAPIRoute}`,
+        payload,
+        axiosInstanceConfig
+      );
+
+      if (response && response.data && response.data.length > 0) {
+        // dispatch(getFees({ academicClass: payload.school_academic_class }));
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error: response && response.message ? response.message : "",
+        };
+      }
+    } catch (error) {
+      console.error("Error in addAdmissionDocument:", error);
+      return rejectWithValue({
+        error: error && error.message ? error.message : "",
+      });
+    }
+  }
+);
+
+export { getAcademicClasses, getAdmissionDocuments, addAdmissionDocument };
