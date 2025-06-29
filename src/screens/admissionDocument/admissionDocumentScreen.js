@@ -1,7 +1,7 @@
-// import { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-// import { getAcademicClasses, getFeeTypes } from "@MERedux/fee/feeAction";
+import { getAcademicClasses, getAdmissionDocuments } from "@MERedux/admissionDocument/admissionDocumentAction";
 
 import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 import AdmissionDocumentScreenHeader from "@MEScreenComponents/admissionDocument/header";
@@ -9,21 +9,20 @@ import AdmissionDocumentScreenHeader from "@MEScreenComponents/admissionDocument
 import AdmissionDocumentScreenAGGridLoader from "@MEScreenComponents/admissionDocument/agGridTable/agGridLoader";
 
 const AdmissionDocumentScreen = () => {
-  // const dispatch = useDispatch();
-  // const { feeLoader } = useSelector((state) => state.fee);
+  const dispatch = useDispatch();
+  const { admissionDocumentLoader } = useSelector((state) => state.admissionDocument);
 
-  // useEffect(() => {
-  //   dispatch(getFeeTypes());
-  //   dispatch(getAcademicClasses());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getAdmissionDocuments());
+    dispatch(getAcademicClasses());
+  }, [dispatch]);
 
   return (
     <>
       <MEAuthHoc>
         <div className="mr-10">
-           <AdmissionDocumentScreenHeader/>
-           <AdmissionDocumentScreenAGGridLoader/>
-          {/* {feeLoader ? <AdmissionDocumentScreenAGGridLoader /> : <FeeScreenAGGridTable />} */}
+          <AdmissionDocumentScreenHeader />
+          {admissionDocumentLoader ? <AdmissionDocumentScreenAGGridLoader /> : <div/>}
         </div>
       </MEAuthHoc>
     </>
