@@ -4,7 +4,7 @@
 // import { getAcademicClasses, getFeeTypes } from "@MERedux/fee/feeAction";
 
 import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
-// import FeeScreenHeader from "@MEScreenComponents/fee/header/header";
+import AdmissionDocumentScreenHeader from "@MEScreenComponents/admissionDocument/header";
 // import FeeScreenAGGridTable from "@MEScreenComponents/fee/agGridTable/agGridTable";
 // import FeeScreenAGGridLoader from "@MEScreenComponents/fee/agGridTable/agGridLoader";
 
@@ -21,9 +21,8 @@ const AdmissionDocumentScreen = () => {
     <>
       <MEAuthHoc>
         <div className="mr-10">
-          <h1> Admission Documents </h1>
-          {/* <FeeScreenHeader/>
-          {feeLoader ? <FeeScreenAGGridLoader /> : <FeeScreenAGGridTable />} */}
+           <AdmissionDocumentScreenHeader/>
+          {/* {feeLoader ? <FeeScreenAGGridLoader /> : <FeeScreenAGGridTable />} */}
         </div>
       </MEAuthHoc>
     </>
