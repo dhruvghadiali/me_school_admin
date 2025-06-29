@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
-import { getSchoolAdmissionDocuments } from "@MERedux/admissionDocument/admissionDocumentAction";
+import { getSchoolAdmissionDocuments, deleteAdmissionDocument } from "@MERedux/admissionDocument/admissionDocumentAction";
 
 import {
   setEductionBoard,
@@ -46,9 +46,9 @@ const SchoolAdmissionAGGridTable = () => {
   const dispatch = useDispatch();
 
   const onDeleteConfirm = (data) => {
-    // if (data && data.data && data.data.id) {
-    //   dispatch(deleteFee({id: data.data.id, academicClass: selectedAcademicClass}));
-    // }
+    if (data && data.data && data.data.id) {
+      dispatch(deleteAdmissionDocument({id: data.data.id, academicClass: selectedAcademicClass}));
+    }
   };
 
   const onEditConfirm = (data) => {
@@ -62,15 +62,6 @@ const SchoolAdmissionAGGridTable = () => {
     dispatch(setSelectedAcademicClass(value));
     dispatch(getSchoolAdmissionDocuments({ academicClass: value }));
   };
-
-  // const pinnedBottomRowData = [
-  //   {
-  //     monthlyFee: _.reduce(fees, (sum, row) => sum + row.monthlyFee, 0),
-  //     quarterlyFee: _.reduce(fees, (sum, row) => sum + row.quarterlyFee, 0),
-  //     halfYearlyFee: _.reduce(fees, (sum, row) => sum + row.halfYearlyFee, 0),
-  //     yearlyFee: _.reduce(fees, (sum, row) => sum + row.yearlyFee, 0),
-  //   },
-  // ];
 
   const colDefs = [
     {

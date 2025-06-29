@@ -170,9 +170,36 @@ const addAdmissionDocument = createAsyncThunk(
   }
 );
 
+const deleteAdmissionDocument = createAsyncThunk(
+  "admissionDocument/deleteAdmissionDocument",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      await axiosInstance.delete(
+        `${schoolAdmissionDocumentsAPIRoute}/${payload.id}`,
+        axiosInstanceConfig
+      );
+
+      dispatch(getSchoolAdmissionDocuments({ academicClass: payload.academicClass }));
+      return {
+        error: "",
+      };
+    } catch (error) {
+      return rejectWithValue({
+        error: error && error.message ? error.message : "",
+      });
+    }
+  }
+);
+
 export {
   getAcademicClasses,
-  getAdmissionDocuments,
   addAdmissionDocument,
+  getAdmissionDocuments,
+  deleteAdmissionDocument,
   getSchoolAdmissionDocuments,
 };

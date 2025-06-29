@@ -3,6 +3,7 @@ import {
   getAcademicClasses,
   addAdmissionDocument,
   getAdmissionDocuments,
+  deleteAdmissionDocument,
   getSchoolAdmissionDocuments,
 } from "@/slice/admissionDocument/admissionDocumentAction";
 
@@ -102,6 +103,18 @@ export const admissionDocumentSlice = createSlice({
       .addCase(addAdmissionDocument.rejected, (state, action) => {
         state.admissionDocumentFormLoader = false;
         state.admissionDocumentFormError = action.payload.error;
+      })
+      .addCase(deleteAdmissionDocument.pending, (state) => {
+        state.admissionDocumentLoader = true;
+        state.admissionDocumentError = "";
+      })
+      .addCase(deleteAdmissionDocument.fulfilled, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
+      })
+      .addCase(deleteAdmissionDocument.rejected, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
       });
   },
 });
