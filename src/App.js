@@ -8,6 +8,7 @@ import SettingsScreen from "@MEScreens/settings/settingsScreen";
 import DashboardScreen from "@MEScreens/dashboard/dashboardScreen";
 import AdmissionScreen from "@MEScreens/admission/admissionScreen";
 import AcademicClassScreen from "@MEScreens/academicClass/academicClassScreen";
+import AdmissionDocumentScreen from "@MEScreens/admissionDocument/admissionDocumentScreen";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path={routeName.schoolProfile} element={<ProfileScreen />} />
         <Route path={routeName.academicClass} element={<AcademicClassScreen />} />
         <Route path={routeName.fees} element={<FeeScreen />} />
+        <Route path={routeName.admissionDocuments} element={<AdmissionDocumentScreen />} />
         <Route path="*" element={<Navigate to={routeName.dashboard} replace />} />
       </Routes>
     </BrowserRouter>

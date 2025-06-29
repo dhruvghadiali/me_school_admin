@@ -1,4 +1,13 @@
-import { Gauge, Inbox, User, Settings, LogOutIcon, GraduationCap, IndianRupee  } from "lucide-react";
+import {
+  User,
+  Gauge,
+  Inbox,
+  Settings,
+  FilesIcon,
+  LogOutIcon,
+  IndianRupee,
+  GraduationCap,
+} from "lucide-react";
 import { sidebarMenuName } from "@MEUtils/enums";
 import { routeName } from "@MEUtils/routeName";
 
@@ -18,10 +27,15 @@ export const sidebarMenu = [
     url: routeName.academicClass,
     icon: GraduationCap,
   },
-   {
+  {
     title: sidebarMenuName.FEES,
     url: routeName.fees,
     icon: IndianRupee,
+  },
+  {
+    title: sidebarMenuName.ADMISSION_DOCUMENTS,
+    url: routeName.admissionDocuments,
+    icon: FilesIcon,
   },
   {
     title: sidebarMenuName.PROFILE,
