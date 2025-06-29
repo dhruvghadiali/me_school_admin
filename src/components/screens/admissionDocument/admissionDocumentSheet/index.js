@@ -44,7 +44,7 @@ const AdmissionDocumentSheet = () => {
       setSchoolAdmissionFormData({
         id: "",
         academicClass: selectedAcademicClass,
-        admissionDocument: "",
+        admissionDocumentValue: "",
         isRequired: true,
         notes: "",
       })

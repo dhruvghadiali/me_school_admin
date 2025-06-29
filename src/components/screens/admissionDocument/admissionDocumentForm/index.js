@@ -6,8 +6,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { variants } from "@MEUtils/enums";
 import { Label } from "@MEShadcnComponents/label";
 import { Checkbox } from "@MEShadcnComponents/checkbox";
-import { addAdmissionDocumentAPIPayload } from "@MEUtils/apiPayload";
-import { addAdmissionDocument } from "@MERedux/admissionDocument/admissionDocumentAction";
+import {
+  addAdmissionDocumentAPIPayload,
+  updateAdmissionDocumentAPIPayload,
+} from "@MEUtils/apiPayload";
+import {
+  addAdmissionDocument,
+  updateAdmissionDocument,
+} from "@MERedux/admissionDocument/admissionDocumentAction";
 
 import {
   notesLabel,
@@ -52,7 +58,7 @@ const AdmissionDocumentForm = () => {
   const formik = useFormik({
     initialValues: {
       academicClass: schoolAdmissionFormData.academicClass,
-      admissionDocument: schoolAdmissionFormData.admissionDocument,
+      admissionDocument: schoolAdmissionFormData.admissionDocumentValue,
       isRequired: schoolAdmissionFormData.isRequired,
       notes: schoolAdmissionFormData.notes,
     },
@@ -60,11 +66,18 @@ const AdmissionDocumentForm = () => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      console.log("Form submitted with values:", values);
-      dispatch(addAdmissionDocument(addAdmissionDocumentAPIPayload(values)));
-      // schoolAdmissionFormData.id
-      //   ? dispatch(updateFee(updateFeeAPIPayload(values, feeFormData.id)))
-      //   : dispatch(addFee(addFeeAPIPayload(values)));
+      schoolAdmissionFormData.id
+        ? dispatch(
+            updateAdmissionDocument(
+              updateAdmissionDocumentAPIPayload(
+                values,
+                schoolAdmissionFormData.id
+              )
+            )
+          )
+        : dispatch(
+            addAdmissionDocument(addAdmissionDocumentAPIPayload(values))
+          );
     },
   });
 
@@ -131,6 +144,10 @@ const AdmissionDocumentForm = () => {
                   _.toLower(admissionDocument.label)
                 )
             ),
+            schoolAdmissionFormData.id && {
+              label: schoolAdmissionFormData.admissionDocumentLabel,
+              value: schoolAdmissionFormData.admissionDocumentValue,
+            },
           ]}
           disabled={schoolAdmissionFormData.id ? true : false}
           labelvariant={variants.DARK}

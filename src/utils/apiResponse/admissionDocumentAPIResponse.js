@@ -17,9 +17,19 @@ const admissionDocumentsAPIResponse = (response) => {
           data &&
           data.admission_document &&
           data.admission_document.admission_document
+            ? _.upperFirst(data.admission_document.admission_document)
+            : "",
+        admissionDocumentValue:
+          data && data.admission_document && data.admission_document.id
+            ? data.admission_document.id
+            : "",
+        admissionDocumentLabel:
+          data &&
+          data.admission_document &&
+          data.admission_document.admission_document
             ? data.admission_document.admission_document
             : "",
-        isRequired: data && data.is_required ? 'Required' : 'Optional',
+        isRequired: data && data.is_required ? "Required" : "Optional",
         notes: data && data.notes ? data.notes : "",
         createdAt:
           data && data.created_at

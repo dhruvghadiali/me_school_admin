@@ -5,11 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
-import { getSchoolAdmissionDocuments, deleteAdmissionDocument } from "@MERedux/admissionDocument/admissionDocumentAction";
+import {
+  getSchoolAdmissionDocuments,
+  deleteAdmissionDocument,
+} from "@MERedux/admissionDocument/admissionDocumentAction";
 
 import {
   setEductionBoard,
   setSelectedAcademicClass,
+  setSchoolAdmissionFormData,
+  manageSchoolAdmissionFormSheetStatus,
 } from "@MERedux/admissionDocument/admissionDocumentSlice";
 import {
   eductionBoardSelectionLabel,
@@ -47,15 +52,24 @@ const SchoolAdmissionAGGridTable = () => {
 
   const onDeleteConfirm = (data) => {
     if (data && data.data && data.data.id) {
-      dispatch(deleteAdmissionDocument({id: data.data.id, academicClass: selectedAcademicClass}));
+      dispatch(
+        deleteAdmissionDocument({
+          id: data.data.id,
+          academicClass: selectedAcademicClass,
+        })
+      );
     }
   };
 
   const onEditConfirm = (data) => {
-    // dispatch(
-    //   setFeeFormData({ ...data.data, academicClass: selectedAcademicClass })
-    // );
-    // dispatch(manageFeeFormSheetStatus(true));
+    dispatch(
+      setSchoolAdmissionFormData({
+        ...data.data,
+        isRequired: _.toLower(data.data.isRequired) === 'required' ? true : false,
+        academicClass: selectedAcademicClass,
+      })
+    );
+    dispatch(manageSchoolAdmissionFormSheetStatus(true));
   };
 
   const onAcademicClassChange = (value) => {

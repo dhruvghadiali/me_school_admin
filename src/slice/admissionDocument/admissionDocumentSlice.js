@@ -4,6 +4,7 @@ import {
   addAdmissionDocument,
   getAdmissionDocuments,
   deleteAdmissionDocument,
+  updateAdmissionDocument,
   getSchoolAdmissionDocuments,
 } from "@/slice/admissionDocument/admissionDocumentAction";
 
@@ -115,6 +116,18 @@ export const admissionDocumentSlice = createSlice({
       .addCase(deleteAdmissionDocument.rejected, (state, action) => {
         state.admissionDocumentLoader = false;
         state.admissionDocumentError = action.payload.error;
+      })
+      .addCase(updateAdmissionDocument.pending, (state) => {
+        state.admissionDocumentFormLoader = true;
+        state.admissionDocumentFormError = "";
+      })
+      .addCase(updateAdmissionDocument.fulfilled, (state, action) => {
+        state.admissionDocumentFormLoader = false;
+        state.admissionDocumentFormError = action.payload.error;
+      })
+      .addCase(updateAdmissionDocument.rejected, (state, action) => {
+        state.admissionDocumentFormLoader = false;
+        state.admissionDocumentFormError = action.payload.error;
       });
   },
 });

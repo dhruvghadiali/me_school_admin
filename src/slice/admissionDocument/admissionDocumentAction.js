@@ -170,6 +170,43 @@ const addAdmissionDocument = createAsyncThunk(
   }
 );
 
+const updateAdmissionDocument = createAsyncThunk(
+  "admissionDocument/updateAdmissionDocument",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      const response = await axiosInstance.put(
+        `${schoolAdmissionDocumentsAPIRoute}/${payload.id}`,
+        payload.data,
+        axiosInstanceConfig
+      );
+
+      if (response && response.data && response.data.length > 0) {
+        dispatch(
+          getSchoolAdmissionDocuments({
+            academicClass: payload.data.school_academic_class,
+          })
+        );
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error: response && response.message ? response.message : "",
+        };
+      }
+    } catch (error) {
+      return rejectWithValue({
+        error: error && error.message ? error.message : "",
+      });
+    }
+  }
+);
+
 const deleteAdmissionDocument = createAsyncThunk(
   "admissionDocument/deleteAdmissionDocument",
   async (payload, { getState, rejectWithValue, dispatch }) => {
@@ -184,7 +221,9 @@ const deleteAdmissionDocument = createAsyncThunk(
         axiosInstanceConfig
       );
 
-      dispatch(getSchoolAdmissionDocuments({ academicClass: payload.academicClass }));
+      dispatch(
+        getSchoolAdmissionDocuments({ academicClass: payload.academicClass })
+      );
       return {
         error: "",
       };
@@ -201,5 +240,6 @@ export {
   addAdmissionDocument,
   getAdmissionDocuments,
   deleteAdmissionDocument,
+  updateAdmissionDocument,
   getSchoolAdmissionDocuments,
 };
