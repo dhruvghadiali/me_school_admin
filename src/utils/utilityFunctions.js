@@ -41,6 +41,8 @@ export const setSidebarMenuNameBasedURL = (pathName) => {
       return sidebarMenuName.FEES;
     case routeName.admissionDocuments:
       return sidebarMenuName.ADMISSION_DOCUMENTS;
+    case routeName.facilities:
+      return sidebarMenuName.FACILITIES;
     default:
       return sidebarMenuName.DASHBOARD;
   }
