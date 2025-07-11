@@ -23,6 +23,7 @@ const sidebarMenuName = {
     ACADEMIC_CLASS: "academicClass",
     FEES: "fees",
     ADMISSION_DOCUMENTS: "admissionDocuments",
+    FACILITIES: "facilities",
     PROFILE: "profile",
     SETTINGS: "settings",
     LOGOUT: "logout",

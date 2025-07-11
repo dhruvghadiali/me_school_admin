@@ -7,6 +7,7 @@ import {
   LogOutIcon,
   IndianRupee,
   GraduationCap,
+  LayoutDashboard, 
 } from "lucide-react";
 import { sidebarMenuName } from "@MEUtils/enums";
 import { routeName } from "@MEUtils/routeName";
@@ -36,6 +37,11 @@ export const sidebarMenu = [
     title: sidebarMenuName.ADMISSION_DOCUMENTS,
     url: routeName.admissionDocuments,
     icon: FilesIcon,
+  },
+  {
+    title: sidebarMenuName.FACILITIES,
+    url: routeName.facilities,
+    icon: LayoutDashboard ,
   },
   {
     title: sidebarMenuName.PROFILE,

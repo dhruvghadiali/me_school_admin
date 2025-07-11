@@ -4,6 +4,7 @@ export const sidebarMenuLabel = {
     academicClass: "academic class",
     fees: "fees",
     admissionDocuments: "admission documents",
+    facilities: "facilities",
     profile: "profile",
     settings: "settings",
     logout: "logout",
