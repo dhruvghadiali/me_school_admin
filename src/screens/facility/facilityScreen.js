@@ -1,21 +1,27 @@
-import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
+import { getFacilityTypes } from "@MERedux/facility/facilityAction";
+
+import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 import FacilityScreenHeader from "@MEScreenComponents/facility/header";
+import FacilityScreenAGGridTable from "@MEScreenComponents/facility/agGridTable";
 
 const FacilityScreen = () => {
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   //   const { feeLoader } = useSelector((state) => state.fee);
 
-  //   useEffect(() => {
-  //     dispatch(getFeeTypes());
-  //     dispatch(getAcademicClasses());
-  //   }, [dispatch]);
+  useEffect(() => {
+    dispatch(getFacilityTypes());
+    // dispatch(getAcademicClasses());
+  }, [dispatch]);
 
   return (
     <>
       <MEAuthHoc>
         <div className="mr-10">
-          <FacilityScreenHeader/>
+          <FacilityScreenHeader />
+          <FacilityScreenAGGridTable/>
           {/* {feeLoader ? <FeeScreenAGGridLoader /> : <FeeScreenAGGridTable />} */}
         </div>
       </MEAuthHoc>
