@@ -1,5 +1,7 @@
 import MEAuthHoc from "@MECommonComponents/hoc/meAuthHoc";
 
+import FacilityScreenHeader from "@MEScreenComponents/facility/header";
+
 const FacilityScreen = () => {
   //   const dispatch = useDispatch();
   //   const { feeLoader } = useSelector((state) => state.fee);
@@ -13,9 +15,8 @@ const FacilityScreen = () => {
     <>
       <MEAuthHoc>
         <div className="mr-10">
-          <h1> Facility Screen </h1>
-          {/* <FeeScreenHeader/>
-          {feeLoader ? <FeeScreenAGGridLoader /> : <FeeScreenAGGridTable />} */}
+          <FacilityScreenHeader/>
+          {/* {feeLoader ? <FeeScreenAGGridLoader /> : <FeeScreenAGGridTable />} */}
         </div>
       </MEAuthHoc>
     </>
