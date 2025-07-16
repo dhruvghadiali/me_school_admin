@@ -19,6 +19,7 @@ import {
 import _ from "lodash";
 
 import MEButton from "@MECommonComponents/button/meButton";
+import FacilityForm from "@MEScreenComponents/facility/facilityForm";
 
 const FacilitySheet = () => {
   const { t, i18n } = useTranslation();
@@ -41,14 +42,14 @@ const FacilitySheet = () => {
                 ? _.upperFirst(t("addFacilitySheetTitle"))
                 : _.upperFirst(addFacilitySheetTitle)}
             </SheetTitle>
-             <SheetDescription>
+            <SheetDescription>
               {i18n.exists("addFacilitySheetDescription")
                 ? _.upperFirst(t("addFacilitySheetDescription"))
                 : _.upperFirst(addFacilitySheetDescription)}
-             </SheetDescription>
+            </SheetDescription>
           </SheetHeader>
           <div className="h-full overflow-y-auto ">
-            {/* <AdmissionDocumentForm /> */}
+            <FacilityForm />
           </div>
         </SheetContent>
       </Sheet>

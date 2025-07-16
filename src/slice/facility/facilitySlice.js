@@ -9,7 +9,9 @@ export const facilitySlice = createSlice({
   name: "facility",
   initialState: {
     facilityLoader: false,
+    facilityFormLoader: false,
     facilityError: "",
+    facilityFormError: "",
     selectedFacilityType: "",
     facilities: [],
     facilityTypes: [],
