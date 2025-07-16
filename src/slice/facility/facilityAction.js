@@ -1,9 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { setSelectedFacilityType } from "@MERedux/facility/facilitySlice";
-import { facilityTypesAPIRoute } from "@MEUtils/apiRoutes";
-import { facilityTypesAPIResponse } from "@MEUtils/apiResponse";
 import { setUpAxiosInstanceConfig } from "@MEUtils/utilityFunctions";
+import { setSelectedFacilityType } from "@MERedux/facility/facilitySlice";
+import { facilityTypesAPIRoute, facilityAPIRoute } from "@MEUtils/apiRoutes";
+
+import {
+  facilityTypesAPIResponse,
+  facilitiesAPIResponse,
+} from "@MEUtils/apiResponse";
 
 import _ from "lodash";
 
@@ -24,12 +28,20 @@ const getFacilityTypes = createAsyncThunk(
       );
 
       if (response && response.data && response.data.length > 0) {
+        dispatch(getFacilities(response.data));
+        
         let facilityTypes = facilityTypesAPIResponse(response.data);
 
-        if(!getState().facility.selectedFacilityType && facilityTypes && facilityTypes.length > 0) {
+        if (
+          getState() &&
+          getState().facility &&
+          !getState().facility.selectedFacilityType &&
+          facilityTypes &&
+          facilityTypes.length > 0
+        ) {
           dispatch(setSelectedFacilityType(facilityTypes[0].value));
         }
-        
+
         return {
           facilityTypes: facilityTypes,
         };
@@ -46,4 +58,49 @@ const getFacilityTypes = createAsyncThunk(
   }
 );
 
-export { getFacilityTypes };
+const getFacilities = createAsyncThunk(
+  "fee/getFacilities",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      let school;
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      if (
+        getState() &&
+        getState().authentication &&
+        getState().authentication.user &&
+        getState().authentication.user.school &&
+        getState().authentication.user.school.id
+      ) {
+        school = getState().authentication.user.school.id;
+      }
+
+      const response = await axiosInstance.get(
+        `${facilityAPIRoute}${school}`,
+        axiosInstanceConfig
+      );
+
+      if (response && response.data && response.data.length > 0) {
+        return {
+          facilities: facilitiesAPIResponse(payload, response.data),
+          error: "",
+        };
+      } else {
+        return {
+          facilities: facilitiesAPIResponse(payload, []),
+          error: response && response.message ? response.message : "",
+        };
+      }
+    } catch (error) {
+      return rejectWithValue({
+        facilities: facilitiesAPIResponse(payload, []),
+        error: error && error.message ? error.message : "",
+      });
+    }
+  }
+);
+
+export { getFacilityTypes, getFacilities };

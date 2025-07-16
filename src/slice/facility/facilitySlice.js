@@ -1,10 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getFacilityTypes } from "@/slice/facility/facilityAction";
+
+import {
+  getFacilityTypes,
+  getFacilities,
+} from "@/slice/facility/facilityAction";
 
 export const facilitySlice = createSlice({
   name: "facility",
   initialState: {
+    facilityLoader: false,
+    facilityError: "",
     selectedFacilityType: "",
+    facilities: [],
     facilityTypes: [],
   },
   reducers: {
@@ -22,6 +29,21 @@ export const facilitySlice = createSlice({
       })
       .addCase(getFacilityTypes.rejected, (state, action) => {
         state.facilityTypes = [];
+      })
+      .addCase(getFacilities.pending, (state) => {
+        state.facilityLoader = true;
+        state.facilityError = "";
+        state.facilities = [];
+      })
+      .addCase(getFacilities.fulfilled, (state, action) => {
+        state.facilityLoader = false;
+        state.facilityError = action.payload.error;
+        state.facilities = action.payload.facilities;
+      })
+      .addCase(getFacilities.rejected, (state, action) => {
+        state.facilityLoader = false;
+        state.facilityError = action.payload.error;
+        state.facilities = action.payload.facilities;
       });
   },
 });
