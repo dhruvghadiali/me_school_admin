@@ -4,9 +4,8 @@ import _ from "lodash";
 const setFacilities = (facilities) => {
   return _.map(facilities, (facility) => {
     return {
-      id: facility && facility.id ? facility.id : "",
-      facilityName:
-        facility && facility.facility_name ? facility.facility_name : "",
+      value: facility && facility.id ? facility.id : "",
+      label: facility && facility.facility_name ? facility.facility_name : "",
     };
   });
 };
@@ -20,7 +19,9 @@ const setSchoolFacilities = (facilities, schoolFacilities) => {
     return {
       id: facility && facility.id ? facility.id : "",
       facilityName:
-        facility && facility.facility_name ? _.toUpper(facility.facility_name) : "",
+        facility && facility.facility_name
+          ? _.toUpper(facility.facility_name)
+          : "",
       isAvailable: schoolFacility ? "Yes" : "No",
       createdAt:
         schoolFacility && schoolFacility.created_at

@@ -9,6 +9,9 @@ const facilityCreatedAtColumnTitle = "created at";
 const facilityUpdatedAtColumnTitle = "updated at";
 const facilityUpdatedByColumnTitle = "updated by";
 const facilityIsAvailableColumnTitle = "is available";
+const addFacilityButtonText = "add facility";
+const addFacilitySheetTitle = "add facility";
+const addFacilitySheetDescription = "Add a new facility for school facilities. Please provide all required details before submitting.";
 
 export {
   facilityHeader,
@@ -22,4 +25,7 @@ export {
   facilityUpdatedAtColumnTitle,
   facilityUpdatedByColumnTitle,
   facilityIsAvailableColumnTitle,
+  addFacilityButtonText,
+  addFacilitySheetTitle,
+  addFacilitySheetDescription,
 };

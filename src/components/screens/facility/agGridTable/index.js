@@ -23,6 +23,7 @@ import _ from "lodash";
 import moment from "moment/moment";
 
 import MESelect from "@MECommonComponents/select/meSelect";
+import FacilitySheet from "@MEScreenComponents/facility/facilitySheet";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 
 const FacilityScreenAGGridTable = () => {
@@ -166,7 +167,9 @@ const FacilityScreenAGGridTable = () => {
           </div>
         </div>
         <div className="justify-self-end self-center lg:mt-0 lg:mb-0 mb-5 mt-6 ">
-          <div className="w-30 pl-2">{/* <AdmissionDocumentSheet /> */}</div>
+          <div className="w-30 pl-2">
+            <FacilitySheet />
+          </div>
         </div>
       </div>
 
