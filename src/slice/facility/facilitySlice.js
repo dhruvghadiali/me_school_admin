@@ -22,16 +22,17 @@ export const facilitySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getFacilityTypes.pending, (state) => {
+        state.facilityLoader = true;
         state.facilityTypes = [];
       })
       .addCase(getFacilityTypes.fulfilled, (state, action) => {
         state.facilityTypes = action.payload.facilityTypes;
       })
       .addCase(getFacilityTypes.rejected, (state, action) => {
+        state.facilityLoader = false;
         state.facilityTypes = [];
       })
       .addCase(getFacilities.pending, (state) => {
-        state.facilityLoader = true;
         state.facilityError = "";
         state.facilities = [];
       })
