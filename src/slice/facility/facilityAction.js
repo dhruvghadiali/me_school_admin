@@ -29,7 +29,7 @@ const getFacilityTypes = createAsyncThunk(
 
       if (response && response.data && response.data.length > 0) {
         dispatch(getFacilities(response.data));
-        
+
         let facilityTypes = facilityTypesAPIResponse(response.data);
 
         if (
@@ -79,7 +79,7 @@ const getFacilities = createAsyncThunk(
       }
 
       const response = await axiosInstance.get(
-        `${facilityAPIRoute}${school}`,
+        `${facilityAPIRoute}/${school}`,
         axiosInstanceConfig
       );
 
@@ -103,4 +103,70 @@ const getFacilities = createAsyncThunk(
   }
 );
 
-export { getFacilityTypes, getFacilities };
+const addFacility = createAsyncThunk(
+  "fee/addFacility",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      if (
+        getState() &&
+        getState().authentication &&
+        getState().authentication.user &&
+        getState().authentication.user.school &&
+        getState().authentication.user.school.id
+      ) {
+        payload = {
+          ...payload,
+          school: getState().authentication.user.school.id,
+        };
+      }
+
+      const response = await axiosInstance.post(
+        facilityAPIRoute,
+        payload,
+        axiosInstanceConfig,
+      );
+
+      if (response && response.data && response.data.length > 0) {
+        dispatch(getFacilityTypes());
+        return {};
+      } else {
+        return {};
+      }
+    } catch (error) {
+      return rejectWithValue({});
+    }
+  }
+);
+
+const deleteFacility = createAsyncThunk(
+  "fee/deleteFacility",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const axiosInstanceConfig = setUpAxiosInstanceConfig(
+        getState(),
+        dispatch
+      );
+
+      const response = await axiosInstance.delete(
+        `${facilityAPIRoute}/${payload}`,
+        axiosInstanceConfig,
+      );
+
+      if (response && response.data) {
+        dispatch(getFacilityTypes());
+        return {};
+      } else {
+        return {};
+      }
+    } catch (error) {
+      return rejectWithValue({});
+    }
+  }
+);
+
+export { getFacilityTypes, getFacilities, addFacility, deleteFacility };

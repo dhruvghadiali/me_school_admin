@@ -11,18 +11,23 @@ const setFacilities = (facilities) => {
 };
 
 const setSchoolFacilities = (facilities, schoolFacilities) => {
-  return _.map(facilities, (facility) => {
-    const schoolFacility = _.find(schoolFacilities, {
-      facility: facility && facility.id ? facility.id : "",
+  return _.orderBy(_.map(facilities, (facility) => {
+    const schoolFacility = _.find(schoolFacilities, (schoolFacility) => {
+      return (
+        schoolFacilities &&
+        schoolFacility.facility &&
+        schoolFacility.facility.id === facility.id
+      );
     });
 
     return {
-      id: facility && facility.id ? facility.id : "",
+      facilityId: facility && facility.id ? facility.id : "",
       facilityName:
         facility && facility.facility_name
           ? _.toUpper(facility.facility_name)
           : "",
-      isAvailable: schoolFacility ? "Yes" : "No",
+      id: schoolFacility && schoolFacility.id ? schoolFacility.id : "",
+      isAvailable: schoolFacility && schoolFacility.is_active ? "Yes" : "No",
       createdAt:
         schoolFacility && schoolFacility.created_at
           ? moment(schoolFacility.created_at).format("DD MMM YYYY hh:mm A")
@@ -40,7 +45,7 @@ const setSchoolFacilities = (facilities, schoolFacilities) => {
           ? _.upperFirst(schoolFacility.updated_by)
           : "",
     };
-  });
+  }),['isAvailable', 'facilityName'], ['desc', 'asc']);
 };
 
 const facilityTypesAPIResponse = (facilityTypes) => {

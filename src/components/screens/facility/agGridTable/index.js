@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { Trash2, PlusIcon } from "lucide-react";
 import { AgGridReact } from "ag-grid-react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
 import { setSelectedFacilityType } from "@MERedux/facility/facilitySlice";
+import { addFacility, deleteFacility } from "@MERedux/facility/facilityAction";
 
 import {
   facilityTypeSelectionLabel,
@@ -23,7 +24,7 @@ import _ from "lodash";
 import moment from "moment/moment";
 
 import MESelect from "@MECommonComponents/select/meSelect";
-import FacilitySheet from "@MEScreenComponents/facility/facilitySheet";
+import MEAddAlertDialog from "@MECommonComponents/alertDialog/addAlertDialog";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 
 const FacilityScreenAGGridTable = () => {
@@ -36,12 +37,17 @@ const FacilityScreenAGGridTable = () => {
 
   const onDeleteConfirm = (data) => {
     if (data && data.data && data.data.id) {
-      // dispatch(
-      //   deleteAdmissionDocument({
-      //     id: data.data.id,
-      //     academicClass: selectedAcademicClass,
-      //   })
-      // );
+      dispatch(deleteFacility(data.data.id));
+    }
+  };
+
+  const onAddConfirm = (data) => {
+    if (data && data.data && data.data.facilityId) {
+      dispatch(
+        addFacility({
+          facility: data.data.facilityId,
+        })
+      );
     }
   };
 
@@ -62,7 +68,11 @@ const FacilityScreenAGGridTable = () => {
             </Button>
           </MEDeleteAlertDialog>
         ) : (
-          <div />
+          <MEAddAlertDialog onConfirm={() => onAddConfirm(data)}>
+            <Button size="icon" variant="link" className="text-dark">
+              <PlusIcon />
+            </Button>
+          </MEAddAlertDialog>
         );
       },
       width: 150,
@@ -164,11 +174,6 @@ const FacilityScreenAGGridTable = () => {
                 }
               />
             </div>
-          </div>
-        </div>
-        <div className="justify-self-end self-center lg:mt-0 lg:mb-0 mb-5 mt-6 ">
-          <div className="w-30 pl-2">
-            <FacilitySheet />
           </div>
         </div>
       </div>
