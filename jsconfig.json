@@ -5,36 +5,54 @@
             "@/*": [
                 "./src/*"
             ],
-            "@MEScreenComponents/*": [
-                "./src/components/screens/*"
+            "@MELib/*": [
+                "./src/lib/*"
             ],
-            "@MECommonComponents/*": [
-                "./src/components/common/*"
+            "@MEMock/*": [
+                "./src/mock/*"
             ],
-            "@MEShadcnComponents/*": [
-                "./src/components/ui/*"
-            ],
-            "@MELocalization/*": [
-                "./src/localization/*"
-            ],
-            "@MEScreens/*": [
-                "./src/screens/*"
+            "@MEPages/*": [
+                "./src/pages/*"
             ],
             "@MERedux/*": [
                 "./src/slice/*"
             ],
-            "@MEStyles/*": [
-                "./src/styles/*"
-            ],
             "@MEUtils/*": [
                 "./src/utils/*"
             ],
-            "@MELib/*": [
-                "./src/lib/*"
-            ],
             "@MEHooks/*": [
                 "./src/hooks/*"
-            ]
+            ],
+            "@MEStyles/*": [
+                "./src/styles/*"
+            ],
+            "@MEAssets/*": [
+                "./src/assets/*"
+            ],
+            "@MEScreens/*": [
+                "./src/screens/*"
+            ],
+            "@MEHelpers/*": [
+                "./src/helpers/*"
+            ],
+            "@MEContexts/*": [
+                "./src/contexts/*"
+            ],
+            "@MELocalization/*": [
+                "./src/localization/*"
+            ],
+            "@MEShadcnComponents/*": [
+                "./src/components/ui/*"
+            ],
+            "@MECommonComponents/*": [
+                "./src/components/common/*"
+            ],
+            "@MEScreenComponents/*": [
+                "./src/components/screens/*"
+            ],
+            "@MEPageRoutes": [
+                "./src/utils/pageRoutes/index.js"
+            ],
         }
     },
     "include": ["./src/**/*"]
