@@ -5,6 +5,8 @@ export const routeName = {
     admission: "/admission",
     academicClass: "/academic-class",
     fees: "/fees",
+    facilities: "/facilities",
+    admissionDocuments: '/admission-documents',
     schoolProfile: "/school-profile",
     settings: "/settings"
 }

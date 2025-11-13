@@ -15,7 +15,7 @@ const FeeScreen = () => {
   useEffect(() => {
     dispatch(getFeeTypes());
     dispatch(getAcademicClasses());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

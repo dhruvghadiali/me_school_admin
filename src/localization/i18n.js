@@ -4,10 +4,6 @@ import { profile } from "@MELocalization/profile/profileTranslationEn";
 import { signInForm } from "@MELocalization/signIn/signInTranslationEn";
 import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
 import { dashboardSummary } from "@MELocalization/dashboard/dashboardTranslationEn";
-import {
-  sidebarMenuLabel,
-  sidebar,
-} from "@MELocalization/sidebar/sidebarTranslationEn";
 
 import * as localizationEn from "@MELocalization/en";
 
@@ -15,10 +11,8 @@ const resources = {
   en: {
     translation: {
       ...profile,
-      ...sidebar,
       ...signInForm,
       ...admissionHub,
-      ...sidebarMenuLabel,
       ...dashboardSummary,
       ...localizationEn,
     },

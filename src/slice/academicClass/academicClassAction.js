@@ -38,7 +38,7 @@ const setUpAcademicClassStateValue = (authentication, academicClass) => {
         _.findIndex(
           school.educationBoards,
           (educationBoard) => educationBoard.id === selectedEducationBoard
-        ) == -1
+        ) === -1
           ? school.educationBoards[0].id
           : selectedEducationBoard;
     } else {

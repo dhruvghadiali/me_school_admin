@@ -1,24 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { setUpAxiosInstanceConfig } from "@MEUtils/utilityFunctions";
-
 import {
-  feesAPIResponse,
-  feeTypesAPIResponse,
+  admissionDocumentsAPIRoute,
+  schoolAcademicClassesAPIRoute,
+  schoolAdmissionDocumentsAPIRoute,
+} from "@MEUtils/apiRoutes";
+import {
+  admissionDocumentAPIResponse,
+  admissionDocumentsAPIResponse,
   eductionBoardsWithAcademicClassesAPIResponse,
 } from "@MEUtils/apiResponse";
-import {
-  feesAPIRoute,
-  feeTypesAPIRoute,
-  schoolAcademicClassesAPIRoute,
-} from "@MEUtils/apiRoutes";
 
 import _ from "lodash";
 
 import axiosInstance from "@MEUtils/axiosInstance";
 
 const getAcademicClasses = createAsyncThunk(
-  "fee/getAcademicClasses",
+  "admissionDocument/getAcademicClasses",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       let school = "";
@@ -62,8 +61,8 @@ const getAcademicClasses = createAsyncThunk(
   }
 );
 
-const getFeeTypes = createAsyncThunk(
-  "fee/getFeeTypes",
+const getAdmissionDocuments = createAsyncThunk(
+  "admissionDocument/getAdmissionDocuments",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       const axiosInstanceConfig = setUpAxiosInstanceConfig(
@@ -72,29 +71,34 @@ const getFeeTypes = createAsyncThunk(
       );
 
       const response = await axiosInstance.get(
-        `${feeTypesAPIRoute}`,
+        admissionDocumentsAPIRoute,
         axiosInstanceConfig
       );
 
       if (response && response.data && response.data.length > 0) {
         return {
-          feeTypes: _.map(response.data, (feeType) =>
-            feeTypesAPIResponse(feeType)
-          ),
+          error: "",
+          admissionDocuments: _.map(response.data, (data) => {
+            return admissionDocumentAPIResponse(data);
+          }),
         };
       } else {
         return {
-          feeTypes: [],
+          error: response && response.message ? response.message : "",
+          admissionDocuments: [],
         };
       }
     } catch (error) {
-      return rejectWithValue({});
+      return rejectWithValue({
+        error: error && error.message ? error.message : "",
+        admissionDocuments: [],
+      });
     }
   }
 );
 
-const getFees = createAsyncThunk(
-  "fee/getFees",
+const getSchoolAdmissionDocuments = createAsyncThunk(
+  "admissionDocument/getSchoolAdmissionDocuments",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       const axiosInstanceConfig = setUpAxiosInstanceConfig(
@@ -103,21 +107,20 @@ const getFees = createAsyncThunk(
       );
 
       const response = await axiosInstance.get(
-        `${feesAPIRoute}/${payload.academicClass}`,
+        `${schoolAdmissionDocumentsAPIRoute}/${payload.academicClass}`,
         axiosInstanceConfig
       );
 
       if (response && response.data && response.data.length > 0) {
         return {
-          fees: _.sortBy(
-            _.map(response.data, (fee) => feesAPIResponse(fee)),
-            ["feeType"]
+          schoolAdmissionDocuments: admissionDocumentsAPIResponse(
+            response.data
           ),
           error: "",
         };
       } else {
         return {
-          fees: [],
+          schoolAdmissionDocuments: [],
           error: response && response.message ? response.message : "",
         };
       }
@@ -129,8 +132,8 @@ const getFees = createAsyncThunk(
   }
 );
 
-const addFee = createAsyncThunk(
-  "fee/addFee",
+const addAdmissionDocument = createAsyncThunk(
+  "admissionDocument/addAdmissionDocument",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       const axiosInstanceConfig = setUpAxiosInstanceConfig(
@@ -139,13 +142,17 @@ const addFee = createAsyncThunk(
       );
 
       const response = await axiosInstance.post(
-        `${feesAPIRoute}`,
+        `${schoolAdmissionDocumentsAPIRoute}`,
         payload,
         axiosInstanceConfig
       );
 
       if (response && response.data && response.data.length > 0) {
-        dispatch(getFees({ academicClass: payload.school_academic_class }));
+        dispatch(
+          getSchoolAdmissionDocuments({
+            academicClass: payload.school_academic_class,
+          })
+        );
         return {
           error: "",
         };
@@ -155,6 +162,7 @@ const addFee = createAsyncThunk(
         };
       }
     } catch (error) {
+      console.error("Error in addAdmissionDocument:", error);
       return rejectWithValue({
         error: error && error.message ? error.message : "",
       });
@@ -162,8 +170,8 @@ const addFee = createAsyncThunk(
   }
 );
 
-const updateFee = createAsyncThunk(
-  "fee/updateFee",
+const updateAdmissionDocument = createAsyncThunk(
+  "admissionDocument/updateAdmissionDocument",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       const axiosInstanceConfig = setUpAxiosInstanceConfig(
@@ -172,14 +180,16 @@ const updateFee = createAsyncThunk(
       );
 
       const response = await axiosInstance.put(
-        `${feesAPIRoute}/${payload.id}`,
+        `${schoolAdmissionDocumentsAPIRoute}/${payload.id}`,
         payload.data,
         axiosInstanceConfig
       );
 
       if (response && response.data && response.data.length > 0) {
         dispatch(
-          getFees({ academicClass: payload.data.school_academic_class })
+          getSchoolAdmissionDocuments({
+            academicClass: payload.data.school_academic_class,
+          })
         );
         return {
           error: "",
@@ -197,8 +207,8 @@ const updateFee = createAsyncThunk(
   }
 );
 
-const deleteFee = createAsyncThunk(
-  "academicClass/deleteFee",
+const deleteAdmissionDocument = createAsyncThunk(
+  "admissionDocument/deleteAdmissionDocument",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       const axiosInstanceConfig = setUpAxiosInstanceConfig(
@@ -207,11 +217,13 @@ const deleteFee = createAsyncThunk(
       );
 
       await axiosInstance.delete(
-        `${feesAPIRoute}/${payload.id}`,
+        `${schoolAdmissionDocumentsAPIRoute}/${payload.id}`,
         axiosInstanceConfig
       );
 
-      dispatch(getFees({ academicClass: payload.academicClass }));
+      dispatch(
+        getSchoolAdmissionDocuments({ academicClass: payload.academicClass })
+      );
       return {
         error: "",
       };
@@ -224,10 +236,10 @@ const deleteFee = createAsyncThunk(
 );
 
 export {
-  addFee,
-  getFees,
-  getFeeTypes,
   getAcademicClasses,
-  updateFee,
-  deleteFee,
+  addAdmissionDocument,
+  getAdmissionDocuments,
+  deleteAdmissionDocument,
+  updateAdmissionDocument,
+  getSchoolAdmissionDocuments,
 };

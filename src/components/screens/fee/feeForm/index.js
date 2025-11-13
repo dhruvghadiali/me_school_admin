@@ -6,14 +6,42 @@ import { useSelector, useDispatch } from "react-redux";
 import { variants } from "@MEUtils/enums";
 import { addFee, updateFee } from "@MERedux/fee/feeAction";
 import { addFeeAPIPayload, updateFeeAPIPayload } from "@MEUtils/apiPayload";
-import { academicClassSelectionRequired } from "@MEUtils/validationMessage";
+
 import {
+  yearlyFeeLabel,
+  monthlyFeeLabel,
+  quarterlyFeeLabel,
+  halfYearlyFeeLabel,
   feeTypeSelectionLabel,
   feeTypeSelectionPlaceholder,
   academicClassSelectionLabel,
   academicClassSubmitButtonText,
   academicClassSelectionPlaceholder,
 } from "@MELocalization/en";
+import {
+  academicClassSelectionRequired,
+  feeTypeSelectionRequired,
+  monthlyFeeRequired,
+  monthlyFeeMinValue,
+  monthlyFeeMaxValue,
+  monthlyFeeIntegerNumber,
+  monthlyFeePositiveNumber,
+  quarterlyFeeRequired,
+  quarterlyFeeMinValue,
+  quarterlyFeeMaxValue,
+  quarterlyFeeIntegerNumber,
+  quarterlyFeePositiveNumber,
+  halfYearlyFeeRequired,
+  halfYearlyFeeMinValue,
+  halfYearlyFeeMaxValue,
+  halfYearlyFeeIntegerNumber,
+  halfYearlyFeePositiveNumber,
+  yearlyFeeRequired,
+  yearlyFeeMinValue,
+  yearlyFeeMaxValue,
+  yearlyFeeIntegerNumber,
+  yearlyFeePositiveNumber,
+} from "@MEUtils/validationMessage";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -179,7 +207,11 @@ const FeeForm = () => {
         <MEInput
           id="monthlyFee"
           type={"text"}
-          label={"Monthly Fee"}
+          label={
+            i18n.exists("monthlyFeeLabel")
+              ? _.upperFirst(t("monthlyFeeLabel"))
+              : _.upperFirst(monthlyFeeLabel)
+          }
           message={formik.errors.monthlyFee}
           value={formik.values.monthlyFee}
           labelvariant={variants.DARK}
@@ -191,7 +223,11 @@ const FeeForm = () => {
         <MEInput
           id="quarterlyFee"
           type={"text"}
-          label={"Quarterly Fee"}
+          label={
+            i18n.exists("quarterlyFeeLabel")
+              ? _.upperFirst(t("quarterlyFeeLabel"))
+              : _.upperFirst(quarterlyFeeLabel)
+          }
           message={formik.errors.quarterlyFee}
           value={formik.values.quarterlyFee}
           labelvariant={variants.DARK}
@@ -203,7 +239,11 @@ const FeeForm = () => {
         <MEInput
           id="halfYearlyFee"
           type={"text"}
-          label={"Half Yearly Fee"}
+          label={
+            i18n.exists("halfYearlyFeeLabel")
+              ? _.upperFirst(t("halfYearlyFeeLabel"))
+              : _.upperFirst(halfYearlyFeeLabel)
+          }
           message={formik.errors.halfYearlyFee}
           value={formik.values.halfYearlyFee}
           labelvariant={variants.DARK}
@@ -215,7 +255,11 @@ const FeeForm = () => {
         <MEInput
           id="yearlyFee"
           type={"text"}
-          label={"Yearly Fee"}
+          label={
+            i18n.exists("yearlyFeeLabel")
+              ? _.upperFirst(t("yearlyFeeLabel"))
+              : _.upperFirst(yearlyFeeLabel)
+          }
           message={formik.errors.yearlyFee}
           value={formik.values.yearlyFee}
           labelvariant={variants.DARK}
@@ -241,31 +285,31 @@ const FeeForm = () => {
 
 const FeeSchema = Yup.object().shape({
   academicClass: Yup.string().required(academicClassSelectionRequired),
-  feeType: Yup.string().required("Fee type is required"),
+  feeType: Yup.string().required(feeTypeSelectionRequired),
   monthlyFee: Yup.number()
-    .required("Monthly fee is required")
-    .positive("Monthly fee must be a positive number")
-    .integer("Monthly fee must be an integer")
-    .min(1, "Monthly fee must be at least 1")
-    .max(100000, "Monthly fee must be at most 100000"),
+    .required(monthlyFeeRequired)
+    .positive(monthlyFeePositiveNumber)
+    .integer(monthlyFeeIntegerNumber)
+    .min(1, monthlyFeeMinValue)
+    .max(100000, monthlyFeeMaxValue),
   quarterlyFee: Yup.number()
-    .required("Quarterly fee is required")
-    .positive("Quarterly fee must be a positive number")
-    .integer("Quarterly fee must be an integer")
-    .min(1, "Quarterly fee must be at least 1")
-    .max(100000, "Quarterly fee must be at most 100000"),
+    .required(quarterlyFeeRequired)
+    .positive(quarterlyFeePositiveNumber)
+    .integer(quarterlyFeeIntegerNumber)
+    .min(1, quarterlyFeeMinValue)
+    .max(100000, quarterlyFeeMaxValue),
   halfYearlyFee: Yup.number()
-    .required("Half yearly fee is required")
-    .positive("Half yearly fee must be a positive number")
-    .integer("Half yearly fee must be an integer")
-    .min(1, "Half yearly fee must be at least 1")
-    .max(100000, "Half yearly fee must be at most 100000"),
+    .required(halfYearlyFeeRequired)
+    .positive(halfYearlyFeePositiveNumber)
+    .integer(halfYearlyFeeIntegerNumber)
+    .min(1, halfYearlyFeeMinValue)
+    .max(100000, halfYearlyFeeMaxValue),
   yearlyFee: Yup.number()
-    .required("Yearly fee is required")
-    .positive("Yearly fee must be a positive number")
-    .integer("Yearly fee must be an integer")
-    .min(1, "Yearly fee must be at least 1")
-    .max(100000, "Yearly fee must be at most 100000"),
+    .required(yearlyFeeRequired)
+    .positive(yearlyFeePositiveNumber)
+    .integer(yearlyFeeIntegerNumber)
+    .min(1, yearlyFeeMinValue)
+    .max(100000, yearlyFeeMaxValue),
 });
 
 FeeForm.propTypes = {};

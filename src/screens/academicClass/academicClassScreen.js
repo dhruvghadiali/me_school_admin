@@ -18,7 +18,7 @@ const AcademicClassScreen = () => {
   useEffect(() => {
     dispatch(getAcademicClasses());
     dispatch(getDefaultAcademicClasses());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

@@ -1,0 +1,142 @@
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  getAcademicClasses,
+  addAdmissionDocument,
+  getAdmissionDocuments,
+  deleteAdmissionDocument,
+  updateAdmissionDocument,
+  getSchoolAdmissionDocuments,
+} from "@/slice/admissionDocument/admissionDocumentAction";
+
+export const admissionDocumentSlice = createSlice({
+  name: "admissionDocument",
+  initialState: {
+    admissionDocumentLoader: false,
+    admissionDocumentFormLoader: false,
+    isSchoolAdmissionFormSheetOpen: false,
+    selectedEductionBoard: "",
+    selectedAcademicClass: "",
+    admissionDocumentError: "",
+    admissionDocumentFormError: "",
+    admissionDocuments: [],
+    schoolAdmissionDocuments: [],
+    eductionBoardsWithAcademicClasses: [],
+    schoolAdmissionFormData: {},
+  },
+  reducers: {
+    manageSchoolAdmissionFormSheetStatus: (state, action) => {
+      state.isSchoolAdmissionFormSheetOpen = action.payload;
+      state.admissionDocumentFormError = "";
+      state.schoolAdmissionFormLoader = false;
+    },
+    setEductionBoard: (state, action) => {
+      state.schoolAdmissionDocuments = [];
+      state.selectedEductionBoard = action.payload;
+      state.selectedAcademicClass = "";
+    },
+    setSelectedAcademicClass: (state, action) => {
+      state.selectedAcademicClass = action.payload;
+    },
+    setSchoolAdmissionFormData: (state, action) => {
+      state.schoolAdmissionFormData = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAcademicClasses.pending, (state) => {
+        state.admissionDocumentLoader = true;
+        state.admissionDocumentError = "";
+        state.eductionBoardsWithAcademicClasses = [];
+      })
+      .addCase(getAcademicClasses.fulfilled, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
+        state.eductionBoardsWithAcademicClasses =
+          action.payload.eductionBoardsWithAcademicClasses;
+      })
+      .addCase(getAcademicClasses.rejected, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
+        state.eductionBoardsWithAcademicClasses = [];
+      })
+      .addCase(getAdmissionDocuments.pending, (state) => {
+        state.admissionDocumentLoader = true;
+        state.admissionDocumentError = "";
+        state.admissionDocuments = [];
+      })
+      .addCase(getAdmissionDocuments.fulfilled, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
+        state.admissionDocuments = action.payload.admissionDocuments;
+      })
+      .addCase(getAdmissionDocuments.rejected, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
+        state.admissionDocuments = [];
+      })
+      .addCase(getSchoolAdmissionDocuments.pending, (state) => {
+        state.admissionDocumentLoader = true;
+        state.admissionDocumentFormLoader = false;
+        state.isSchoolAdmissionFormSheetOpen = false;
+        state.admissionDocumentError = "";
+        state.admissionDocumentFormError = "";
+        state.schoolAdmissionDocuments = [];
+      })
+      .addCase(getSchoolAdmissionDocuments.fulfilled, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.schoolAdmissionDocuments =
+          action.payload.schoolAdmissionDocuments;
+        state.admissionDocumentError = action.payload.error;
+      })
+      .addCase(getSchoolAdmissionDocuments.rejected, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
+        state.schoolAdmissionDocuments = [];
+      })
+      .addCase(addAdmissionDocument.pending, (state) => {
+        state.admissionDocumentFormLoader = true;
+        state.admissionDocumentFormError = "";
+      })
+      .addCase(addAdmissionDocument.fulfilled, (state, action) => {
+        state.admissionDocumentFormLoader = false;
+        state.admissionDocumentFormError = action.payload.error;
+      })
+      .addCase(addAdmissionDocument.rejected, (state, action) => {
+        state.admissionDocumentFormLoader = false;
+        state.admissionDocumentFormError = action.payload.error;
+      })
+      .addCase(deleteAdmissionDocument.pending, (state) => {
+        state.admissionDocumentLoader = true;
+        state.admissionDocumentError = "";
+      })
+      .addCase(deleteAdmissionDocument.fulfilled, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
+      })
+      .addCase(deleteAdmissionDocument.rejected, (state, action) => {
+        state.admissionDocumentLoader = false;
+        state.admissionDocumentError = action.payload.error;
+      })
+      .addCase(updateAdmissionDocument.pending, (state) => {
+        state.admissionDocumentFormLoader = true;
+        state.admissionDocumentFormError = "";
+      })
+      .addCase(updateAdmissionDocument.fulfilled, (state, action) => {
+        state.admissionDocumentFormLoader = false;
+        state.admissionDocumentFormError = action.payload.error;
+      })
+      .addCase(updateAdmissionDocument.rejected, (state, action) => {
+        state.admissionDocumentFormLoader = false;
+        state.admissionDocumentFormError = action.payload.error;
+      });
+  },
+});
+
+export const {
+  setEductionBoard,
+  setSelectedAcademicClass,
+  setSchoolAdmissionFormData,
+  manageSchoolAdmissionFormSheetStatus,
+} = admissionDocumentSlice.actions;
+
+export default admissionDocumentSlice.reducer;

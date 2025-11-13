@@ -5,80 +5,85 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
-import { deleteFee, getFees } from "@MERedux/fee/feeAction";
+import {
+  getSchoolAdmissionDocuments,
+  deleteAdmissionDocument,
+} from "@MERedux/admissionDocument/admissionDocumentAction";
 
 import {
-  setFeeFormData,
   setEductionBoard,
   setSelectedAcademicClass,
-  manageFeeFormSheetStatus,
-} from "@MERedux/fee/feeSlice";
+  setSchoolAdmissionFormData,
+  manageSchoolAdmissionFormSheetStatus,
+} from "@MERedux/admissionDocument/admissionDocumentSlice";
 import {
   eductionBoardSelectionLabel,
   academicClassSelectionLabel,
   eductionBoardSelectionPlaceholder,
   academicClassSelectionPlaceholder,
-  academicClassCreatedByColumnTitle,
-  academicClassCreatedAtColumnTitle,
-  academicClassUpdatedAtColumnTitle,
-  academicClassUpdatedByColumnTitle,
+  admissionDocumentNotesColumnTitle,
+  admissionDocumentActionsColumnTitle,
+  admissionDocumentCreatedByColumnTitle,
+  admissionDocumentCreatedAtColumnTitle,
+  admissionDocumentUpdatedByColumnTitle,
+  admissionDocumentUpdatedAtColumnTitle,
+  admissionDocumentIsRequiredColumnTitle,
+  admissionDocumentDocumentNameColumnTitle,
 } from "@MELocalization/en";
 
 import _ from "lodash";
 import moment from "moment/moment";
 
 import MESelect from "@MECommonComponents/select/meSelect";
-import FeeSheet from "@MEScreenComponents/fee/feeSheet/feeSheet";
-import FeeLogSheet from "@MEScreenComponents/fee/feeLogSheet/feeLogSheet";
+import AdmissionDocumentSheet from "@MEScreenComponents/admissionDocument/admissionDocumentSheet";
 import MEEditAlertDialog from "@MECommonComponents/alertDialog/editAlertDialog";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 
-const FeeScreenAGGridTable = () => {
+const SchoolAdmissionAGGridTable = () => {
   const {
-    fees,
-    selectedEductionBoard,
     selectedAcademicClass,
+    selectedEductionBoard,
+    schoolAdmissionDocuments,
     eductionBoardsWithAcademicClasses,
-  } = useSelector((state) => state.fee);
+  } = useSelector((state) => state.admissionDocument);
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch();
 
   const onDeleteConfirm = (data) => {
     if (data && data.data && data.data.id) {
-      dispatch(deleteFee({id: data.data.id, academicClass: selectedAcademicClass}));
+      dispatch(
+        deleteAdmissionDocument({
+          id: data.data.id,
+          academicClass: selectedAcademicClass,
+        })
+      );
     }
   };
 
   const onEditConfirm = (data) => {
     dispatch(
-      setFeeFormData({ ...data.data, academicClass: selectedAcademicClass })
+      setSchoolAdmissionFormData({
+        ...data.data,
+        isRequired: _.toLower(data.data.isRequired) === 'required' ? true : false,
+        academicClass: selectedAcademicClass,
+      })
     );
-    dispatch(manageFeeFormSheetStatus(true));
+    dispatch(manageSchoolAdmissionFormSheetStatus(true));
   };
 
   const onAcademicClassChange = (value) => {
     dispatch(setSelectedAcademicClass(value));
-    dispatch(getFees({ academicClass: value }));
+    dispatch(getSchoolAdmissionDocuments({ academicClass: value }));
   };
-
-  const pinnedBottomRowData = [
-    {
-      monthlyFee: _.reduce(fees, (sum, row) => sum + row.monthlyFee, 0),
-      quarterlyFee: _.reduce(fees, (sum, row) => sum + row.quarterlyFee, 0),
-      halfYearlyFee: _.reduce(fees, (sum, row) => sum + row.halfYearlyFee, 0),
-      yearlyFee: _.reduce(fees, (sum, row) => sum + row.yearlyFee, 0),
-    },
-  ];
 
   const colDefs = [
     {
-      headerName: "Action",
+      headerName: i18n.exists("admissionDocumentActionsColumnTitle")
+        ? _.upperFirst(t("admissionDocumentActionsColumnTitle"))
+        : _.upperFirst(admissionDocumentActionsColumnTitle),
       field: "action",
       cellRenderer: (data) => {
-        if (data.node.rowPinned === "bottom") {
-          return "Total";
-        }
         return (
           <div>
             <MEEditAlertDialog onConfirm={() => onEditConfirm(data)}>
@@ -99,47 +104,41 @@ const FeeScreenAGGridTable = () => {
       sortable: false,
     },
     {
-      headerName: "Fee Type",
-      field: "feeType",
+      headerName: i18n.exists("admissionDocumentDocumentNameColumnTitle")
+        ? _.upperFirst(t("admissionDocumentDocumentNameColumnTitle"))
+        : _.upperFirst(admissionDocumentDocumentNameColumnTitle),
+      field: "admissionDocument",
       filter: true,
       width: 500,
     },
     {
-      headerName: "Monthly Fee",
-      field: "monthlyFee",
+      headerName: i18n.exists("admissionDocumentIsRequiredColumnTitle")
+        ? _.upperFirst(t("admissionDocumentIsRequiredColumnTitle"))
+        : _.upperFirst(admissionDocumentIsRequiredColumnTitle),
+      field: "isRequired",
       filter: true,
       width: 150,
       aggFunc: "sum",
     },
     {
-      headerName: "Quarterly Fee",
-      field: "quarterlyFee",
+      headerName: i18n.exists("admissionDocumentNotesColumnTitle")
+        ? _.upperFirst(t("admissionDocumentNotesColumnTitle"))
+        : _.upperFirst(admissionDocumentNotesColumnTitle),
+      field: "notes",
       filter: true,
-      width: 150,
+      width: 500,
     },
     {
-      headerName: "Half Yearly Fee",
-      field: "halfYearlyFee",
-      filter: true,
-      width: 150,
-    },
-    {
-      headerName: "Yearly Fee",
-      field: "yearlyFee",
-      filter: true,
-      width: 150,
-    },
-    {
-      headerName: i18n.exists("academicClassCreatedByColumnTitle")
-        ? _.upperFirst(t("academicClassCreatedByColumnTitle"))
-        : _.upperFirst(academicClassCreatedByColumnTitle),
+      headerName: i18n.exists("admissionDocumentCreatedByColumnTitle")
+        ? _.upperFirst(t("admissionDocumentCreatedByColumnTitle"))
+        : _.upperFirst(admissionDocumentCreatedByColumnTitle),
       field: "createdBy",
       filter: true,
     },
     {
-      headerName: i18n.exists("academicClassCreatedAtColumnTitle")
-        ? _.upperFirst(t("academicClassCreatedAtColumnTitle"))
-        : _.upperFirst(academicClassCreatedAtColumnTitle),
+      headerName: i18n.exists("admissionDocumentCreatedAtColumnTitle")
+        ? _.upperFirst(t("admissionDocumentCreatedAtColumnTitle"))
+        : _.upperFirst(admissionDocumentCreatedAtColumnTitle),
       field: "createdAt",
       filter: "agDateColumnFilter",
       filterParams: {
@@ -155,16 +154,16 @@ const FeeScreenAGGridTable = () => {
       },
     },
     {
-      headerName: i18n.exists("academicClassUpdatedByColumnTitle")
-        ? _.upperFirst(t("academicClassUpdatedByColumnTitle"))
-        : _.upperFirst(academicClassUpdatedByColumnTitle),
+      headerName: i18n.exists("admissionDocumentUpdatedByColumnTitle")
+        ? _.upperFirst(t("admissionDocumentUpdatedByColumnTitle"))
+        : _.upperFirst(admissionDocumentUpdatedByColumnTitle),
       field: "updatedBy",
       filter: true,
     },
     {
-      headerName: i18n.exists("academicClassUpdatedAtColumnTitle")
-        ? _.upperFirst(t("academicClassUpdatedAtColumnTitle"))
-        : _.upperFirst(academicClassUpdatedAtColumnTitle),
+      headerName: i18n.exists("admissionDocumentUpdatedAtColumnTitle")
+        ? _.upperFirst(t("admissionDocumentUpdatedAtColumnTitle"))
+        : _.upperFirst(admissionDocumentUpdatedAtColumnTitle),
       field: "updatedAt",
       filter: "agDateColumnFilter",
       filterParams: {
@@ -234,35 +233,23 @@ const FeeScreenAGGridTable = () => {
           </div>
         </div>
         <div className="justify-self-end self-center lg:mt-0 lg:mb-0 mb-5 mt-6 ">
-          <div className="grid grid-flow-row grid-cols-2 mt-5 ml-1 mb-2">
-            <div className="w-30 pr-2 mb-2">
-              <FeeLogSheet />
-            </div>
-            <div className="w-30 pl-2">
-              <FeeSheet />
-            </div>
+          <div className="w-30 pl-2">
+            <AdmissionDocumentSheet />
           </div>
         </div>
       </div>
 
       <div className="ag-theme-alpine w-full h-[75vh]">
         <AgGridReact
-          rowData={fees}
+          rowData={schoolAdmissionDocuments}
           columnDefs={colDefs}
           pagination={true}
-          getRowStyle={(params) => {
-            if (params.node.rowPinned === "bottom") {
-              return { fontWeight: "bold", backgroundColor: "#f0f0f0" };
-            }
-            return {};
-          }}
-          pinnedBottomRowData={fees.length > 0 ? pinnedBottomRowData : []}
         />
       </div>
     </>
   );
 };
 
-FeeScreenAGGridTable.propTypes = {};
+SchoolAdmissionAGGridTable.propTypes = {};
 
-export default FeeScreenAGGridTable;
+export default SchoolAdmissionAGGridTable;
