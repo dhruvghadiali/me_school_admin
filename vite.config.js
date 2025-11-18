@@ -19,7 +19,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@MEComponents': path.resolve(__dirname, 'src/components'),
       '@MECommonComponents': path.resolve(__dirname, 'src/components/common'),
       '@MEScreenComponents': path.resolve(__dirname, 'src/components/screens'),
       '@MEScreens': path.resolve(__dirname, 'src/screens'),
