@@ -10,7 +10,8 @@ const variants = {
 };
 
 const variantColor = {
-    PRIMARY: "#3b98ba",
+    PRIMARY: "#040D12",
+    SECONDARY: "#FAF0E6", 
     DANGER: "#ab4459",
     WARNING: "#d17615",
     SUCCESS: "#60b159",

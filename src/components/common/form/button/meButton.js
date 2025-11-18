@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 const MEButton = ({ buttonVariant, ...props }) => {
   return (
     <Button
-      className={`${buttonClassNameByVariant(buttonVariant)}`}
+      className={`${buttonClassNameByVariant(buttonVariant)} cursor-pointer hover:cursor-pointer`}
       {...props}
     />
   );

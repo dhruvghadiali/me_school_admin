@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 // import { useNavigate } from "react-router";
 // import { CircleAlertIcon } from "lucide-react";
@@ -31,6 +31,7 @@ const SignInForm = () => {
   //   (state) => state.authentication
   // );
   const { t } = useTranslation();
+  // const [validatingField, setValidatingField] = useState(null);
   // const dispatch = useDispatch();
   // const navigate = useNavigate();
 
@@ -48,16 +49,56 @@ const SignInForm = () => {
     },
     validationSchema: SignInSchema,
     validateOnChange: false,
-    validateOnBlur: true,
+    validateOnBlur: false,
     onSubmit: (values) => {
       // dispatch(validateUser(values));
     },
   });
 
+  // Custom change handler for real-time error clearing
+  const handleFieldChange = async (event) => {
+    const { name, value } = event.target;
+    
+    // Update the field value first
+    formik.setFieldValue(name, value);
+    
+    // If the field currently has an error, validate it to see if we can clear the error
+    if (formik.errors[name]) {
+      try {
+        // Create updated values object for validation
+        const updatedValues = { ...formik.values, [name]: value };
+        await SignInSchema.validateAt(name, updatedValues);
+        // Clear error if validation passes
+        formik.setFieldError(name, undefined);
+      } catch (error) {
+        // Keep the error if validation still fails
+        // Don't update error message on every keystroke, just clear when valid
+      }
+    }
+  };
+
+  // Custom blur handler for individual field validation
+  const handleFieldBlur = async (fieldName) => {
+    // setValidatingField(fieldName);
+    try {
+      // Validate only the specific field
+      await SignInSchema.validateAt(fieldName, formik.values);
+      // Clear error for this field if validation passes
+      formik.setFieldError(fieldName, undefined);
+    } catch (error) {
+      // Set error for this specific field if validation fails
+      formik.setFieldError(fieldName, error.message);
+    }
+    // Mark field as touched
+    formik.setFieldTouched(fieldName, true);
+    // setValidatingField(null);
+  };
+
   console.log("formik errors", formik);
   return (
     <>
       <div className="py-3" />
+      
       {/* {error && (
         <div className="bg-danger mb-2 flex items-center  rounded-md">
           <CircleAlertIcon className="text-accent ml-2" />
@@ -67,32 +108,43 @@ const SignInForm = () => {
       <form onSubmit={formik.handleSubmit}>
         <MEInput
           id="username"
+          name="username"
           type={"text"}
           message={formik.errors.username}
           value={formik.values.username}
-          labelvariant={variants.DARK}
-          inputvariant={variants.DARK}
+          labelvariant={formik.errors.username ? variants.DANGER : variants.PRIMARY}
+          inputvariant={formik.errors.username ? variants.DANGER : variants.PRIMARY}
           messagevariant={variants.DANGER}
-          onChange={formik.handleChange}
+          onChange={handleFieldChange}
+          onBlur={() => handleFieldBlur('username')}
+          placeholder={t("usernameInputLabel", {
+            defaultValue: signInForm.usernameInputLabel,
+          })}
           label={t("usernameInputLabel", {
             defaultValue: signInForm.usernameInputLabel,
           })}
         />
         <MEInput
           id="password"
+          name="password"
           type={"password"}
           message={formik.errors.password}
           value={formik.values.password}
-          labelvariant={variants.DARK}
-          inputvariant={variants.DARK}
+          labelvariant={formik.errors.password ? variants.DANGER : variants.PRIMARY}
+          inputvariant={formik.errors.password ? variants.DANGER : variants.PRIMARY}
           messagevariant={variants.DANGER}
-          onChange={formik.handleChange}
+          onChange={handleFieldChange}
+          onBlur={() => handleFieldBlur('password')}
+          placeholder={t("passwordInputLabel", {
+            defaultValue: signInForm.passwordInputLabel,
+          })}
           label={t("passwordInputLabel", {
             defaultValue: signInForm.passwordInputLabel,
           })}
         />
+
         <div className="py-2">
-          <MEButton type="submit" buttonVariant={variants.DANGER}>
+          <MEButton type="submit" buttonVariant={variants.SUCCESS}>
             {t("signInButtonLabel", {
               defaultValue: signInForm.signInButtonLabel,
             })}
