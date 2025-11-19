@@ -51,7 +51,7 @@
                 "./src/components/screens/*"
             ],
             "@MEPageRoutes": [
-                "./src/utils/pageRoutes/index.js"
+                "./src/utils/pageRoutes"
             ],
         }
     },

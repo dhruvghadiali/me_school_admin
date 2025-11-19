@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 // import { useNavigate } from "react-router";
-// import { CircleAlertIcon } from "lucide-react";
+import { CircleAlertIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Input } from "@MEShadcnComponents/input";
-// import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 // import { routeName } from "@MEUtils/routeName";
 import { variants } from "@MEUtils/enums";
+import { signIn } from "@MERedux/authentication/authenticationAction";
 // import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
 import { signInForm } from "@MELocalization/signIn/signInTranslationEn";
-// import { validateUser } from "@/slice/authentication/authenticationAction";
 import {
   passwordMax,
   passwordMin,
@@ -27,12 +26,12 @@ import MEButton from "@MECommonComponents/form/button/meButton";
 // import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const SignInForm = () => {
-  // const { loader, error, isValidUser } = useSelector(
-  //   (state) => state.authentication
-  // );
+  const { loader, error } = useSelector(
+    (state) => state.authentication
+  );
   const { t } = useTranslation();
   // const [validatingField, setValidatingField] = useState(null);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   // const navigate = useNavigate();
 
   // useEffect(() => {
@@ -51,17 +50,17 @@ const SignInForm = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      // dispatch(validateUser(values));
+      dispatch(signIn(values));
     },
   });
 
   // Custom change handler for real-time error clearing
   const handleFieldChange = async (event) => {
     const { name, value } = event.target;
-    
+
     // Update the field value first
     formik.setFieldValue(name, value);
-    
+
     // If the field currently has an error, validate it to see if we can clear the error
     if (formik.errors[name]) {
       try {
@@ -94,17 +93,16 @@ const SignInForm = () => {
     // setValidatingField(null);
   };
 
-  console.log("formik errors", formik);
   return (
     <>
       <div className="py-3" />
-      
-      {/* {error && (
+
+      {error && (
         <div className="bg-danger mb-2 flex items-center  rounded-md">
           <CircleAlertIcon className="text-accent ml-2" />
           <p className="text-accent p-2 text-center">{error}</p>
         </div>
-      )} */}
+      )}
       <form onSubmit={formik.handleSubmit}>
         <MEInput
           id="username"
@@ -112,11 +110,15 @@ const SignInForm = () => {
           type={"text"}
           message={formik.errors.username}
           value={formik.values.username}
-          labelvariant={formik.errors.username ? variants.DANGER : variants.PRIMARY}
-          inputvariant={formik.errors.username ? variants.DANGER : variants.PRIMARY}
+          labelvariant={
+            formik.errors.username ? variants.DANGER : variants.PRIMARY
+          }
+          inputvariant={
+            formik.errors.username ? variants.DANGER : variants.PRIMARY
+          }
           messagevariant={variants.DANGER}
           onChange={handleFieldChange}
-          onBlur={() => handleFieldBlur('username')}
+          onBlur={() => handleFieldBlur("username")}
           placeholder={t("usernameInputLabel", {
             defaultValue: signInForm.usernameInputLabel,
           })}
@@ -130,11 +132,15 @@ const SignInForm = () => {
           type={"password"}
           message={formik.errors.password}
           value={formik.values.password}
-          labelvariant={formik.errors.password ? variants.DANGER : variants.PRIMARY}
-          inputvariant={formik.errors.password ? variants.DANGER : variants.PRIMARY}
+          labelvariant={
+            formik.errors.password ? variants.DANGER : variants.PRIMARY
+          }
+          inputvariant={
+            formik.errors.password ? variants.DANGER : variants.PRIMARY
+          }
           messagevariant={variants.DANGER}
           onChange={handleFieldChange}
-          onBlur={() => handleFieldBlur('password')}
+          onBlur={() => handleFieldBlur("password")}
           placeholder={t("passwordInputLabel", {
             defaultValue: signInForm.passwordInputLabel,
           })}

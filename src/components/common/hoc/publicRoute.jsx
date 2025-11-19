@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 const PublicRoute = ({ children, redirectAuthenticated = false, redirectTo = '/' }) => {
-  const { isValidUser } = useSelector((state) => state.signIn);
+  const { token } = useSelector((state) => state.authentication);
 
-  if (redirectAuthenticated && isValidUser) {
+  if (redirectAuthenticated && token) {
     return <Navigate to={redirectTo} replace />;
   }
 

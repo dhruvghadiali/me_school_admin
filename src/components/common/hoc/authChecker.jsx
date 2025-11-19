@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { setLogin } from '@MERedux/signIn/signInSlice';
+import { setLogin } from '@MERedux/authentication/authenticationSlice';
 import { getAuthData } from '@MEHelpers/authHelpers';
 
 const AuthChecker = ({ children }) => {
@@ -12,9 +12,8 @@ const AuthChecker = ({ children }) => {
 
     if (authData) {
       dispatch(setLogin({ 
-        userData: authData.user, 
+        user: authData.user, 
         token: authData.token,
-        isValidUser: true 
       }));
     }
   }, [dispatch]);

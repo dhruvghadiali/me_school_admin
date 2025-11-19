@@ -34,7 +34,7 @@ export default defineConfig({
       '@MEHooks': path.resolve(__dirname, 'src/hooks'),
       '@MEAssets': path.resolve(__dirname, 'src/assets'),
       '@MEHelpers': path.resolve(__dirname, 'src/helpers'),
-      '@MEPageRoutes': path.resolve(__dirname, 'src/utils/pageRoutes/index.js'),
+      '@MEPageRoutes': path.resolve(__dirname, 'src/utils/pageRoutes'),
     },
   },
   server: {

@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { signIn } from '@MEPageRoutes';
+import { SIGN_IN } from '@MEPageRoutes';
 
 const ProtectedRoute = ({ children }) => {
-  const { isValidUser } = useSelector((state) => state.signIn);
+  const { token } = useSelector((state) => state.authentication);
 
-  if (!isValidUser) {
-    return <Navigate to={signIn} replace />;
+  if (!token) {
+    return <Navigate to={SIGN_IN} replace />;
   }
 
   return children;

@@ -46,6 +46,8 @@ const API_CONFIG = {
   HEADERS: {
     CONTENT_TYPE: "application/json",
   },
+  // Control automatic logout and redirect on unauthorized errors
+  AUTO_LOGOUT_ON_UNAUTHORIZED: true,
 };
 
 // Authorization utility functions
@@ -140,6 +142,11 @@ axiosInstance.interceptors.request.use(
     const state = config.state;
     delete config.state;
 
+    // Store auto-logout preference from config (can be overridden per request)
+    if (config.autoLogoutOnUnauthorized === undefined) {
+      config.autoLogoutOnUnauthorized = API_CONFIG.AUTO_LOGOUT_ON_UNAUTHORIZED;
+    }
+
     if (
       state &&
       state.authentication &&
@@ -190,11 +197,14 @@ axiosInstance.interceptors.response.use(
       
       // Handle authorization errors with automatic logout and redirect
       if (statusCode === HTTP_STATUS_CODES.UNAUTHORIZED) {
-        if (!isAuthorizedUser(error.response)) {
+        // Check if auto-logout is enabled for this request
+        const autoLogout = error.config?.autoLogoutOnUnauthorized !== false;
+        
+        if (autoLogout && !isAuthorizedUser(error.response)) {
           console.warn('User authorization failed - redirecting to sign-in');
           
           // Handle unauthorized user with cleanup and redirect
-          handleUnauthorizedUser('/signin');
+          handleUnauthorizedUser('/');
           
           // Return early with standardized unauthorized response
           return Promise.reject({
@@ -287,13 +297,15 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+
+
 // Export enums and utilities for use in other components
 export { 
   HTTP_STATUS_CODES, 
   API_RESPONSE_MESSAGES, 
   API_CONFIG, 
+  axiosInstance,
   isAuthorizedUser, 
-  handleUnauthorizedUser 
+  handleUnauthorizedUser,
 };
 
-export default axiosInstance;
