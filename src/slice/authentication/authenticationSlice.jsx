@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { signIn } from "@MERedux/authentication/authenticationAction";
+import { clearAuthData } from "@MEHelpers/authHelpers";
 
 export const signInSlice = createSlice({
   name: "signIn",
@@ -14,6 +15,11 @@ export const signInSlice = createSlice({
     setLogin: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token || "";
+    },
+    signOut: (state, _) => {
+      state.user = {};
+      state.token = "";
+      clearAuthData();
     },
   },
   extraReducers: (builder) => {
@@ -39,8 +45,6 @@ export const signInSlice = createSlice({
   },
 });
 
-export const {
-  setLogin,
-} = signInSlice.actions;
+export const { setLogin, signOut } = signInSlice.actions;
 
 export default signInSlice.reducer;

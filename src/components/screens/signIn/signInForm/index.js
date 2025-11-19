@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
 import { useFormik } from "formik";
-// import { useNavigate } from "react-router";
 import { CircleAlertIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
-// import { routeName } from "@MEUtils/routeName";
 import { variants } from "@MEUtils/enums";
 import { signIn } from "@MERedux/authentication/authenticationAction";
-// import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
 import { signInForm } from "@MELocalization/signIn/signInTranslationEn";
 import {
   passwordMax,
@@ -23,23 +19,12 @@ import * as Yup from "yup";
 
 import MEInput from "@MECommonComponents/form/input/meInput";
 import MEButton from "@MECommonComponents/form/button/meButton";
-// import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const SignInForm = () => {
-  const { loader, error } = useSelector(
-    (state) => state.authentication
-  );
+  const { loader, error } = useSelector((state) => state.authentication);
   const { t } = useTranslation();
-  // const [validatingField, setValidatingField] = useState(null);
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (isValidUser) {
-  //     navigate(routeName.dashboard, { replace: true });
-  //     dispatch(changeActiveMenu(sidebarMenuName.DASHBOARD));
-  //   }
-  // }, [isValidUser]);
 
   const formik = useFormik({
     initialValues: {
@@ -96,7 +81,6 @@ const SignInForm = () => {
   return (
     <>
       <div className="py-3" />
-
       {error && (
         <div className="bg-danger mb-2 flex items-center  rounded-md">
           <CircleAlertIcon className="text-accent ml-2" />
@@ -150,11 +134,14 @@ const SignInForm = () => {
         />
 
         <div className="py-2">
-          <MEButton type="submit" buttonVariant={variants.SUCCESS}>
+          <MEButton 
+            type="submit" 
+            disabled={loader}
+            buttonVariant={variants.SUCCESS}>
             {t("signInButtonLabel", {
               defaultValue: signInForm.signInButtonLabel,
             })}
-            {/* {loader && <MELoaderIcon />} */}
+            {loader && <MELoaderIcon />}
           </MEButton>
         </div>
       </form>

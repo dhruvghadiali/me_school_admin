@@ -1,4 +1,5 @@
 import axios from "axios";
+import { clearAuthData } from "@MEHelpers/authHelpers";
 
 // HTTP Status Code Enums
 const HTTP_STATUS_CODES = {
@@ -62,21 +63,28 @@ const isAPIServedSuccessfully = (response) =>
 const isAuthorizedUser = (response) => {
   // Check if response indicates valid authorization
   if (!response) return false;
-  
+
   // If 401 or 403, user is not authorized
-  if (response.status === HTTP_STATUS_CODES.UNAUTHORIZED || 
-      response.status === HTTP_STATUS_CODES.FORBIDDEN) {
+  if (
+    response.status === HTTP_STATUS_CODES.UNAUTHORIZED ||
+    response.status === HTTP_STATUS_CODES.FORBIDDEN
+  ) {
     return false;
   }
-  
+
   // Check if response data indicates authorization issues
   const responseData = response.data;
   if (responseData && responseData.message) {
-    const authErrorKeywords = ['unauthorized', 'forbidden', 'invalid token', 'expired token'];
+    const authErrorKeywords = [
+      "unauthorized",
+      "forbidden",
+      "invalid token",
+      "expired token",
+    ];
     const message = responseData.message.toLowerCase();
-    return !authErrorKeywords.some(keyword => message.includes(keyword));
+    return !authErrorKeywords.some((keyword) => message.includes(keyword));
   }
-  
+
   return true;
 };
 
@@ -84,35 +92,28 @@ const isAuthorizedUser = (response) => {
  * Handle user logout and redirect
  * @param {string} redirectPath - Path to redirect to after logout
  */
-const handleUnauthorizedUser = (redirectPath = '/signin') => {
-  // Clear authentication data from localStorage
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('userData');
-  localStorage.removeItem('refreshToken');
-  
-  // Clear any other auth-related storage
-  sessionStorage.removeItem('authToken');
-  sessionStorage.removeItem('userData');
-  
+const handleUnauthorizedUser = (redirectPath = "/signin") => {
+  clearAuthData();
+
   // Dispatch sign out action if store is available
   // This will be handled by the Redux store when integrated
-  
+
   // Redirect to sign-in page
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     window.location.href = redirectPath;
   }
 };
 
 /**
  * Axios instance with standardized response format
- * 
+ *
  * Returns consistent response structure:
  * {
  *   message: string,  // Success/error message
  *   status: number,   // HTTP status code
  *   data: array      // Response data (always array)
  * }
- * 
+ *
  * @example
  * // Success response
  * {
@@ -120,8 +121,8 @@ const handleUnauthorizedUser = (redirectPath = '/signin') => {
  *   status: 200,
  *   data: [{ id: 1, name: "John" }]
  * }
- * 
- * @example  
+ *
+ * @example
  * // Error response
  * {
  *   message: "Unauthorized access",
@@ -167,21 +168,29 @@ axiosInstance.interceptors.response.use(
     // Response format: {message, status, data}
     if (response && response.status && isAPIServedSuccessfully(response)) {
       return {
-        message: response.data?.message || response.statusText || API_RESPONSE_MESSAGES.SUCCESS,
+        message:
+          response.data?.message ||
+          response.statusText ||
+          API_RESPONSE_MESSAGES.SUCCESS,
         status: response.status,
-        data: Array.isArray(response.data?.data) 
-          ? response.data.data 
-          : Array.isArray(response.data) 
-          ? response.data 
-          : response.data ? [response.data] : []
+        data: Array.isArray(response.data?.data)
+          ? response.data.data
+          : Array.isArray(response.data)
+          ? response.data
+          : response.data
+          ? [response.data]
+          : [],
       };
     }
 
     // Fallback for unsuccessful responses
     return {
-      message: response?.data?.message || response?.statusText || API_RESPONSE_MESSAGES.UNKNOWN_ERROR,
+      message:
+        response?.data?.message ||
+        response?.statusText ||
+        API_RESPONSE_MESSAGES.UNKNOWN_ERROR,
       status: response?.status || HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-      data: []
+      data: [],
     };
   },
   (error) => {
@@ -189,40 +198,41 @@ axiosInstance.interceptors.response.use(
     let standardizedErrorResponse = {
       message: API_RESPONSE_MESSAGES.UNKNOWN_ERROR,
       status: HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
-      data: []
+      data: [],
     };
 
     if (error && error.response) {
       const statusCode = error.response.status;
-      
+
       // Handle authorization errors with automatic logout and redirect
       if (statusCode === HTTP_STATUS_CODES.UNAUTHORIZED) {
         // Check if auto-logout is enabled for this request
         const autoLogout = error.config?.autoLogoutOnUnauthorized !== false;
-        
+
         if (autoLogout && !isAuthorizedUser(error.response)) {
-          console.warn('User authorization failed - redirecting to sign-in');
-          
+          console.warn("User authorization failed - redirecting to sign-in");
+
           // Handle unauthorized user with cleanup and redirect
-          handleUnauthorizedUser('/');
-          
+          handleUnauthorizedUser("/");
+
           // Return early with standardized unauthorized response
           return Promise.reject({
             message: API_RESPONSE_MESSAGES.UNAUTHORIZED,
             status: HTTP_STATUS_CODES.UNAUTHORIZED,
-            data: []
+            data: [],
           });
         }
       }
-      
+
       // Handle forbidden access (different from unauthorized)
       if (statusCode === HTTP_STATUS_CODES.FORBIDDEN) {
-        console.warn('Access forbidden - user lacks required permissions');
+        console.warn("Access forbidden - user lacks required permissions");
       }
 
       // Extract error message from response or provide default based on status code
-      let errorMessage = error.response.data?.message || error.response.statusText;
-      
+      let errorMessage =
+        error.response.data?.message || error.response.statusText;
+
       // Provide user-friendly default messages for common HTTP status codes
       if (!errorMessage) {
         switch (statusCode) {
@@ -258,7 +268,7 @@ axiosInstance.interceptors.response.use(
       standardizedErrorResponse = {
         message: errorMessage,
         status: statusCode,
-        data: error.response.data?.data || []
+        data: error.response.data?.data || [],
       };
 
       return Promise.reject(standardizedErrorResponse);
@@ -269,43 +279,40 @@ axiosInstance.interceptors.response.use(
       standardizedErrorResponse = {
         message: API_RESPONSE_MESSAGES.NETWORK_ERROR,
         status: HTTP_STATUS_CODES.NETWORK_ERROR,
-        data: []
+        data: [],
       };
-    } else if (error.code === 'ECONNABORTED') {
+    } else if (error.code === "ECONNABORTED") {
       // Handle timeout errors
       standardizedErrorResponse = {
         message: API_RESPONSE_MESSAGES.TIMEOUT_ERROR,
         status: HTTP_STATUS_CODES.GATEWAY_TIMEOUT,
-        data: []
+        data: [],
       };
     } else if (error.message) {
       // Handle other request setup errors
       standardizedErrorResponse = {
         message: error.message || API_RESPONSE_MESSAGES.REQUEST_FAILED,
         status: HTTP_STATUS_CODES.BAD_REQUEST,
-        data: []
+        data: [],
       };
     }
 
-    console.error('API Error Details:', {
+    console.error("API Error Details:", {
       originalError: error,
       standardizedResponse: standardizedErrorResponse,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-    
+
     return Promise.reject(standardizedErrorResponse);
   }
 );
 
-
-
 // Export enums and utilities for use in other components
-export { 
-  HTTP_STATUS_CODES, 
-  API_RESPONSE_MESSAGES, 
-  API_CONFIG, 
+export {
+  HTTP_STATUS_CODES,
+  API_RESPONSE_MESSAGES,
+  API_CONFIG,
   axiosInstance,
-  isAuthorizedUser, 
+  isAuthorizedUser,
   handleUnauthorizedUser,
 };
-

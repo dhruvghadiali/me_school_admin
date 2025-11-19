@@ -1,8 +1,12 @@
+import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+
 const DashboardPage = () => {
   return (
     <>
       <div className="flex items-center justify-center h-screen">
-        <h1>Dashboard</h1>
+        <MESidebar>
+          <h1>Dashboard</h1>
+        </MESidebar>
       </div>
     </>
   );
