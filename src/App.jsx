@@ -19,7 +19,7 @@ import SettingPage from "@MEPages/settingPage";
 import ProfilePage from "@MEPages/profilePage";
 import FacilityPage from "@MEPages/facilityPage";
 import DashboardPage from "@MEPages/dashboardPage";
-import AdmissionPage from "@MEPages/admissionPage";
+// import AdmissionPage from "@MEPages/admissionPage";
 import AcademicClassPage from "@MEPages/academicClassPage";
 import AdmissionDocumentPage from "@MEPages/admissionDocumentPage";
 import AuthChecker from "@MECommonComponents/hoc/authChecker";
@@ -51,14 +51,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
+            {/* <Route
               path={ADMISSION}
               element={
                 <ProtectedRoute>
                   <AdmissionPage />
                 </ProtectedRoute>
               }
-            />
+            /> */}
             <Route
               path={ACADEMIC_CLASS}
               element={
