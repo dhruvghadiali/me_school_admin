@@ -1,3 +1,4 @@
+import {useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
@@ -23,11 +24,38 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
   SidebarInset,
+  useSidebar,
 } from "@MEShadcnComponents/sidebar";
 import { Separator } from "@MEShadcnComponents/separator";
 import { sidebarMenuLabel, sidebar } from "@MELocalization/en";
 import PropTypes from "prop-types";
 import _ from "lodash";
+
+const MainContent = ({ children }) => {
+  const { open, isMobile } = useSidebar();
+  
+  return (
+    <main className={`flex-1 overflow-auto transition-all duration-200 ${!isMobile ? open ? 'pl-6 ml-48' : 'pl-6 ml-14' : ''}`}>
+      {children}
+    </main>
+  );
+};
+
+const SidebarContent_Internal = ({ children, onMenuClick }) => {
+  const { isMobile, setOpenMobile, open, state } = useSidebar();
+
+  const handleMenuClick = (item) => {
+    onMenuClick(item);
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
+
+  // Log sidebar state for debugging
+  console.log('Sidebar state:', { open, state, isMobile });
+
+  return children(handleMenuClick);
+};
 
 const MESidebar = ({ children }) => {
   const { activeMenu } = useSelector((state) => state.sidebar);
@@ -46,35 +74,73 @@ const MESidebar = ({ children }) => {
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <Sidebar collapsible="offcanvas" className="border-r">
-        <SidebarHeader className="border-b bg-danger">
-          <div className="flex h-full items-center px-4">
-            <h2 className="text-white font-bold text-lg">
+      <Sidebar collapsible="icon" className="border-r">
+        <SidebarHeader className="h-14 border-b bg-danger">
+          <div className="flex h-full items-center justify-center px-2">
+            <h2 className="text-white font-bold text-sm truncate group-data-[collapsible=icon]:hidden">
               {t('titleStatic', { defaultValue: sidebar.titleStatic })}
             </h2>
           </div>
         </SidebarHeader>
         <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel className="px-2 text-xs uppercase text-sidebar-foreground/70">
-              Menu
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
+          <SidebarContent_Internal onMenuClick={onClick}>
+            {(handleMenuClick) => (
+              <SidebarGroup>
+                <SidebarGroupLabel className="px-2 text-xs uppercase text-sidebar-foreground/70">
+                  Menu
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {sidebarMenu.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                          onClick={() => handleMenuClick(item)}
+                          tooltip={_.startCase(
+                            t(item.title, {
+                              defaultValue: sidebarMenuLabel[item.title],
+                            })
+                          )}
+                          className={`cursor-pointer ${
+                            item.title === activeMenu
+                              ? "bg-dark text-secondary hover:bg-dark/90 hover:text-secondary"
+                              : ""
+                          }`}
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>
+                            {_.startCase(
+                              t(item.title, {
+                                defaultValue: sidebarMenuLabel[item.title],
+                              })
+                            )}
+                          </span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
+          </SidebarContent_Internal>
+        </SidebarContent>
+        <SidebarFooter className="mt-auto border-t">
+          <SidebarContent_Internal onMenuClick={onClick}>
+            {(handleMenuClick) => (
               <SidebarMenu>
-                {sidebarMenu.map((item) => (
+                {footerMenu.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
-                      onClick={() => onClick(item)}
-                      isActive={item.title === activeMenu}
-                      className={`cursor-pointer ${
-                        item.title === activeMenu
-                          ? "bg-dark text-secondary"
-                          : ""
-                      }`}
+                      onClick={() => handleMenuClick(item)}
+                      tooltip={_.upperFirst(
+                        t(item.title, {
+                          defaultValue: sidebarMenuLabel[item.title],
+                        })
+                      )}
+                      className="cursor-pointer"
                     >
                       <item.icon className="h-4 w-4" />
                       <span>
-                        {_.startCase(
+                        {_.upperFirst(
                           t(item.title, {
                             defaultValue: sidebarMenuLabel[item.title],
                           })
@@ -84,46 +150,17 @@ const MESidebar = ({ children }) => {
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarFooter className="mt-auto border-t">
-          <SidebarMenu>
-            {footerMenu.map((item) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton
-                  onClick={() => onClick(item)}
-                  className="cursor-pointer"
-                >
-                  <item.icon className="h-4 w-4" />
-                  <span>
-                    {_.upperFirst(
-                      t(item.title, {
-                        defaultValue: sidebarMenuLabel[item.title],
-                      })
-                    )}
-                  </span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
+            )}
+          </SidebarContent_Internal>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset className="flex flex-col">
-        <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-2 border-b bg-background px-4">
-          <SidebarTrigger />
-          <Separator orientation="vertical" className="h-4" />
-          <h1 className="text-base font-semibold">
-            {_.upperFirst(
-              t(activeMenu, {
-                defaultValue: sidebarMenuLabel[activeMenu],
-              })
-            )}
-          </h1>
-        </header>
-        <main className="flex-1 overflow-auto p-6">
-          {children}
-        </main>
+        <MainContent activeMenu={activeMenu} t={t} sidebarMenuLabel={sidebarMenuLabel}>
+          <SidebarTrigger/>
+          <div className="pl-2">
+            {children}
+          </div>
+        </MainContent>
       </SidebarInset>
     </SidebarProvider>
   );
