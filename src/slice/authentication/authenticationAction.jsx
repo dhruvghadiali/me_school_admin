@@ -1,9 +1,10 @@
-import { axiosInstance } from "@MEUtils/axiosInstance";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setAuthData } from '@MEHelpers/authHelpers';
 
-// Define the sign-in API route relative to axiosInstance.baseURL
-const signInAPIRoute = "/signin";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+import { setAuthData } from '@MEHelpers/authHelpers';
+import { signInAPIRoute } from "@MEUtils/apiRoutes";
+import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
+
 
 const signIn = createAsyncThunk(
   "authentication/signIn",
@@ -14,12 +15,7 @@ const signIn = createAsyncThunk(
         autoLogoutOnUnauthorized: false,
       });
 
-      if (
-        response &&
-        response.data &&
-        Array.isArray(response.data) &&
-        response.data.length > 0
-      ) {
+      if (apiResponseHaveData(response)) {
         setAuthData(response.data[0], response.data[0].token);
         return { user: response.data[0], token: response.data[0].token };
       }else{

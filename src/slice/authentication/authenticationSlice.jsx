@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { signIn } from "@MERedux/authentication/authenticationAction";
 import { clearAuthData } from "@MEHelpers/authHelpers";
+import { API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
+import { signIn } from "@MERedux/authentication/authenticationAction";
 
 export const signInSlice = createSlice({
   name: "signIn",
@@ -39,7 +40,7 @@ export const signInSlice = createSlice({
       .addCase(signIn.rejected, (state, action) => {
         state.user = {};
         state.token = "";
-        state.error = action.payload.error;
+        state.error = action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
         state.loader = false;
       });
   },
