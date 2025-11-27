@@ -9,55 +9,66 @@ import {
   GraduationCap,
   LayoutDashboard,
 } from "lucide-react";
-import { sidebarMenuName } from "@MEUtils/enums";
-import { DASHBOARD, SIGN_IN } from "@MEPageRoutes";
+
+import { SIDEBAR_MENU_NAMES } from "@MEHelpers/enums";
+import {
+  DASHBOARD,
+  SIGN_IN,
+  ADMISSION,
+  ACADEMIC_CLASS,
+  FEES,
+  ADMISSION_DOCUMENTS,
+  FACILITIES,
+  PROFILE,
+  SETTINGS,
+} from "@MEPageRoutes";
 
 export const sidebarMenu = [
   {
-    title: sidebarMenuName.DASHBOARD,
+    title: SIDEBAR_MENU_NAMES.DASHBOARD,
     url: DASHBOARD,
     icon: Gauge,
   },
   {
-    title: sidebarMenuName.ADMISSION,
-    url: DASHBOARD,
+    title: SIDEBAR_MENU_NAMES.ADMISSION,
+    url: ADMISSION,
     icon: Inbox,
   },
   {
-    title: sidebarMenuName.ACADEMIC_CLASS,
-    url: DASHBOARD,
+    title: SIDEBAR_MENU_NAMES.ACADEMIC_CLASS,
+    url: ACADEMIC_CLASS,
     icon: GraduationCap,
   },
   {
-    title: sidebarMenuName.FEES,
-    url: DASHBOARD,
+    title: SIDEBAR_MENU_NAMES.FEES,
+    url: FEES,
     icon: IndianRupee,
   },
   {
-    title: sidebarMenuName.ADMISSION_DOCUMENTS,
-    url: DASHBOARD,
+    title: SIDEBAR_MENU_NAMES.ADMISSION_DOCUMENTS,
+    url: ADMISSION_DOCUMENTS,
     icon: FilesIcon,
   },
   {
-    title: sidebarMenuName.FACILITIES,
-    url: DASHBOARD,
+    title: SIDEBAR_MENU_NAMES.FACILITIES,
+    url: FACILITIES,
     icon: LayoutDashboard,
   },
   {
-    title: sidebarMenuName.PROFILE,
-    url: DASHBOARD,
+    title: SIDEBAR_MENU_NAMES.PROFILE,
+    url: PROFILE,
     icon: User,
   },
   {
-    title: sidebarMenuName.SETTINGS,
-    url: DASHBOARD,
+    title: SIDEBAR_MENU_NAMES.SETTINGS,
+    url: SETTINGS,
     icon: Settings,
   },
 ];
 
 export const footerMenu = [
   {
-    title: sidebarMenuName.LOGOUT,
+    title: SIDEBAR_MENU_NAMES.LOGOUT,
     url: SIGN_IN,
     icon: LogOutIcon,
   },

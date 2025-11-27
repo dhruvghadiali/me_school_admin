@@ -3,6 +3,8 @@ import axios from "axios";
 import { clearAuthData } from "@MEHelpers/authHelpers";
 import { HTTP_STATUS_CODES, API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
 
+import _ from "lodash";
+
 // API Configuration
 const API_CONFIG = {
   BASE_URL: import.meta.env.VITE_API_BASE_URL,

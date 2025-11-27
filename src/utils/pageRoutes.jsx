@@ -1,2 +1,9 @@
 export const SIGN_IN = "/"; 
 export const DASHBOARD = "/dashboard";
+export const ADMISSION = "/admission";
+export const ACADEMIC_CLASS = "/academic-class";
+export const FEES = "/fees";
+export const ADMISSION_DOCUMENTS = "/admission-documents";
+export const FACILITIES = "/facilities";    
+export const PROFILE = "/profile";
+export const SETTINGS = "/settings";
