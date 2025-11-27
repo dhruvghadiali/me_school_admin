@@ -4,8 +4,11 @@ import { useTranslation } from "react-i18next";
 
 import { sidebarMenuName } from "@MEUtils/enums";
 import { signOut } from "@/slice/authentication/authenticationSlice";
-// import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
-import { sidebarMenu, footerMenu } from "@MECommonComponents/sidebar/sidebarMenu";
+import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
+import {
+  sidebarMenu,
+  footerMenu,
+} from "@MECommonComponents/sidebar/sidebarMenu";
 import {
   Sidebar,
   SidebarContent,
@@ -19,18 +22,16 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
+  SidebarInset,
 } from "@MEShadcnComponents/sidebar";
-import {
-  sidebarMenuLabel,
-  sidebar,
-} from "@MELocalization/en";
+import { sidebarMenuLabel, sidebar } from "@MELocalization/en";
 
 import MEButton from "@MECommonComponents/form/button/meButton";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
 const MESidebar = ({ children }) => {
-  // const { activeMenu } = useSelector((state) => state.sidebar);
+  const { activeMenu } = useSelector((state) => state.sidebar);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,9 +40,9 @@ const MESidebar = ({ children }) => {
     if (item.title === sidebarMenuName.LOGOUT) {
       dispatch(signOut());
     } else {
-      // dispatch(changeActiveMenu(item.title));
+      dispatch(changeActiveMenu(item.title));
     }
-    navigate(item.url, { replace: true });
+    navigate(item.url, { replace: false });
   };
 
   return (
@@ -60,20 +61,19 @@ const MESidebar = ({ children }) => {
                     <SidebarMenuButton asChild>
                       <MEButton
                         variant={"ghost"}
-                        className={`justify-start ${
-                          "text-dark"
-                          // item.title === activeMenu
-                          //   ? "text-primary hover:text-primary"
-                          //   : "text-dark"
+                        className={`justify-start cursor-pointer hover:cursor-pointer ${
+                          item.title === activeMenu
+                            ? "text-secondary bg-dark hover:text-danger"
+                            : "text-dark"
                         } `}
                         onClick={() => onClick(item)}
                       >
                         <item.icon />
                         <span>
-                          {_.startCase(item.title
-                            // i18n.exists(item.title)
-                            //   ? t()
-                            //   : sidebarMenuLabel[item.title]
+                          {_.startCase(
+                            t(item.title, {
+                              defaultValue: sidebarMenuLabel[item.title],
+                            })
                           )}
                         </span>
                       </MEButton>
@@ -90,15 +90,15 @@ const MESidebar = ({ children }) => {
                   <SidebarMenuButton asChild>
                     <MEButton
                       variant={"ghost"}
-                      className="justify-start text-dark"
+                      className="justify-start text-dark cursor-pointer hover:cursor-pointer"
                       onClick={() => onClick(item)}
                     >
                       <item.icon />
                       <span>
-                        {_.upperFirst(item.title
-                          // i18n.exists(item.title)
-                          //   ? t(item.title)
-                          //   : sidebarMenuLabel[item.title]
+                        {_.upperFirst(
+                          t(item.title, {
+                            defaultValue: sidebarMenuLabel[item.title],
+                          })
                         )}
                       </span>
                     </MEButton>
@@ -111,7 +111,9 @@ const MESidebar = ({ children }) => {
       </Sidebar>
       <main className="w-full ">
         <SidebarTrigger />
-        <div className="ml-5">{children}</div>
+        <div className="flex ml-5">
+          {children}
+        </div>
       </main>
     </SidebarProvider>
   );
