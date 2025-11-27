@@ -5,17 +5,17 @@ const SignInFormHeader = () => {
   const { t } = useTranslation();
 
   return (
-    <>
-      <div className="w-20 h-20 bg-danger p-2" />
-      <div className="py-2">
-        <h1 className="text-5xl font-bold">
+    <div className="mb-6 sm:mb-8">
+      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-danger rounded-lg mb-4" />
+      <div className="space-y-2">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
           {t("signInFormHeader", { defaultValue: signInForm.signInFormHeader })}
         </h1>
-        <p className="text-base text-dark">
+        <p className="text-sm sm:text-base text-muted-foreground">
           {t("signInFormSubtitle", { defaultValue: signInForm.signInFormSubtitle })}
         </p>
       </div>
-    </>
+    </div>
   );
 };
 
