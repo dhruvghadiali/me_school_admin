@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import {
   academicClassAPIResponse,
-  // schoolAcademicClassAPIResponse,
+  schoolAcademicClassAPIResponse,
 } from "@MEUtils/apiResponse";
 import {
   academicClassesAPIRoute,
@@ -137,7 +137,12 @@ const getAcademicClasses = createAsyncThunk(
 
           if (apiResponseHaveData(response)) {
             return {
-              academicClasses: response.data,
+              academicClasses: _.sortBy(
+                _.map(response.data, (academicClass) =>
+                  schoolAcademicClassAPIResponse(academicClass)
+                ),
+                ["academicClass"]
+              ),
               educationBoards,
               school,
               selectedEducationBoard,
@@ -252,38 +257,42 @@ const getDefaultAcademicClasses = createAsyncThunk(
   }
 );
 
-// const addAcademicClasses = createAsyncThunk(
-//   "academicClass/addAcademicClasses",
-//   async (payload, { getState, rejectWithValue, dispatch }) => {
-//     try {
-//       const axiosInstanceConfig = setUpAxiosInstanceConfig(
-//         getState(),
-//         dispatch
-//       );
+const addAcademicClasses = createAsyncThunk(
+  "academicClass/addAcademicClasses",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      console.log("getDefaultAcademicClasses thunk called", getState());
 
-//       const response = await axiosInstance.post(
-//         `${schoolAcademicClassesAPIRoute}`,
-//         payload,
-//         axiosInstanceConfig
-//       );
+      const response = await axiosInstance.post(
+        schoolAcademicClassesAPIRoute,
+        payload,
+        {
+          state: getState(),
+        }
+      );
 
-//       if (response && response.data && response.data.length > 0) {
-//         dispatch(getAcademicClasses());
-//         return {
-//           error: "",
-//         };
-//       } else {
-//         return {
-//           error: response && response.message ? response.message : "",
-//         };
-//       }
-//     } catch (error) {
-//       return rejectWithValue({
-//         error: error && error.message ? error.message : "",
-//       });
-//     }
-//   }
-// );
+      if (apiResponseHaveData(response)) {
+        dispatch(getAcademicClasses());
+
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "academic class addition failed",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "academic class addition failed";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
 
 // const deleteAcademicClasses = createAsyncThunk(
 //   "academicClass/deleteAcademicClasses",
@@ -312,7 +321,7 @@ const getDefaultAcademicClasses = createAsyncThunk(
 // );
 
 export {
-  // addAcademicClasses,
+  addAcademicClasses,
   getAcademicClasses,
   // onChangeEductionBoard,
   // deleteAcademicClasses,

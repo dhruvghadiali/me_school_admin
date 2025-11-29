@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  // addAcademicClasses,
+  addAcademicClasses,
   getAcademicClasses,
   // onChangeEductionBoard,
   // deleteAcademicClasses,
@@ -80,17 +80,18 @@ export const academicClassSlice = createSlice({
         state.defaultAcademicClasses = action.payload.defaultAcademicClasses;
       })
       .addCase(getDefaultAcademicClasses.rejected, (state, action) => {
-        state.academicClassError = action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
+        state.academicClassError =
+          action.payload.error || API_RESPONSE_MESSAGES.SOMETHING_WENT_WRONG;
         state.defaultAcademicClasses = action.payload.defaultAcademicClasses;
+      })
+      .addCase(addAcademicClasses.pending, (state, _) => {
+        state.academicClassFormError = "";
+        state.academicClassFormLoader = true;
+      })
+      .addCase(addAcademicClasses.fulfilled, (state, action) => {
+        state.academicClassFormError = action.payload.error;
+        state.academicClassFormLoader = false;
       });
-    // .addCase(addAcademicClasses.pending, (state, _) => {
-    //   // state.academicClassFormError = "";
-    //   // state.academicClassFormLoader = true;
-    // })
-    // .addCase(addAcademicClasses.fulfilled, (state, action) => {
-    //   // state.academicClassFormError = action.payload.error;
-    //   // state.academicClassFormLoader = false;
-    // })
     // .addCase(addAcademicClasses.rejected, (state, action) => {
     //   // state.academicClassFormError = action.payload.error;
     //   // state.academicClassFormLoader = false;

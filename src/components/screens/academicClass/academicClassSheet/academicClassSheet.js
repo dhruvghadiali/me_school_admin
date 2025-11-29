@@ -24,7 +24,7 @@ import MEButton from "@MECommonComponents/form/button/meButton";
 import AcademicClassForm from "@MEScreenComponents/academicClass/academicClassForm";
 
 const AcademicClassSheet = () => {
-  const { isAcademicClassFormSheetOpen } = useSelector(
+  const { isAcademicClassFormSheetOpen, academicClassFormLoader } = useSelector(
     (state) => state.academicClass
   );
   const { t } = useTranslation();
@@ -38,7 +38,11 @@ const AcademicClassSheet = () => {
     <>
       <Sheet
         open={isAcademicClassFormSheetOpen}
-        onOpenChange={(open) => onClick(open)}
+        onOpenChange={(open) => {
+          // Prevent closing the sheet while form is loading
+          if (academicClassFormLoader && open === false) return;
+          onClick(open);
+        }}
       >
         <SheetTrigger>
           <MEButton buttonVariant={variants.DARK} onClick={() => onClick(true)}>
@@ -46,17 +50,22 @@ const AcademicClassSheet = () => {
             {_.upperFirst(t("addAcademicClassButtonText",{defaultValue: addAcademicClassButtonText}))}
           </MEButton>
         </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>
-              {_.upperFirst(t("addAcademicClassSheetTitle",{defaultValue: addAcademicClassSheetTitle}))}
-            </SheetTitle>
-            <SheetDescription>
-              {_.upperFirst(t("addAcademicClassSheetDescription",{defaultValue: addAcademicClassSheetDescription}))}
-              <AcademicClassForm />
-            </SheetDescription>
-          </SheetHeader>
-        </SheetContent>
+            <SheetContent
+              className="[&>button]:cursor-pointer"
+              side={"right"}
+            >
+              <SheetHeader>
+                <SheetTitle>
+                  {_.upperFirst(t("addAcademicClassSheetTitle",{defaultValue: addAcademicClassSheetTitle}))}
+                </SheetTitle>
+                <SheetDescription>
+                  {_.upperFirst(t("addAcademicClassSheetDescription",{defaultValue: addAcademicClassSheetDescription}))}
+                </SheetDescription>
+              </SheetHeader>
+              <div className="ml-2 mr-2">
+                <AcademicClassForm />
+              </div>
+            </SheetContent>
       </Sheet>
     </>
   );

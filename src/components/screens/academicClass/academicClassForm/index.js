@@ -4,9 +4,9 @@ import { CircleAlertIcon } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
-// import { addNewAcademicClassAPIPayload } from "@MEUtils/apiPayload";
+import { addNewAcademicClassAPIPayload } from "@MEUtils/apiPayload";
 import { academicClassSelectionRequired } from "@MEUtils/validationMessage";
-// import { addAcademicClasses } from "@MERedux/academicClass/academicClassAction";
+import { addAcademicClasses } from "@MERedux/academicClass/academicClassAction";
 import {
   academicClassSelectionLabel,
   academicClassSubmitButtonText,
@@ -41,14 +41,15 @@ const AcademicClassForm = () => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      dispatch();
-      // addAcademicClasses(
-      //   addNewAcademicClassAPIPayload({
-      //     academicClass: values.academicClass,
-      //     school: school,
-      //     eductionBoard: selectedEducationBoard,
-      //   })
-      // )
+      dispatch(
+        addAcademicClasses(
+          addNewAcademicClassAPIPayload({
+            academicClass: values.academicClass,
+            school: school,
+            eductionBoard: selectedEducationBoard,
+          })
+        )
+      );
     },
   });
 
@@ -95,7 +96,11 @@ const AcademicClassForm = () => {
           }
         />
         <div className="py-2">
-          <MEButton type="submit" buttonVariant={variants.SUCCESS}>
+          <MEButton
+            type="submit"
+            buttonVariant={variants.SUCCESS}
+            disabled={academicClassFormLoader}
+          >
             {_.upperCase(
               t("academicClassSubmitButtonText", {
                 defaultValue: academicClassSubmitButtonText,
