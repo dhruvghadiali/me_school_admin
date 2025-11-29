@@ -1,10 +1,9 @@
-
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { setAuthData } from '@MEHelpers/authHelpers';
 import { signInAPIRoute } from "@MEUtils/apiRoutes";
+import { setAuthData } from "@MEHelpers/authHelpers";
+import { setUserInformation } from "@MEUtils/apiResponse";
 import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
-
 
 const signIn = createAsyncThunk(
   "authentication/signIn",
@@ -16,9 +15,10 @@ const signIn = createAsyncThunk(
       });
 
       if (apiResponseHaveData(response)) {
-        setAuthData(response.data[0], response.data[0].token);
-        return { user: response.data[0], token: response.data[0].token };
-      }else{
+        let user = setUserInformation(response.data[0]);
+        setAuthData(user, response.data[0].token);
+        return { user: user, token: response.data[0].token };
+      } else {
         return { user: {}, token: "" };
       }
     } catch (error) {

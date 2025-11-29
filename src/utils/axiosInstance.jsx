@@ -129,10 +129,9 @@ axiosInstance.interceptors.request.use(
     if (
       state &&
       state.authentication &&
-      state.authentication.user &&
-      state.authentication.user.token
+      state.authentication.token 
     ) {
-      config.headers.Authorization = `Bearer ${state.authentication.user.token}`;
+      config.headers.Authorization = `Bearer ${state.authentication.token}`;
     }
     return config;
   },

@@ -52,7 +52,7 @@ const SidebarContent_Internal = ({ children, onMenuClick }) => {
   };
 
   // Log sidebar state for debugging
-  console.log('Sidebar state:', { open, state, isMobile });
+  // console.log('Sidebar state:', { open, state, isMobile });
 
   return children(handleMenuClick);
 };
