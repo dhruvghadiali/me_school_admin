@@ -29,7 +29,7 @@ const AcademicClassForm = () => {
     selectedEducationBoard,
     school,
   } = useSelector((state) => state.academicClass);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -41,15 +41,14 @@ const AcademicClassForm = () => {
     validateOnChange: false,
     validateOnBlur: true,
     onSubmit: (values) => {
-      dispatch(
-        // addAcademicClasses(
-        //   addNewAcademicClassAPIPayload({
-        //     academicClass: values.academicClass,
-        //     school: school,
-        //     eductionBoard: selectedEducationBoard,
-        //   })
-        // )
-      );
+      dispatch();
+      // addAcademicClasses(
+      //   addNewAcademicClassAPIPayload({
+      //     academicClass: values.academicClass,
+      //     school: school,
+      //     eductionBoard: selectedEducationBoard,
+      //   })
+      // )
     },
   });
 
@@ -65,11 +64,11 @@ const AcademicClassForm = () => {
       <form onSubmit={formik.handleSubmit}>
         <MESelect
           id="academicClass"
-          label={
-            i18n.exists("academicClassSelectionLabel")
-              ? _.upperFirst(t("academicClassSelectionLabel"))
-              : _.upperFirst(academicClassSelectionLabel)
-          }
+          label={_.upperFirst(
+            t("academicClassSelectionLabel", {
+              defaultValue: academicClassSelectionLabel,
+            })
+          )}
           items={_.filter(
             defaultAcademicClasses,
             (defaultAcademicClass) =>
@@ -80,11 +79,11 @@ const AcademicClassForm = () => {
                 _.toLower(defaultAcademicClass.label)
               )
           )}
-          placeholder={
-            i18n.exists("academicClassSelectionPlaceholder")
-              ? _.upperFirst(t("academicClassSelectionPlaceholder"))
-              : _.upperFirst(academicClassSelectionPlaceholder)
-          }
+          placeholder={_.upperFirst(
+            t("academicClassSelectionPlaceholder", {
+              defaultValue: academicClassSelectionPlaceholder,
+            })
+          )}
           selectedValue={formik.values.academicClass}
           message={formik.errors.academicClass}
           selectVariant={variants.DARK}
@@ -97,9 +96,11 @@ const AcademicClassForm = () => {
         />
         <div className="py-2">
           <MEButton type="submit" buttonVariant={variants.SUCCESS}>
-            {i18n.exists("academicClassSubmitButtonText")
-              ? _.upperCase(t("academicClassSubmitButtonText"))
-              : _.upperCase(academicClassSubmitButtonText)}
+            {_.upperCase(
+              t("academicClassSubmitButtonText", {
+                defaultValue: academicClassSubmitButtonText,
+              })
+            )}
             {academicClassFormLoader && <MELoaderIcon />}
           </MEButton>
         </div>

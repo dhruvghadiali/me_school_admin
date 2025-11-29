@@ -21,7 +21,7 @@ import {
 import _ from "lodash";
 
 import MEButton from "@MECommonComponents/form/button/meButton";
-// import AcademicClassForm from "@MEScreenComponents/academicClass/academicClassForm";
+import AcademicClassForm from "@MEScreenComponents/academicClass/academicClassForm";
 
 const AcademicClassSheet = () => {
   const { isAcademicClassFormSheetOpen } = useSelector(
@@ -53,7 +53,7 @@ const AcademicClassSheet = () => {
             </SheetTitle>
             <SheetDescription>
               {_.upperFirst(t("addAcademicClassSheetDescription",{defaultValue: addAcademicClassSheetDescription}))}
-              {/* <AcademicClassForm /> */}
+              <AcademicClassForm />
             </SheetDescription>
           </SheetHeader>
         </SheetContent>
