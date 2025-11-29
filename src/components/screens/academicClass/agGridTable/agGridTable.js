@@ -1,10 +1,11 @@
 import { Trash2 } from "lucide-react";
-import { AgGridReact } from "ag-grid-react";
+// AG Grid removed; rendering a simple table instead
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
+import MEDataTable from "@/components/common/table/meDataTable";
 // import {
 //   onChangeEductionBoard,
 //   deleteAcademicClasses,
@@ -50,7 +51,11 @@ const AcademicClassScreenAGGridTable = () => {
       field: "actions",
       cellRenderer: (data) => (
         <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
-          <Button size="icon" variant="link" className="text-danger">
+          <Button
+            size="icon"
+            variant="link"
+            className="text-danger cursor-pointer hover:cursor-pointer"
+          >
             <Trash2 />
           </Button>
         </MEDeleteAlertDialog>
@@ -67,7 +72,8 @@ const AcademicClassScreenAGGridTable = () => {
       ),
       field: "academicClass",
       filter: true,
-      flex: 1,
+      sortable: true,
+      width: 500,
     },
     {
       headerName: _.upperFirst(
@@ -77,6 +83,8 @@ const AcademicClassScreenAGGridTable = () => {
       ),
       field: "createdBy",
       filter: true,
+      sortable: true,
+      width: 300,
     },
     {
       headerName: _.upperFirst(
@@ -85,18 +93,10 @@ const AcademicClassScreenAGGridTable = () => {
         })
       ),
       field: "createdAt",
-      filter: "agDateColumnFilter",
-      filterParams: {
-        comparator: (filterLocalDateAtMidnight, cellValue) => {
-          if (!cellValue) return -1;
-          const cellDate = moment(cellValue, "DD MMM YYYY")
-            .startOf("day")
-            .toDate();
-          if (cellDate < filterLocalDateAtMidnight) return -1;
-          if (cellDate > filterLocalDateAtMidnight) return 1;
-          return 0;
-        },
-      },
+      filter: true,
+      filterType: "dateColumnFilter",
+      sortable: true,
+      width: 300,
     },
     {
       headerName: _.upperFirst(
@@ -106,6 +106,8 @@ const AcademicClassScreenAGGridTable = () => {
       ),
       field: "updatedBy",
       filter: true,
+      sortable: true,
+      width: 300,
     },
     {
       headerName: _.upperFirst(
@@ -114,22 +116,12 @@ const AcademicClassScreenAGGridTable = () => {
         })
       ),
       field: "updatedAt",
-      filter: "agDateColumnFilter",
-      filterParams: {
-        comparator: (filterLocalDateAtMidnight, cellValue) => {
-          if (!cellValue) return -1;
-          const cellDate = moment(cellValue, "DD MMM YYYY")
-            .startOf("day")
-            .toDate();
-          if (cellDate < filterLocalDateAtMidnight) return -1;
-          if (cellDate > filterLocalDateAtMidnight) return 1;
-          return 0;
-        },
-      },
+      filter: true,
+      filterType: "dateColumnFilter",
+      sortable: true,
+      width: 300,
     },
   ];
-
-  console.log("educationBoards", educationBoards);
 
   return (
     <>
@@ -162,11 +154,7 @@ const AcademicClassScreenAGGridTable = () => {
       </div>
 
       <div className="ag-theme-alpine w-full h-[75vh]">
-        <AgGridReact
-          rowData={academicClasses}
-          columnDefs={colDefs}
-          pagination={true}
-        />
+        <MEDataTable rows={academicClasses} columns={colDefs} />
       </div>
     </>
   );

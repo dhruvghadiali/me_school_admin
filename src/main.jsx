@@ -1,14 +1,13 @@
-import { StrictMode } from 'react';
-import { Provider } from "react-redux";
-import { createRoot } from 'react-dom/client';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App.jsx'
 
-import App from './App.jsx';
+import { Provider } from "react-redux";
 import store from "@/store";
 
-import '@/index.css';
+// AG Grid removed
 
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
+import '@/index.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
