@@ -5,7 +5,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { signIn } from "@MERedux/authentication/authenticationAction";
-import { signInForm } from "@MELocalization/signIn/signInTranslationEn";
+import {
+  usernameInputLabel,
+  passwordInputLabel,
+  signInButtonLabel,
+} from "@MELocalization/signIn/signInTranslationEn";
 import {
   passwordMax,
   passwordMin,
@@ -104,10 +108,10 @@ const SignInForm = () => {
           onChange={handleFieldChange}
           onBlur={() => handleFieldBlur("username")}
           placeholder={t("usernameInputLabel", {
-            defaultValue: signInForm.usernameInputLabel,
+            defaultValue: usernameInputLabel,
           })}
           label={t("usernameInputLabel", {
-            defaultValue: signInForm.usernameInputLabel,
+            defaultValue: usernameInputLabel,
           })}
         />
         <MEInput
@@ -126,20 +130,21 @@ const SignInForm = () => {
           onChange={handleFieldChange}
           onBlur={() => handleFieldBlur("password")}
           placeholder={t("passwordInputLabel", {
-            defaultValue: signInForm.passwordInputLabel,
+            defaultValue: passwordInputLabel,
           })}
           label={t("passwordInputLabel", {
-            defaultValue: signInForm.passwordInputLabel,
+            defaultValue: passwordInputLabel,
           })}
         />
 
         <div className="py-2">
-          <MEButton 
-            type="submit" 
+          <MEButton
+            type="submit"
             disabled={loader}
-            buttonVariant={variants.SUCCESS}>
+            buttonVariant={variants.SUCCESS}
+          >
             {t("signInButtonLabel", {
-              defaultValue: signInForm.signInButtonLabel,
+              defaultValue: signInButtonLabel,
             })}
             {loader && <MELoaderIcon />}
           </MEButton>

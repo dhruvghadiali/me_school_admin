@@ -7,9 +7,13 @@ import {
 } from "@MERedux/academicClass/academicClassAction";
 
 import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+import AcademicClassScreenHeader from "@MEScreenComponents/academicClass/header/header";
+import AcademicClassScreenAGGridTable from "@MEScreenComponents/academicClass/agGridTable/agGridTable";
+import AcademicClassScreenAGGridLoader from "@MEScreenComponents/academicClass/agGridTable/agGridLoader";
 
 const AcademicClassPage = () => {
   const dispatch = useDispatch();
+  const { academicClassLoader } = useSelector((state) => state.academicClass);
 
   useEffect(() => {
     dispatch(getAcademicClasses());
@@ -18,7 +22,12 @@ const AcademicClassPage = () => {
 
   return (
     <MESidebar>
-      <h1>Academic Class</h1>
+      <AcademicClassScreenHeader />
+      {academicClassLoader ? (
+        <AcademicClassScreenAGGridLoader />
+      ) : (
+        <AcademicClassScreenAGGridTable />
+      )}
     </MESidebar>
   );
 };

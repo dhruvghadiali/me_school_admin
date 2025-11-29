@@ -35,7 +35,7 @@ const MainContent = ({ children }) => {
   const { open, isMobile } = useSidebar();
   
   return (
-    <main className={`flex-1 overflow-auto transition-all duration-200 ${!isMobile ? open ? 'pl-6 ml-48' : 'pl-6 ml-14' : ''}`}>
+    <main className={`flex-1 overflow-auto transition-all duration-200 pr-6 ${!isMobile ? open ? 'pl-6 ml-48' : 'pl-6 ml-14' : ''}`}>
       {children}
     </main>
   );

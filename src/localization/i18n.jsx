@@ -1,7 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { profile } from "@MELocalization/profile/profileTranslationEn";
-import { signInForm } from "@MELocalization/signIn/signInTranslationEn";
 import { admissionHub } from "@MELocalization/admission/admissionTranslationEn";
 import { dashboardSummary } from "@MELocalization/dashboard/dashboardTranslationEn";
 
@@ -11,7 +10,6 @@ const resources = {
   en: {
     translation: {
       ...profile,
-      ...signInForm,
       ...admissionHub,
       ...dashboardSummary,
       ...localizationEn,

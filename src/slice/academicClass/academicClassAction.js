@@ -121,7 +121,13 @@ const getAcademicClasses = createAsyncThunk(
           _.size(user.school.educationBoards) > 0
         ) {
           school = user.school.id;
-          educationBoards = user.school.educationBoards;
+          educationBoards = _.map(
+            user.school.educationBoards,
+            (educationBoard) => ({
+              label: educationBoard.educationBoard,
+              value: educationBoard.id,
+            })
+          );
           selectedEducationBoard = user.school.educationBoards[0].id;
 
           const response = await axiosInstance.get(
@@ -219,7 +225,7 @@ const getDefaultAcademicClasses = createAsyncThunk(
 
       if (apiResponseHaveData(response)) {
         return {
-          defaultAcademicClasses: response.data.map((academicClass) => {
+          defaultAcademicClasses: _.map(response.data, (academicClass) => {
             let academicClassInfo = academicClassAPIResponse(academicClass);
             return {
               label: academicClassInfo.academicClass,
@@ -227,14 +233,15 @@ const getDefaultAcademicClasses = createAsyncThunk(
             };
           }),
           error: "",
-        }
+        };
       } else {
         return {
           defaultAcademicClasses: [],
-          error: response && response.message
-            ? response.message
-            : "No academic classes found",
-        }
+          error:
+            response && response.message
+              ? response.message
+              : "No academic classes found",
+        };
       }
     } catch (error) {
       const errMsg =
