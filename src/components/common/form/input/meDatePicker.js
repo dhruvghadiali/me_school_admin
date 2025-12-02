@@ -70,7 +70,7 @@ export default function MEDatePicker({
       )}
       <Popover open={open} onOpenChange={setOpen} modal={popoverModal}>
         <PopoverTrigger asChild>
-          <MEButton className={`w-full border bg-transparent ${placeholderTextColor} font-normal hover:bg-transparent cursor-pointer`}>
+          <MEButton className={`w-full border bg-transparent ${placeholderTextColor} font-normal shadow-xs transition-[color,box-shadow] hover:bg-transparent cursor-pointer`}>
             <span className="text-left truncate w-full">{displayText}</span>
             <CalendarIcon className="ml-2 h-4 w-4 text-dark" />
           </MEButton>
@@ -82,7 +82,7 @@ export default function MEDatePicker({
           className="z-50 w-auto p-0 bg-popover border border-border rounded-md shadow-lg"
         >
           <Calendar
-            className="p-2"
+            className="p-2 bg-accent/10 rounded-md"
             mode="single"
             disabled={disabledDays}
             selected={selected || (useDefaultAsSelected ? defDate : undefined)}
