@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react";
 import { format, isValid as isValidDate } from "date-fns";
-import "react-day-picker/style.css";
 
-import { Button } from "@MEShadcnComponents/button";
+import { CalendarIcon } from "lucide-react";
 import { Label } from "@MEShadcnComponents/label";
 import { Calendar } from "@MEShadcnComponents/calendar";
 import {
@@ -10,10 +9,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@MEShadcnComponents/popover";
-import MEInput from "@MECommonComponents/form/input/meInput";
-import { variants } from "@MEUtils/enums";
-import { CalendarIcon } from "lucide-react";
+
 import MEButton from "@MECommonComponents/form/button/meButton";
+
+import "react-day-picker/style.css";
 
 // MEDatePicker: single-date input with popover calendar
 export default function MEDatePicker({
@@ -70,7 +69,9 @@ export default function MEDatePicker({
       )}
       <Popover open={open} onOpenChange={setOpen} modal={popoverModal}>
         <PopoverTrigger asChild>
-          <MEButton className={`w-full border bg-transparent ${placeholderTextColor} font-normal shadow-xs transition-[color,box-shadow] hover:bg-transparent cursor-pointer`}>
+          <MEButton 
+            disabled={disabled}
+            className={`w-full border bg-transparent ${placeholderTextColor} font-normal shadow-xs transition-[color,box-shadow] hover:bg-transparent cursor-pointer`}>
             <span className="text-left truncate w-full">{displayText}</span>
             <CalendarIcon className="ml-2 h-4 w-4 text-dark" />
           </MEButton>
@@ -82,7 +83,10 @@ export default function MEDatePicker({
           className="z-50 w-auto p-0 bg-popover border border-border rounded-md shadow-lg"
         >
           <Calendar
-            className="p-2 bg-accent/10 rounded-md"
+            classNames={{
+              today: "bg-danger/20 text-danger ring-1 ring-danger rounded-full",
+              selected: "bg-dark text-danger-foreground rounded-full",
+            }}
             mode="single"
             disabled={disabledDays}
             selected={selected || (useDefaultAsSelected ? defDate : undefined)}

@@ -94,6 +94,23 @@ const MEDataTable = ({ columns, rows, emptyText = "No data available" }) => {
     });
   }, [filteredRows, sortConfig]);
 
+  // Pagination: page size options 15, 25, 50; default 15
+  const PAGE_SIZE_OPTIONS = [15, 25, 50];
+  const [pageSize, setPageSize] = useState(15);
+  const [pageIndex, setPageIndex] = useState(0); // 0-based
+
+  const totalRows = sortedRows.length;
+  const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
+  const pagedRows = useMemo(() => {
+    const start = pageIndex * pageSize;
+    return sortedRows.slice(start, start + pageSize);
+  }, [sortedRows, pageIndex, pageSize]);
+
+  // Reset page when filters or pageSize change to keep within bounds
+  useMemo(() => {
+    if (pageIndex > totalPages - 1) setPageIndex(0);
+  }, [totalPages]);
+
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
   const [filterDraftAll, setFilterDraftAll] = useState({});
 
@@ -199,8 +216,8 @@ const MEDataTable = ({ columns, rows, emptyText = "No data available" }) => {
             </tr>
           </thead>
           <tbody>
-            {sortedRows && sortedRows.length > 0 ? (
-              sortedRows.map((row, idx) => (
+            {pagedRows && pagedRows.length > 0 ? (
+              pagedRows.map((row, idx) => (
                 <tr key={row.id ?? idx} className="border-t odd:bg-muted/30">
                   {resolvedColumns.map((col) => (
                     <td
@@ -230,6 +247,50 @@ const MEDataTable = ({ columns, rows, emptyText = "No data available" }) => {
           </tbody>
         </table>
       </div>
+      {/* Pagination controls */}
+      <div className="flex items-center justify-between gap-3 p-2 sm:p-3 border-t border-border">
+        <div className="flex items-center gap-2">
+          <span className="text-xs sm:text-sm text-muted-foreground">Rows per page:</span>
+          <select
+            className="rounded-md border border-input bg-transparent px-2 py-1 text-xs sm:text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+            value={pageSize}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              setPageSize(val);
+              setPageIndex(0);
+            }}
+          >
+            {PAGE_SIZE_OPTIONS.map((opt) => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-xs sm:text-sm text-muted-foreground">
+            {totalRows === 0
+              ? "0 of 0"
+              : `${pageIndex * pageSize + 1}-${Math.min((pageIndex + 1) * pageSize, totalRows)} of ${totalRows}`}
+          </span>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="outline"
+              className="px-2 py-1"
+              onClick={() => setPageIndex((p) => Math.max(0, p - 1))}
+              disabled={pageIndex === 0}
+            >
+              Prev
+            </Button>
+            <Button
+              variant="outline"
+              className="px-2 py-1"
+              onClick={() => setPageIndex((p) => Math.min(totalPages - 1, p + 1))}
+              disabled={pageIndex >= totalPages - 1}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      </div>
       <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
         <SheetContent side="right" className="[&>button]:cursor-pointer">
           <SheetHeader>
@@ -245,6 +306,7 @@ const MEDataTable = ({ columns, rows, emptyText = "No data available" }) => {
                     <MEDatePicker
                       label={""}
                       placeholder={"Select date"}
+                      // todayClassName="bg-danger/20 text-danger ring-1 ring-danger rounded-full"
                       selectedDate={filterDraftAll[c._key] ?? ""}
                       onSelect={(date) =>
                         setFilterDraftAll((prev) => ({ ...prev, [c._key]: date }))
