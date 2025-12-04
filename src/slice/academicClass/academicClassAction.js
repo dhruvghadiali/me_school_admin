@@ -8,101 +8,19 @@ import {
   academicClassesAPIRoute,
   schoolAcademicClassesAPIRoute,
 } from "@MEUtils/apiRoutes";
-// import {
-//   defaultAPIErrorResponse,
-//   setUpAxiosInstanceConfig,
-// } from "@MEUtils/utilityFunctions";
 
 import _ from "lodash";
 
-import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
-
-// const setUpAcademicClassStateValue = (authentication, academicClass) => {
-//   if (
-//     academicClass &&
-//     authentication &&
-//     authentication.user &&
-//     authentication.user.school &&
-//     authentication.user.school.id &&
-//     authentication.user.school.educationBoards &&
-//     authentication.user.school.educationBoards.length > 0
-//   ) {
-//     let school = authentication.user.school;
-//     let selectedEducationBoard = academicClass.selectedEducationBoard
-//       ? academicClass.selectedEducationBoard
-//       : "";
-
-//     if (selectedEducationBoard) {
-//       selectedEducationBoard = selectedEducationBoard =
-//         _.findIndex(
-//           school.educationBoards,
-//           (educationBoard) => educationBoard.id === selectedEducationBoard
-//         ) === -1
-//           ? school.educationBoards[0].id
-//           : selectedEducationBoard;
-//     } else {
-//       selectedEducationBoard = school.educationBoards[0].id;
-//     }
-
-//     let educationBoards = school.educationBoards.map((educationBoard) => ({
-//       label: educationBoard.educationBoard,
-//       value: educationBoard.id,
-//     }));
-
-//     return {
-//       school: school.id,
-//       educationBoards: educationBoards,
-//       selectedEducationBoard: selectedEducationBoard,
-//     };
-//   } else {
-//     return {
-//       school: "",
-//       selectedEducationBoard: "",
-//       educationBoards: [],
-//     };
-//   }
-// };
-
-// const getAcademicClassesInfo = async ({
-//   school,
-//   selectedEducationBoard,
-//   axiosInstanceConfig,
-// }) => {
-//   try {
-//     const response = await axiosInstance.get(
-//       `${schoolAcademicClassesAPIRoute}/${school}/${selectedEducationBoard}`,
-//       axiosInstanceConfig
-//     );
-
-//     if (response && response.data && response.data.length > 0) {
-//       return {
-//         academicClassError:
-//           response && response.message ? response.message : "",
-//         academicClasses: _.sortBy(_.map(response.data, (academicClass) =>
-//           schoolAcademicClassAPIResponse(academicClass)
-//         ),['academicClass']),
-//       };
-//     } else {
-//       return {
-//         academicClassError:
-//           response && response.message ? response.message : "",
-//         academicClasses: [],
-//       };
-//     }
-//   } catch (error) {
-//     return {
-//       academicClassError: error && error.message ? error.message : "",
-//       academicClasses: [],
-//     };
-//   }
-// };
+import {
+  axiosInstance,
+  apiResponseHaveData,
+  isAPIServedSuccessfully,
+} from "@MEUtils/axiosInstance";
 
 const getAcademicClasses = createAsyncThunk(
   "academicClass/getAcademicClasses",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
-      console.log("getAcademicClasses thunk called", getState());
-
       let school = "";
       let selectedEducationBoard = "";
       let academicClasses = [];
@@ -128,7 +46,12 @@ const getAcademicClasses = createAsyncThunk(
               value: educationBoard.id,
             })
           );
-          selectedEducationBoard = user.school.educationBoards[0].id;
+          selectedEducationBoard =
+            getState() &&
+            getState().academicClass &&
+            getState().academicClass.selectedEducationBoard
+              ? getState().academicClass.selectedEducationBoard
+              : user.school.educationBoards[0].id;
 
           const response = await axiosInstance.get(
             `${schoolAcademicClassesAPIRoute}/${school}/${selectedEducationBoard}`,
@@ -187,43 +110,82 @@ const getAcademicClasses = createAsyncThunk(
   }
 );
 
-// const onChangeEductionBoard = createAsyncThunk(
-//   "academicClass/onChangeEductionBoard",
-//   async (payload, { getState, rejectWithValue, dispatch }) => {
-//     try {
-//       const axiosInstanceConfig = setUpAxiosInstanceConfig(
-//         getState(),
-//         dispatch
-//       );
-//       const state = getState();
-//       const academicClass = state.academicClass;
+const onChangeEductionBoard = createAsyncThunk(
+  "academicClass/onChangeEductionBoard",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      let school = "";
+      let selectedEducationBoard = payload;
+      let academicClasses = [];
 
-//       let response = await getAcademicClassesInfo({
-//         school: academicClass.school,
-//         selectedEducationBoard: payload,
-//         axiosInstanceConfig: axiosInstanceConfig,
-//       });
+      if (
+        getState() &&
+        getState().authentication &&
+        getState().authentication.user
+      ) {
+        let user = getState().authentication.user;
 
-//       return {
-//         ...response,
-//         selectedEducationBoard: payload,
-//       };
-//     } catch (error) {
-//       return rejectWithValue({
-//         error: defaultAPIErrorResponse.message,
-//         academicClasses: [],
-//         selectedEducationBoard: "",
-//       });
-//     }
-//   }
-// );
+        if (
+          user.school &&
+          user.school.id &&
+          user.school.educationBoards &&
+          _.size(user.school.educationBoards) > 0
+        ) {
+          school = user.school.id;
+
+          const response = await axiosInstance.get(
+            `${schoolAcademicClassesAPIRoute}/${school}/${selectedEducationBoard}`,
+            { state: getState() }
+          );
+
+          if (apiResponseHaveData(response)) {
+            return {
+              academicClasses: _.sortBy(
+                _.map(response.data, (academicClass) =>
+                  schoolAcademicClassAPIResponse(academicClass)
+                ),
+                ["academicClass"]
+              ),
+              selectedEducationBoard,
+              error: "",
+            };
+          } else {
+            return {
+              academicClasses,
+              selectedEducationBoard,
+              error:
+                response && response.message
+                  ? response.message
+                  : "No academic classes found",
+            };
+          }
+        } else {
+          return {
+            academicClasses,
+            selectedEducationBoard,
+            error: "No school or education boards found for the user",
+          };
+        }
+      } else {
+        return {
+          academicClasses,
+          selectedEducationBoard,
+          error: "No authenticated user found",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Get academic classes request failed";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
 
 const getDefaultAcademicClasses = createAsyncThunk(
   "academicClass/getDefaultAcademicClasses",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
-      console.log("getDefaultAcademicClasses thunk called", getState());
-
       const response = await axiosInstance.get(academicClassesAPIRoute, {
         state: getState(),
       });
@@ -261,8 +223,6 @@ const addAcademicClasses = createAsyncThunk(
   "academicClass/addAcademicClasses",
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
-      console.log("getDefaultAcademicClasses thunk called", getState());
-
       const response = await axiosInstance.post(
         schoolAcademicClassesAPIRoute,
         payload,
@@ -294,36 +254,44 @@ const addAcademicClasses = createAsyncThunk(
   }
 );
 
-// const deleteAcademicClasses = createAsyncThunk(
-//   "academicClass/deleteAcademicClasses",
-//   async (payload, { getState, rejectWithValue, dispatch }) => {
-//     try {
-//       const axiosInstanceConfig = setUpAxiosInstanceConfig(
-//         getState(),
-//         dispatch
-//       );
+const deleteAcademicClasses = createAsyncThunk(
+  "academicClass/deleteAcademicClasses",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const response = await axiosInstance.delete(
+        `${schoolAcademicClassesAPIRoute}/${payload}`,
+        {
+          state: getState(),
+        }
+      );
 
-//       await axiosInstance.delete(
-//         `${schoolAcademicClassesAPIRoute}/${payload}`,
-//         axiosInstanceConfig
-//       );
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getAcademicClasses());
 
-//       dispatch(getAcademicClasses());
-//       return {
-//         error: "",
-//       };
-//     } catch (error) {
-//       return rejectWithValue({
-//         error: error && error.message ? error.message : "",
-//       });
-//     }
-//   }
-// );
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "academic class deletion failed",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "academic class deletion failed";
+      return rejectWithValue({ error: errMsg });
+    }
+  }
+);
 
 export {
   addAcademicClasses,
   getAcademicClasses,
-  // onChangeEductionBoard,
-  // deleteAcademicClasses,
+  onChangeEductionBoard,
+  deleteAcademicClasses,
   getDefaultAcademicClasses,
 };

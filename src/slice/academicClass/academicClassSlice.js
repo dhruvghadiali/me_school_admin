@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   addAcademicClasses,
   getAcademicClasses,
-  // onChangeEductionBoard,
-  // deleteAcademicClasses,
+  onChangeEductionBoard,
+  deleteAcademicClasses,
   getDefaultAcademicClasses,
 } from "@/slice/academicClass/academicClassAction";
 import { API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
@@ -40,7 +40,7 @@ export const academicClassSlice = createSlice({
         state.academicClasses = [];
       })
       .addCase(getAcademicClasses.fulfilled, (state, action) => {
-        state.academicClassError = action.payload.error;
+        state.academicClassError = "action.payload.error";
         state.academicClassLoader = false;
         state.school = action.payload.school;
         state.selectedEducationBoard = action.payload.selectedEducationBoard;
@@ -55,22 +55,22 @@ export const academicClassSlice = createSlice({
         state.educationBoards = [];
         state.academicClasses = [];
       })
-      // .addCase(onChangeEductionBoard.pending, (state, _) => {
-      //   // state.academicClassError = "";
-      //   // state.academicClassLoader = true;
-      //   // state.academicClasses = [];
-      // })
-      // .addCase(onChangeEductionBoard.fulfilled, (state, action) => {
-      //   // state.academicClassError = action.payload.error;
-      //   // state.academicClassLoader = false;
-      //   // state.selectedEducationBoard = action.payload.selectedEducationBoard;
-      //   // state.academicClasses = action.payload.academicClasses;
-      // })
-      // .addCase(onChangeEductionBoard.rejected, (state, action) => {
-      //       // state.error = action.payload.error;
-      //       // state.academicClassLoader = false;
-      //       // state.academicClasses = [];
-      // })
+      .addCase(onChangeEductionBoard.pending, (state, _) => {
+        state.academicClassError = "";
+        state.academicClassLoader = true;
+        state.academicClasses = [];
+      })
+      .addCase(onChangeEductionBoard.fulfilled, (state, action) => {
+        state.academicClassError = action.payload.error;
+        state.academicClassLoader = false;
+        state.selectedEducationBoard = action.payload.selectedEducationBoard;
+        state.academicClasses = action.payload.academicClasses;
+      })
+      .addCase(onChangeEductionBoard.rejected, (state, action) => {
+        state.error = action.payload.error;
+        state.academicClassLoader = false;
+        state.academicClasses = [];
+      })
       .addCase(getDefaultAcademicClasses.pending, (state, _) => {
         state.academicClassError = "";
         state.defaultAcademicClasses = [];
@@ -91,23 +91,23 @@ export const academicClassSlice = createSlice({
       .addCase(addAcademicClasses.fulfilled, (state, action) => {
         state.academicClassFormError = action.payload.error;
         state.academicClassFormLoader = false;
+      })
+      .addCase(addAcademicClasses.rejected, (state, action) => {
+        state.academicClassFormError = action.payload.error;
+        state.academicClassFormLoader = false;
+      })
+      .addCase(deleteAcademicClasses.pending, (state, _) => {
+        state.academicClassError = "";
+        state.academicClassLoader = true;
+      })
+      .addCase(deleteAcademicClasses.fulfilled, (state, action) => {
+        state.academicClassError = action.payload.error;
+        // state.academicClassLoader = false;
+      })
+      .addCase(deleteAcademicClasses.rejected, (state, action) => {
+        state.academicClassError = action.payload.error;
+        state.academicClassLoader = false;
       });
-    // .addCase(addAcademicClasses.rejected, (state, action) => {
-    //   // state.academicClassFormError = action.payload.error;
-    //   // state.academicClassFormLoader = false;
-    // })
-    // .addCase(deleteAcademicClasses.pending, (state, _) => {
-    //   // state.academicClassFormError = "";
-    //   // state.academicClassFormLoader = true;
-    // })
-    // .addCase(deleteAcademicClasses.fulfilled, (state, action) => {
-    //   // state.academicClassFormError = action.payload.error;
-    //   // state.academicClassFormLoader = false;
-    // })
-    // .addCase(deleteAcademicClasses.rejected, (state, action) => {
-    //   // state.academicClassFormError = action.payload.error;
-    //   // state.academicClassFormLoader = false;
-    // });
   },
 });
 

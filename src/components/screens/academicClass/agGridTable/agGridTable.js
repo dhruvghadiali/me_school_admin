@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
 import MEDataTable from "@/components/common/table/meDataTable";
-// import {
-//   onChangeEductionBoard,
-//   deleteAcademicClasses,
-// } from "@MERedux/academicClass/academicClassAction";
+import {
+  onChangeEductionBoard,
+  deleteAcademicClasses,
+} from "@MERedux/academicClass/academicClassAction";
 import {
   academicClassColumnTitle,
   eductionBoardSelectionLabel,
@@ -36,8 +36,8 @@ const AcademicClassScreenAGGridTable = () => {
   const dispatch = useDispatch();
 
   const onDeleteConfirm = (data) => {
-    if (data && data.data && data.data.id) {
-      // dispatch(deleteAcademicClasses(data.data.id));
+    if (data && data.id) {
+      dispatch(deleteAcademicClasses(data.id));
     }
   };
 
@@ -49,7 +49,9 @@ const AcademicClassScreenAGGridTable = () => {
         })
       ),
       field: "actions",
-      cellRenderer: (data) => (
+      cellRenderer: (data) => {
+        console.log("Action Cell Data:", data);
+        return (
         <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
           <Button
             size="icon"
@@ -59,7 +61,8 @@ const AcademicClassScreenAGGridTable = () => {
             <Trash2 />
           </Button>
         </MEDeleteAlertDialog>
-      ),
+      );
+      },
       width: 100,
       filter: false,
       sortable: false,
@@ -144,7 +147,7 @@ const AcademicClassScreenAGGridTable = () => {
                   defaultValue: eductionBoardSelectionPlaceholder,
                 })
               )}
-              // onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
+              onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
             />
           </div>
         </div>
