@@ -2,7 +2,7 @@ import { Skeleton } from "@MEShadcnComponents/skeleton";
 
 import _ from "lodash";
 
-const AcademicClassScreenAGGridLoader = () => {
+const AcademicClassScreenTableDataLoader = () => {
   return (
     <div className="border-2 border-secondary mt-10">
       {_.times(15, (index) => {
@@ -42,6 +42,6 @@ const AcademicClassScreenAGGridLoader = () => {
   );
 };
 
-AcademicClassScreenAGGridLoader.propTypes = {};
+AcademicClassScreenTableDataLoader.propTypes = {};
 
-export default AcademicClassScreenAGGridLoader;
+export default AcademicClassScreenTableDataLoader;

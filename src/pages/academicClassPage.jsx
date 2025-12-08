@@ -8,8 +8,8 @@ import {
 
 import MESidebar from "@MECommonComponents/sidebar/meSidebar";
 import AcademicClassScreenHeader from "@MEScreenComponents/academicClass/header/header";
-import AcademicClassScreenAGGridTable from "@MEScreenComponents/academicClass/agGridTable/agGridTable";
-import AcademicClassScreenAGGridLoader from "@MEScreenComponents/academicClass/agGridTable/agGridLoader";
+import AcademicClassScreenTableData from "@MEScreenComponents/academicClass/tableData";
+import AcademicClassScreenTableDataLoader from "@MEScreenComponents/academicClass/tableData/tableDataLoader";
 
 const AcademicClassPage = () => {
   const dispatch = useDispatch();
@@ -24,9 +24,9 @@ const AcademicClassPage = () => {
     <MESidebar>
       <AcademicClassScreenHeader />
       {academicClassLoader ? (
-        <AcademicClassScreenAGGridLoader />
+        <AcademicClassScreenTableDataLoader />
       ) : (
-        <AcademicClassScreenAGGridTable />
+        <AcademicClassScreenTableData />
       )}
     </MESidebar>
   );

@@ -28,7 +28,7 @@ import MESelect from "@MECommonComponents/form/select/meSelect";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 import AcademicClassSheet from "@MEScreenComponents/academicClass/academicClassSheet/academicClassSheet";
 
-const AcademicClassScreenAGGridTable = () => {
+const AcademicClassScreenTableData = () => {
   const { selectedEducationBoard, educationBoards, academicClasses } =
     useSelector((state) => state.academicClass);
   const { t } = useTranslation();
@@ -163,6 +163,6 @@ const AcademicClassScreenAGGridTable = () => {
   );
 };
 
-AcademicClassScreenAGGridTable.propTypes = {};
+AcademicClassScreenTableData.propTypes = {};
 
-export default AcademicClassScreenAGGridTable;
+export default AcademicClassScreenTableData;
