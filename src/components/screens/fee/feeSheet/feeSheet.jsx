@@ -53,7 +53,10 @@ const FeeSheet = () => {
             {_.upperFirst(t("addFeeButtonText", { defaultValue: addFeeButtonText }))}
           </MEButton>
         </SheetTrigger>
-        <SheetContent side="right" className="!w-[30vw] !max-w-none p-4">
+        <SheetContent
+          side="right"
+          className="!w-[90vw] md:!w-[80vw] lg:!w-[60vw] xl:!w-[30vw] !max-w-none p-4"
+        >
           <SheetHeader>
             <SheetTitle>
               {feeFormData.id
