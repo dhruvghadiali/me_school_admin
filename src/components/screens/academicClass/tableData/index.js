@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
-import MEDataTable from "@/components/common/table/meDataTable";
 import {
   onChangeEductionBoard,
   deleteAcademicClasses,
@@ -22,8 +21,8 @@ import {
 } from "@MELocalization/en";
 
 import _ from "lodash";
-import moment from "moment/moment";
 
+import MEDataTable from "@/components/common/table/meDataTable";
 import MESelect from "@MECommonComponents/form/select/meSelect";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 import AcademicClassSheet from "@MEScreenComponents/academicClass/academicClassSheet/academicClassSheet";

@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import {
-  // feesAPIResponse,
+  feesAPIResponse,
   feeTypesAPIResponse,
   eductionBoardsWithAcademicClassesAPIResponse,
 } from "@MEUtils/apiResponse";
 import {
-  // feesAPIRoute,
+  feesAPIRoute,
   feeTypesAPIRoute,
   schoolAcademicClassesAPIRoute,
 } from "@MEUtils/apiRoutes";
@@ -85,10 +85,9 @@ const getFeeTypes = createAsyncThunk(
   async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       let feeTypes = [];
-      const response = await axiosInstance.get(
-        `${feeTypesAPIRoute}`,
-        { state: getState() }
-      );
+      const response = await axiosInstance.get(`${feeTypesAPIRoute}`, {
+        state: getState(),
+      });
 
       if (apiResponseHaveData(response)) {
         return {
@@ -116,34 +115,30 @@ const getFeeTypes = createAsyncThunk(
 const getFees = createAsyncThunk(
   "fee/getFees",
   async (payload, { getState, rejectWithValue, dispatch }) => {
-    // try {
-    //   const axiosInstanceConfig = setUpAxiosInstanceConfig(
-    //     getState(),
-    //     dispatch
-    //   );
-    //   const response = await axiosInstance.get(
-    //     `${feesAPIRoute}/${payload.academicClass}`,
-    //     axiosInstanceConfig
-    //   );
-    //   if (response && response.data && response.data.length > 0) {
-    //     return {
-    //       fees: _.sortBy(
-    //         _.map(response.data, (fee) => feesAPIResponse(fee)),
-    //         ["feeType"]
-    //       ),
-    //       error: "",
-    //     };
-    //   } else {
-    //     return {
-    //       fees: [],
-    //       error: response && response.message ? response.message : "",
-    //     };
-    //   }
-    // } catch (error) {
-    //   return rejectWithValue({
-    //     error: error && error.message ? error.message : "",
-    //   });
-    // }
+    try {
+      let fees = [];
+      const response = await axiosInstance.get(
+        `${feesAPIRoute}/${payload.academicClass}`,
+        { state: getState() }
+      );
+
+      if (apiResponseHaveData(response)) {
+        return {
+          fees: feesAPIResponse(response.data),
+          error: "",
+        };
+      } else {
+        return {
+          fees,
+          error:
+            response && response.message ? response.message : "No fees found",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) || "Get fees request failed";
+      return rejectWithValue({ error: errMsg });
+    }
   }
 );
 

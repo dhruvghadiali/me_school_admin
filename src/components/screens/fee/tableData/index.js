@@ -1,20 +1,22 @@
-import { Trash2 } from "lucide-react";
-// AG Grid removed; rendering a simple table instead
+import { Trash2, Edit } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 import { variants } from "@MEUtils/enums";
 import { Button } from "@MEShadcnComponents/button";
-import MEDataTable from "@/components/common/table/meDataTable";
+import { deleteFee, getFees } from "@MERedux/fee/feeAction";
+
 import {
-  onChangeEductionBoard,
-  deleteAcademicClasses,
-} from "@MERedux/academicClass/academicClassAction";
+  setFeeFormData,
+  setEductionBoard,
+  setSelectedAcademicClass,
+  manageFeeFormSheetStatus,
+} from "@MERedux/fee/feeSlice";
 import {
-  academicClassColumnTitle,
   eductionBoardSelectionLabel,
-  academicClassActionColumnTitle,
+  academicClassSelectionLabel,
   eductionBoardSelectionPlaceholder,
+  academicClassSelectionPlaceholder,
   academicClassCreatedByColumnTitle,
   academicClassCreatedAtColumnTitle,
   academicClassUpdatedAtColumnTitle,
@@ -24,145 +26,197 @@ import {
 import _ from "lodash";
 import moment from "moment/moment";
 
+import MEDataTable from "@/components/common/table/meDataTable";
 import MESelect from "@MECommonComponents/form/select/meSelect";
+import FeeSheet from "@MEScreenComponents/fee/feeSheet/feeSheet";
+// import FeeLogSheet from "@MEScreenComponents/fee/feeLogSheet/feeLogSheet";
+import MEEditAlertDialog from "@MECommonComponents/alertDialog/editAlertDialog";
 import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
-import AcademicClassSheet from "@MEScreenComponents/academicClass/academicClassSheet/academicClassSheet";
 
-const AcademicClassScreenTableData = () => {
-  const { selectedEducationBoard, educationBoards, academicClasses } =
-    useSelector((state) => state.academicClass);
+const FeeScreenTableData = () => {
+  const {
+    fees,
+    selectedEductionBoard,
+    selectedAcademicClass,
+    eductionBoardsWithAcademicClasses,
+  } = useSelector((state) => state.fee);
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const onDeleteConfirm = (data) => {
-    if (data && data.id) {
-      dispatch(deleteAcademicClasses(data.id));
-    }
+    // if (data && data.data && data.data.id) {
+    //   dispatch(deleteFee({id: data.data.id, academicClass: selectedAcademicClass}));
+    // }
   };
+
+  const onEditConfirm = (data) => {
+    // dispatch(
+    //   setFeeFormData({ ...data.data, academicClass: selectedAcademicClass })
+    // );
+    // dispatch(manageFeeFormSheetStatus(true));
+  };
+
+  const onAcademicClassChange = (value) => {
+    dispatch(setSelectedAcademicClass(value));
+    dispatch(getFees({ academicClass: value }));
+  };
+
+  const pinnedBottomRowData = [
+    {
+      monthlyFee: _.reduce(fees, (sum, row) => sum + row.monthlyFee, 0),
+      quarterlyFee: _.reduce(fees, (sum, row) => sum + row.quarterlyFee, 0),
+      halfYearlyFee: _.reduce(fees, (sum, row) => sum + row.halfYearlyFee, 0),
+      yearlyFee: _.reduce(fees, (sum, row) => sum + row.yearlyFee, 0),
+    },
+  ];
 
   const colDefs = [
     {
-      headerName: _.upperFirst(
-        t("academicClassActionColumnTitle", {
-          defaultValue: academicClassActionColumnTitle,
-        })
-      ),
-      field: "actions",
+      headerName: "Action",
+      field: "action",
       cellRenderer: (data) => {
-        console.log("Action Cell Data:", data);
         return (
-        <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
-          <Button
-            size="icon"
-            variant="link"
-            className="text-danger cursor-pointer hover:cursor-pointer"
-          >
-            <Trash2 />
-          </Button>
-        </MEDeleteAlertDialog>
-      );
+          <div>
+            <MEEditAlertDialog onConfirm={() => onEditConfirm(data)}>
+              <Button size="icon" variant="link" className="text-dark">
+                <Edit />
+              </Button>
+            </MEEditAlertDialog>
+            <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
+              <Button size="icon" variant="link" className="text-danger">
+                <Trash2 />
+              </Button>
+            </MEDeleteAlertDialog>
+          </div>
+        );
       },
-      width: 100,
+      width: 150,
       filter: false,
       sortable: false,
     },
     {
-      headerName: _.upperFirst(
-        t("academicClassColumnTitle", {
-          defaultValue: academicClassColumnTitle,
-        })
-      ),
-      field: "academicClass",
+      headerName: "Fee Type",
+      field: "feeType",
       filter: true,
-      sortable: true,
       width: 500,
     },
     {
-      headerName: _.upperFirst(
-        t("academicClassCreatedByColumnTitle", {
-          defaultValue: academicClassCreatedByColumnTitle,
-        })
-      ),
+      headerName: "Monthly Fee",
+      field: "monthlyFee",
+      filter: true,
+      width: 150,
+      aggFunc: "sum",
+    },
+    {
+      headerName: "Quarterly Fee",
+      field: "quarterlyFee",
+      filter: true,
+      width: 150,
+    },
+    {
+      headerName: "Half Yearly Fee",
+      field: "halfYearlyFee",
+      filter: true,
+      width: 150,
+    },
+    {
+      headerName: "Yearly Fee",
+      field: "yearlyFee",
+      filter: true,
+      width: 150,
+    },
+    {
+      headerName: _.upperFirst("Created By"),
       field: "createdBy",
       filter: true,
-      sortable: true,
-      width: 300,
     },
     {
-      headerName: _.upperFirst(
-        t("academicClassCreatedAtColumnTitle", {
-          defaultValue: academicClassCreatedAtColumnTitle,
-        })
-      ),
+      headerName: _.upperFirst("Created At"),
       field: "createdAt",
-      filter: true,
       filterType: "dateColumnFilter",
-      sortable: true,
-      width: 300,
+      filter: true,
     },
     {
-      headerName: _.upperFirst(
-        t("academicClassUpdatedByColumnTitle", {
-          defaultValue: academicClassUpdatedByColumnTitle,
-        })
-      ),
+      headerName: _.upperFirst("Updated By"),
       field: "updatedBy",
       filter: true,
-      sortable: true,
-      width: 300,
     },
     {
-      headerName: _.upperFirst(
-        t("academicClassUpdatedAtColumnTitle", {
-          defaultValue: academicClassUpdatedAtColumnTitle,
-        })
-      ),
+      headerName: _.upperFirst("Updated At"),
       field: "updatedAt",
-      filter: true,
       filterType: "dateColumnFilter",
-      sortable: true,
-      width: 300,
+      filter: true,
     },
   ];
 
   return (
     <>
-      <div className="md:grid md:grid-flow-row md:grid-cols-2 mt-5 ml-1 mb-2">
-        <div className="md:self-center md:justify-self-start">
-          <div className="w-60">
-            <MESelect
-              items={educationBoards}
-              selectedValue={selectedEducationBoard}
-              selectVariant={variants.DARK}
-              selectedVariant={variants.DARK}
-              labelvariant={variants.DARK}
-              label={_.upperFirst(
-                t("eductionBoardSelectionLabel", {
-                  defaultValue: eductionBoardSelectionLabel,
-                })
-              )}
-              placeholder={_.upperFirst(
-                t("eductionBoardSelectionPlaceholder", {
-                  defaultValue: eductionBoardSelectionPlaceholder,
-                })
-              )}
-              onValueChange={(value) => dispatch(onChangeEductionBoard(value))}
-            />
+      <div className="lg:grid lg:grid-flow-row lg:grid-cols-2 mt-5 ml-1 mb-2">
+        <div className="lg:self-center lg:justify-self-start">
+          <div className="lg:grid lg:grid-flow-row lg:grid-cols-2 mt-5 ml-1 mb-2">
+            <div className="xl:w-60 lg:pr-2">
+              <MESelect
+                label={_.upperFirst(
+                  t("eductionBoardSelectionLabel", {
+                    defaultValue: eductionBoardSelectionLabel,
+                  })
+                )}
+                placeholder={_.upperFirst(
+                  t("eductionBoardSelectionPlaceholder", {
+                    defaultValue: eductionBoardSelectionPlaceholder,
+                  })
+                )}
+                items={eductionBoardsWithAcademicClasses}
+                selectedValue={selectedEductionBoard}
+                selectVariant={variants.DARK}
+                selectedVariant={variants.DARK}
+                labelvariant={variants.DARK}
+                onValueChange={(value) => dispatch(setEductionBoard(value))}
+              />
+            </div>
+            <div className="xl:w-60 lg:pl-2">
+              <MESelect
+                label={_.upperFirst(
+                  t("academicClassSelectionLabel", {
+                    defaultValue: academicClassSelectionLabel,
+                  })
+                )}
+                placeholder={_.upperFirst(
+                  t("academicClassSelectionPlaceholder", {
+                    defaultValue: academicClassSelectionPlaceholder,
+                  })
+                )}
+                items={
+                  _.find(
+                    eductionBoardsWithAcademicClasses,
+                    (item) => item.value === selectedEductionBoard
+                  )?.children || []
+                }
+                selectedValue={selectedAcademicClass}
+                selectVariant={variants.DARK}
+                selectedVariant={variants.DARK}
+                labelvariant={variants.DARK}
+                onValueChange={(value) => onAcademicClassChange(value)}
+              />
+            </div>
           </div>
         </div>
-        <div className="md:justify-self-end md:self-center md:mt-0 md:mb-0 mb-5 mt-6">
-          <AcademicClassSheet />
+        <div className="justify-self-end self-center lg:mt-0 lg:mb-0 mb-5 mt-6 ">
+          <div className="grid grid-flow-row grid-cols-2 mt-5 ml-1 mb-2">
+            <div className="w-30 pr-2 mb-2">{/* <FeeLogSheet /> */}</div>
+            <div className="w-30 pl-2"><FeeSheet /></div>
+          </div>
         </div>
       </div>
 
       <div className="ag-theme-alpine w-full h-[75vh]">
-        <MEDataTable rows={academicClasses} columns={colDefs} />
+        <MEDataTable rows={fees} columns={colDefs} />
       </div>
     </>
   );
 };
 
-AcademicClassScreenTableData.propTypes = {};
+FeeScreenTableData.propTypes = {};
 
-export default AcademicClassScreenTableData;
+export default FeeScreenTableData;
