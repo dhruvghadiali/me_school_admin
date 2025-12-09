@@ -115,15 +115,15 @@ export const feeSlice = createSlice({
         state.feeFormError = action.payload.error;
       })
       .addCase(deleteFee.pending, (state) => {
-        state.feeFormLoader = true;
+        state.feeLoader = true;
         state.feeFormError = "";
       })
       .addCase(deleteFee.fulfilled, (state, action) => {
-        state.feeFormLoader = false;
+        state.feeLoader = false;
         state.feeFormError = action.payload.error;
       })
       .addCase(deleteFee.rejected, (state, action) => {
-        state.feeFormLoader = false;
+        state.feeLoader = false;
         state.feeFormError = action.payload.error;
       });
   },

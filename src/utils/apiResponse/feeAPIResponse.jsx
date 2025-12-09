@@ -9,34 +9,33 @@ const feeTypesAPIResponse = (data) => {
 };
 
 const feesAPIResponse = (data) => {
-  return {
-    id: data && data.id ? data.id : "",
+  return _.map(data, (fee) => ({
+    id: fee && fee.id ? fee.id : "",
     feeType:
-      data && data.fee_type && data.fee_type.fee_type
-        ? _.upperFirst(data.fee_type.fee_type)
+      fee && fee.fee_type && fee.fee_type.fee_type
+        ? _.upperFirst(fee.fee_type.fee_type)
         : "",
     feeTypeValue:
-      data && data.fee_type && data.fee_type.id ? data.fee_type.id : "",
+      fee && fee.fee_type && fee.fee_type.id ? fee.fee_type.id : "",
     feeTypeLabel:
-      data && data.fee_type && data.fee_type.fee_type ? data.fee_type.fee_type : "",
-    monthlyFee: data && data.monthly_fee ? data.monthly_fee : 0,
-    quarterlyFee: data && data.quarterly_fee ? data.quarterly_fee : 0,
-    halfYearlyFee: data && data.half_yearly_fee ? data.half_yearly_fee : 0,
-    yearlyFee: data && data.yearly_fee ? data.yearly_fee : 0,
+      fee && fee.fee_type && fee.fee_type.fee_type
+        ? fee.fee_type.fee_type
+        : "",
+    monthlyFee: fee && fee.monthly_fee ? fee.monthly_fee : 0,
+    quarterlyFee: fee && fee.quarterly_fee ? fee.quarterly_fee : 0,
+    halfYearlyFee: fee && fee.half_yearly_fee ? fee.half_yearly_fee : 0,
+    yearlyFee: fee && fee.yearly_fee ? fee.yearly_fee : 0,
     createdAt:
-      data && data.created_at
-        ? moment(data.created_at).format("DD MMM YYYY hh:mm A")
+      fee && fee.created_at
+        ? moment(fee.created_at).format("DD MMM YYYY hh:mm A")
         : "",
     updatedAt:
-      data && data.updated_at
-        ? moment(data.updated_at).format("DD MMM YYYY hh:mm A")
+      fee && fee.updated_at
+        ? moment(fee.updated_at).format("DD MMM YYYY hh:mm A")
         : "",
-    createdBy: data && data.created_by ? _.upperFirst(data.created_by) : "",
-    updatedBy: data && data.updated_by ? _.upperFirst(data.updated_by) : "",
-  };
+    createdBy: fee && fee.created_by ? _.upperFirst(fee.created_by) : "",
+    updatedBy: fee && fee.updated_by ? _.upperFirst(fee.updated_by) : "",
+  }));
 };
 
-export {
-  feeTypesAPIResponse,
-  feesAPIResponse,
-};
+export { feeTypesAPIResponse, feesAPIResponse };

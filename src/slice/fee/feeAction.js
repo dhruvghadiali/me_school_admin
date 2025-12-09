@@ -145,88 +145,96 @@ const getFees = createAsyncThunk(
 const addFee = createAsyncThunk(
   "fee/addFee",
   async (payload, { getState, rejectWithValue, dispatch }) => {
-    // try {
-    //   const axiosInstanceConfig = setUpAxiosInstanceConfig(
-    //     getState(),
-    //     dispatch
-    //   );
-    //   const response = await axiosInstance.post(
-    //     `${feesAPIRoute}`,
-    //     payload,
-    //     axiosInstanceConfig
-    //   );
-    //   if (response && response.data && response.data.length > 0) {
-    //     dispatch(getFees({ academicClass: payload.school_academic_class }));
-    //     return {
-    //       error: "",
-    //     };
-    //   } else {
-    //     return {
-    //       error: response && response.message ? response.message : "",
-    //     };
-    //   }
-    // } catch (error) {
-    //   return rejectWithValue({
-    //     error: error && error.message ? error.message : "",
-    //   });
-    // }
+    try {
+      const response = await axiosInstance.post(`${feesAPIRoute}`, payload, {
+        state: getState(),
+      });
+
+      if (apiResponseHaveData(response)) {
+        dispatch(getFees({ academicClass: payload.school_academic_class }));
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to add fee",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) || "Add fee request failed";
+      return rejectWithValue({ error: errMsg });
+    }
   }
 );
 
 const updateFee = createAsyncThunk(
   "fee/updateFee",
   async (payload, { getState, rejectWithValue, dispatch }) => {
-    // try {
-    //   const axiosInstanceConfig = setUpAxiosInstanceConfig(
-    //     getState(),
-    //     dispatch
-    //   );
-    //   const response = await axiosInstance.put(
-    //     `${feesAPIRoute}/${payload.id}`,
-    //     payload.data,
-    //     axiosInstanceConfig
-    //   );
-    //   if (response && response.data && response.data.length > 0) {
-    //     dispatch(
-    //       getFees({ academicClass: payload.data.school_academic_class })
-    //     );
-    //     return {
-    //       error: "",
-    //     };
-    //   } else {
-    //     return {
-    //       error: response && response.message ? response.message : "",
-    //     };
-    //   }
-    // } catch (error) {
-    //   return rejectWithValue({
-    //     error: error && error.message ? error.message : "",
-    //   });
-    // }
+    try {
+      const response = await axiosInstance.put(
+        `${feesAPIRoute}/${payload.id}`,
+        payload.data,
+        {
+          state: getState(),
+        }
+      );
+
+      if (apiResponseHaveData(response)) {
+        dispatch(
+          getFees({ academicClass: payload.data.school_academic_class })
+        );
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to add fee",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) || "Add fee request failed";
+      return rejectWithValue({ error: errMsg });
+    }
   }
 );
 
 const deleteFee = createAsyncThunk(
   "fee/deleteFee",
   async (payload, { getState, rejectWithValue, dispatch }) => {
-    // try {
-    //   const axiosInstanceConfig = setUpAxiosInstanceConfig(
-    //     getState(),
-    //     dispatch
-    //   );
-    //   await axiosInstance.delete(
-    //     `${feesAPIRoute}/${payload.id}`,
-    //     axiosInstanceConfig
-    //   );
-    //   dispatch(getFees({ academicClass: payload.academicClass }));
-    //   return {
-    //     error: "",
-    //   };
-    // } catch (error) {
-    //   return rejectWithValue({
-    //     error: error && error.message ? error.message : "",
-    //   });
-    // }
+    try {
+      const response = await axiosInstance.delete(
+        `${feesAPIRoute}/${payload.id}`,
+        {
+          state: getState(),
+        }
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        dispatch(getFees({ academicClass: payload.school_academic_class }));
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to add fee",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) || "Add fee request failed";
+      return rejectWithValue({ error: errMsg });
+    }
   }
 );
 

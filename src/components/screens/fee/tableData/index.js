@@ -45,16 +45,16 @@ const FeeScreenTableData = () => {
   const dispatch = useDispatch();
 
   const onDeleteConfirm = (data) => {
-    // if (data && data.data && data.data.id) {
-    //   dispatch(deleteFee({id: data.data.id, academicClass: selectedAcademicClass}));
-    // }
+    if (data && data.id) {
+      dispatch(deleteFee({id: data.id, academicClass: selectedAcademicClass}));
+    }
   };
 
   const onEditConfirm = (data) => {
-    // dispatch(
-    //   setFeeFormData({ ...data.data, academicClass: selectedAcademicClass })
-    // );
-    // dispatch(manageFeeFormSheetStatus(true));
+    dispatch(
+      setFeeFormData({ ...data, academicClass: selectedAcademicClass })
+    );
+    dispatch(manageFeeFormSheetStatus(true));
   };
 
   const onAcademicClassChange = (value) => {

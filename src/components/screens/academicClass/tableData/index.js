@@ -49,7 +49,6 @@ const AcademicClassScreenTableData = () => {
       ),
       field: "actions",
       cellRenderer: (data) => {
-        console.log("Action Cell Data:", data);
         return (
         <MEDeleteAlertDialog onConfirm={() => onDeleteConfirm(data)}>
           <Button
