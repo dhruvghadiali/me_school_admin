@@ -74,6 +74,21 @@ const MESidebar = ({ children }) => {
 
   return (
     <SidebarProvider defaultOpen={true}>
+      {/* Mobile/Tablet sidebar widths via CSS variable + width override */}
+      <style>{`
+        /* Mobile/Tablet sidebar widths */
+        [data-slot="sheet-content"][data-mobile="true"][data-sidebar="sidebar"] {
+          --sidebar-width: 90vw;
+          width: var(--sidebar-width) !important;
+          max-width: none !important;
+        }
+        @media (min-width: 768px) {
+          [data-slot="sheet-content"][data-mobile="true"][data-sidebar="sidebar"] {
+            --sidebar-width: 75vw;
+            width: var(--sidebar-width) !important;
+          }
+        }
+      `}</style>
       <Sidebar collapsible="icon" className="border-r">
         <SidebarHeader className="h-14 border-b bg-danger">
           <div className="flex h-full items-center justify-center px-2">
