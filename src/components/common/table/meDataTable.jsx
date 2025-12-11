@@ -297,7 +297,7 @@ const MEDataTable = ({ columns, rows, emptyText = "No data available" }) => {
             <SheetTitle>Filters</SheetTitle>
           </SheetHeader>
           <div className="mt-3 mr-4 ml-4">
-            <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
+            <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2 pl-2">
             {resolvedColumns.filter((c) => c.filter).map((c) => {
               const type = c.filterType ?? "stringColumnFilter";
               return (
@@ -328,7 +328,7 @@ const MEDataTable = ({ columns, rows, emptyText = "No data available" }) => {
               );
             })}
             </div>
-            <div className="flex gap-2 pt-2">
+            <div className="flex gap-2 pr-2 pl-2 mt-6">
               <Button onClick={applyFilter} className="px-3">Apply</Button>
               <Button variant="secondary" onClick={() => setFilterSheetOpen(false)} className="px-3">Cancel</Button>
               <Button variant="ghost" className="px-3 text-danger hover:bg-danger/10" onClick={clearAllFilters}>Clear All</Button>

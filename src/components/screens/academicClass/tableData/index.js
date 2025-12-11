@@ -1,5 +1,4 @@
 import { Trash2 } from "lucide-react";
-// AG Grid removed; rendering a simple table instead
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -154,7 +153,7 @@ const AcademicClassScreenTableData = () => {
         </div>
       </div>
 
-      <div className="ag-theme-alpine w-full h-[75vh]">
+      <div className="w-full h-[75vh]">
         <MEDataTable rows={academicClasses} columns={colDefs} />
       </div>
     </>
