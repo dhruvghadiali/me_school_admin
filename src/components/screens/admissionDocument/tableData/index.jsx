@@ -52,25 +52,25 @@ const SchoolAdmissionTableData = () => {
   const dispatch = useDispatch();
 
   const onDeleteConfirm = (data) => {
-    // if (data && data.data && data.data.id) {
-    //   dispatch(
-    //     deleteAdmissionDocument({
-    //       id: data.data.id,
-    //       academicClass: selectedAcademicClass,
-    //     })
-    //   );
-    // }
+    if (data  && data.id) {
+      dispatch(
+        deleteAdmissionDocument({
+          id: data.id,
+          academicClass: selectedAcademicClass,
+        })
+      );
+    }
   };
 
   const onEditConfirm = (data) => {
-    // dispatch(
-    //   setSchoolAdmissionFormData({
-    //     ...data.data,
-    //     isRequired: _.toLower(data.data.isRequired) === 'required' ? true : false,
-    //     academicClass: selectedAcademicClass,
-    //   })
-    // );
-    // dispatch(manageSchoolAdmissionFormSheetStatus(true));
+    dispatch(
+      setSchoolAdmissionFormData({
+        ...data,
+        isRequired: _.toLower(data.isRequired) === 'required' ? true : false,
+        academicClass: selectedAcademicClass,
+      })
+    );
+    dispatch(manageSchoolAdmissionFormSheetStatus(true));
   };
 
   const onAcademicClassChange = (value) => {

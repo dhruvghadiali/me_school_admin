@@ -226,14 +226,13 @@ const deleteAdmissionDocument = createAsyncThunk(
     try {
       const response = await axiosInstance.delete(
         `${schoolAdmissionDocumentsAPIRoute}/${payload.id}`,
-        payload.data,
         { state: getState() }
       );
 
       if (isAPIServedSuccessfully(response)) {
         dispatch(
           getSchoolAdmissionDocuments({
-            academicClass: payload.school_academic_class,
+            academicClass: payload.academicClass,
           })
         );
         return {
