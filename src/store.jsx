@@ -5,6 +5,7 @@ import sidebarSlice from "@MERedux/sidebar/sidebarSlice";
 import loggerMiddleware from "@MERedux/middleware/logger";
 import academicClassSlice from "@MERedux/academicClass/academicClassSlice";
 import authenticationSlice from "@MERedux/authentication/authenticationSlice";
+import admissionDocumentSlice from "@MERedux/admissionDocument/admissionDocumentSlice";
 
 export default configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export default configureStore({
     sidebar: sidebarSlice,
     academicClass: academicClassSlice,
     authentication: authenticationSlice,
+    admissionDocument: admissionDocumentSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(loggerMiddleware),
