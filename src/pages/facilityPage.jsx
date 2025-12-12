@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFacilityTypes } from "@MERedux/facility/facilityAction";
 
 import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+import FacilityScreenHeader from "@MEScreenComponents/facility/header";
+import FacilityScreenTableData from "@MEScreenComponents/facility/tableData";
+import FacilityScreenTableDataLoader from "@MEScreenComponents/facility/tableData/tableDataLoader";
 
 const FacilityPage = () => {
   const dispatch = useDispatch();
@@ -15,7 +18,12 @@ const FacilityPage = () => {
 
   return (
     <MESidebar>
-      <h1>Facility</h1>
+      <FacilityScreenHeader />
+      {facilityLoader ? (
+        <FacilityScreenTableDataLoader />
+      ) : (
+        <FacilityScreenTableData />
+      )}
     </MESidebar>
   );
 };
