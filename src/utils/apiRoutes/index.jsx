@@ -1,6 +1,8 @@
 export const signInAPIRoute = "/signin";
 export const feesAPIRoute = `/school-fees`;
 export const feeTypesAPIRoute = `/fee-types`;
+export const facilityAPIRoute = `/school-facilities`;
+export const facilityTypesAPIRoute = `/facility-types`;
 export const academicClassesAPIRoute = `/academic-classes`;
 export const admissionDocumentsAPIRoute = `/admission-documents`;
 export const schoolAcademicClassesAPIRoute = `/school-academic-classes`;

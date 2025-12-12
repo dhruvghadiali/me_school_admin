@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import feeSlice from "@MERedux/fee/feeSlice";
 import sidebarSlice from "@MERedux/sidebar/sidebarSlice";
 import loggerMiddleware from "@MERedux/middleware/logger";
+import facilitySlice from "@MERedux/facility/facilitySlice";
 import academicClassSlice from "@MERedux/academicClass/academicClassSlice";
 import authenticationSlice from "@MERedux/authentication/authenticationSlice";
 import admissionDocumentSlice from "@MERedux/admissionDocument/admissionDocumentSlice";
@@ -14,6 +15,7 @@ export default configureStore({
     academicClass: academicClassSlice,
     authentication: authenticationSlice,
     admissionDocument: admissionDocumentSlice,
+    facility: facilitySlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(loggerMiddleware),
