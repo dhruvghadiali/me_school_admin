@@ -1,10 +1,10 @@
-import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+import AdmissionScreenHeader from "@MEScreenComponents/admission/header";
 
 const AdmissionPage = () => {
   return (
-    <MESidebar>
-      <h1>Admission</h1>
-    </MESidebar>
+    <>
+      <AdmissionScreenHeader />
+    </>
   );
 };
 

@@ -6,7 +6,6 @@ import {
   getAdmissionDocuments,
 } from "@MERedux/admissionDocument/admissionDocumentAction";
 
-import MESidebar from "@MECommonComponents/sidebar/meSidebar";
 import AdmissionDocumentScreenHeader from "@MEScreenComponents/admissionDocument/header";
 import SchoolAdmissionTableData from "@MEScreenComponents/admissionDocument/tableData";
 import AdmissionDocumentScreenTableDataLoader from "@MEScreenComponents/admissionDocument/tableData/tableDataLoader";
@@ -23,10 +22,10 @@ const AdmissionDocumentPage = () => {
   }, [dispatch]);
 
   return (
-    <MESidebar>
+    <>
       <AdmissionDocumentScreenHeader />
       {admissionDocumentLoader ? <AdmissionDocumentScreenTableDataLoader/> : <SchoolAdmissionTableData />}
-    </MESidebar>
+    </>
   );
 };
 

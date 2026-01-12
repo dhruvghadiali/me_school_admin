@@ -19,11 +19,12 @@ import SettingPage from "@MEPages/settingPage";
 import ProfilePage from "@MEPages/profilePage";
 import FacilityPage from "@MEPages/facilityPage";
 import DashboardPage from "@MEPages/dashboardPage";
-// import AdmissionPage from "@MEPages/admissionPage";
+import AdmissionPage from "@MEPages/admissionPage";
 import AcademicClassPage from "@MEPages/academicClassPage";
-import AdmissionDocumentPage from "@MEPages/admissionDocumentPage";
+import MESidebar from "@MECommonComponents/sidebar/meSidebar";
 import AuthChecker from "@MECommonComponents/hoc/authChecker";
 import PublicRoute from "@MECommonComponents/hoc/publicRoute";
+import AdmissionDocumentPage from "@MEPages/admissionDocumentPage";
 import ProtectedRoute from "@MECommonComponents/hoc/protectedRoute";
 
 function App() {
@@ -47,23 +48,29 @@ function App() {
               path={DASHBOARD}
               element={
                 <ProtectedRoute>
-                  <DashboardPage />
+                  <MESidebar>
+                    <DashboardPage />
+                  </MESidebar>
                 </ProtectedRoute>
               }
             />
-            {/* <Route
+            <Route
               path={ADMISSION}
               element={
                 <ProtectedRoute>
-                  <AdmissionPage />
+                  <MESidebar>
+                    <AdmissionPage />
+                  </MESidebar>
                 </ProtectedRoute>
               }
-            /> */}
+            />
             <Route
               path={ACADEMIC_CLASS}
               element={
                 <ProtectedRoute>
-                  <AcademicClassPage />
+                  <MESidebar>
+                    <AcademicClassPage />
+                  </MESidebar>
                 </ProtectedRoute>
               }
             />
@@ -71,7 +78,9 @@ function App() {
               path={FEES}
               element={
                 <ProtectedRoute>
-                  <FeePage />
+                  <MESidebar>
+                    <FeePage />
+                  </MESidebar>
                 </ProtectedRoute>
               }
             />
@@ -79,7 +88,9 @@ function App() {
               path={ADMISSION_DOCUMENTS}
               element={
                 <ProtectedRoute>
-                  <AdmissionDocumentPage />
+                  <MESidebar>
+                    <AdmissionDocumentPage />
+                  </MESidebar>
                 </ProtectedRoute>
               }
             />
@@ -87,7 +98,9 @@ function App() {
               path={FACILITIES}
               element={
                 <ProtectedRoute>
-                  <FacilityPage />
+                  <MESidebar>
+                    <FacilityPage />
+                  </MESidebar>
                 </ProtectedRoute>
               }
             />
@@ -95,7 +108,9 @@ function App() {
               path={PROFILE}
               element={
                 <ProtectedRoute>
-                  <ProfilePage />
+                  <MESidebar>
+                    <ProfilePage />
+                  </MESidebar>
                 </ProtectedRoute>
               }
             />
@@ -103,7 +118,9 @@ function App() {
               path={SETTINGS}
               element={
                 <ProtectedRoute>
-                  <SettingPage />
+                  <MESidebar>
+                    <SettingPage />
+                  </MESidebar>
                 </ProtectedRoute>
               }
             />

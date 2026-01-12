@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAcademicClasses, getFeeTypes } from "@MERedux/fee/feeAction";
 
 import FeeScreenHeader from "@MEScreenComponents/fee/header";
-import MESidebar from "@MECommonComponents/sidebar/meSidebar";
 import FeeScreenTableData from "@/components/screens/fee/tableData";
 import FeeScreenTableDataLoader from "@MEScreenComponents/fee/tableData/tableDataLoader";
 
@@ -18,10 +17,10 @@ const FeePage = () => {
   }, [dispatch]);
 
   return (
-    <MESidebar>
+    <>
       <FeeScreenHeader />
       {feeLoader ? <FeeScreenTableDataLoader /> : <FeeScreenTableData />}
-    </MESidebar>
+    </>
   );
 };
 

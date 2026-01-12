@@ -6,7 +6,6 @@ import {
   getDefaultAcademicClasses,
 } from "@MERedux/academicClass/academicClassAction";
 
-import MESidebar from "@MECommonComponents/sidebar/meSidebar";
 import AcademicClassScreenHeader from "@MEScreenComponents/academicClass/header/header";
 import AcademicClassScreenTableData from "@MEScreenComponents/academicClass/tableData";
 import AcademicClassScreenTableDataLoader from "@MEScreenComponents/academicClass/tableData/tableDataLoader";
@@ -21,14 +20,14 @@ const AcademicClassPage = () => {
   }, [dispatch]);
 
   return (
-    <MESidebar>
+    <>
       <AcademicClassScreenHeader />
       {academicClassLoader ? (
         <AcademicClassScreenTableDataLoader />
       ) : (
         <AcademicClassScreenTableData />
       )}
-    </MESidebar>
+    </>
   );
 };
 
