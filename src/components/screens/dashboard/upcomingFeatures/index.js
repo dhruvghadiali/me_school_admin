@@ -10,6 +10,7 @@ import {
   BookOpen,
   Calendar,
   CheckCircle2,
+  Zap,
 } from "lucide-react";
 
 const DashboardScreenUpcomingFeatures = () => {
@@ -53,43 +54,34 @@ const DashboardScreenUpcomingFeatures = () => {
     },
   ];
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12 auto-rows-fr">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
       {upcomingFeatures.map((feature) => {
         const IconComponent = feature.icon;
         return (
           <Card
             key={feature.id}
-            className="group relative overflow-hidden hover:shadow-2xl shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1 shadow-lg border flex flex-col h-full"
+            className="border border-slate-200 dark:border-slate-700 hover:border-primary/50 transition-colors"
           >
-            {/* Gradient Background */}
-            <div
-              className={`absolute inset-0 bg-linear-to-br  opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
-            />
-
-            {/* Card Header with Icon */}
-            <CardHeader className="relative pb-4">
-              <div
-                className={`w-16 h-16 rounded-lg  bg-primary/5 shadow-2xl border flex items-center justify-center mb-3`}
-              >
-                <IconComponent className={`w-8 h-8 `} />
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between mb-2">
+                <IconComponent className="w-6 h-6 text-primary" />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors duration-300">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
                 {feature.title}
               </h2>
             </CardHeader>
 
-            {/* Card Content */}
-            <CardContent className="pb-4 grow flex flex-col">
-              <p className="text-slate-600 dark:text-slate-400 mb-4">
+            <CardContent className="pb-3 grow">
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
                 {feature.description}
               </p>
 
               {/* Key Features */}
-              <div className="space-y-2 grow flex flex-col">
+              <div className="space-y-1 mb-4">
                 {feature.features.map((feat, idx) => (
                   <div key={idx} className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success shrink-0" />
-                    <span className="text-sm text-slate-600 dark:text-slate-300">
+                    <CheckCircle2 className="w-3 h-3 text-success shrink-0" />
+                    <span className="text-xs text-slate-600 dark:text-slate-400">
                       {feat}
                     </span>
                   </div>
@@ -97,34 +89,26 @@ const DashboardScreenUpcomingFeatures = () => {
               </div>
 
               {/* Release Date */}
-              <div className="mt-5 flex items-center gap-2 pt-4 border-t border-slate-200 dark:border-slate-700">
-                <Calendar className="w-4 h-4 text-slate-500 dark:text-slate-400 " />
-                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                  Available: {feature.releaseDate}
-                </span>
+              <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                <Calendar className="w-3 h-3" />
+                <span>{feature.releaseDate}</span>
               </div>
             </CardContent>
 
-            {/* Card Footer */}
-            <CardFooter className="flex flex-col gap-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-              {/* Status and Timeline Info */}
-              <div className="w-full space-y-3">
-                {/* Status Badge */}
+            <CardFooter className="pt-3 border-t border-slate-200 dark:border-slate-700">
+              <div className="w-full space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">
-                    Status
-                  </span>
-                  <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs font-semibold rounded-full">
-                    {feature.status}
-                  </span>
+                  <span className="text-slate-600 dark:text-slate-400">Status:</span>
+                  <div className="flex items-center gap-1">
+                    <Zap className="w-3 h-3 text-yellow-600 dark:text-yellow-400" />
+                    <span className="font-medium text-slate-700 dark:text-slate-300">
+                      {feature.status}
+                    </span>
+                  </div>
                 </div>
-
-                {/* Release Info */}
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-600 dark:text-slate-400 font-medium">
-                    Phase
-                  </span>
-                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  <span className="text-slate-600 dark:text-slate-400">Phase:</span>
+                  <span className="font-medium text-slate-700 dark:text-slate-300">
                     {feature.phase}
                   </span>
                 </div>
