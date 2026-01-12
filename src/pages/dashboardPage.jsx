@@ -1,11 +1,12 @@
 import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+import DashboardScreenHeader from "@MEScreenComponents/dashboard/header";
+import DashboardScreenUpcomingFeatures from "@MEScreenComponents/dashboard/upcomingFeatures";
 
 const DashboardPage = () => {
   return (
     <MESidebar>
-      <div className="bg-dark w-full h-full">
-        <h1 className="text-danger">Dashboard</h1>
-      </div>
+      <DashboardScreenHeader />
+      <DashboardScreenUpcomingFeatures />
     </MESidebar>
   );
 };
