@@ -297,7 +297,7 @@ const MEDataTable = ({ columns, rows, emptyText = "No data available" }) => {
             <SheetTitle>Filters</SheetTitle>
           </SheetHeader>
           <div className="mt-3 mr-4 ml-4">
-            <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2 pl-2">
+            <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2 pl-2 pb-5">
             {resolvedColumns.filter((c) => c.filter).map((c) => {
               const type = c.filterType ?? "stringColumnFilter";
               return (
