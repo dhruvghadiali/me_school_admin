@@ -1,11 +1,30 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { getDashboardSummary } from "@MERedux/dashboard/dashboardAction";
+
 import DashboardScreenHeader from "@MEScreenComponents/dashboard/header";
 import DashboardScreenStatsData from "@MEScreenComponents/dashboard/statsData";
 import DashboardScreenAdmissionSummaryByMonth from "@MEScreenComponents/dashboard/admissionSummaryByMonth";
-import DashboardScreenAdmissionSummaryByAcademicClass from "@MEScreenComponents/dashboard/admissionSummaryByAcademicClass";
 import DashboardScreenAdmissionSummaryByAcademicYear from "@MEScreenComponents/dashboard/admissionSummaryByAcademicYear";
+import DashboardScreenAdmissionSummaryByAcademicClass from "@MEScreenComponents/dashboard/admissionSummaryByAcademicClass";
+
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 
 const DashboardPage = () => {
-  return (
+  const dispatch = useDispatch();
+
+  const { dashboardSummaryLoader } = useSelector((state) => state.dashboard);
+
+  useEffect(() => {
+    dispatch(getDashboardSummary());
+  }, [dispatch]);
+
+  return dashboardSummaryLoader ? (
+    <div className="w-full h-screen flex items-center justify-center">
+      <MELoaderIcon />
+    </div>
+  ) : (
     <>
       <DashboardScreenHeader />
       <DashboardScreenStatsData />
@@ -15,7 +34,7 @@ const DashboardPage = () => {
         <DashboardScreenAdmissionSummaryByAcademicClass />
         <DashboardScreenAdmissionSummaryByMonth />
       </div>
-      
+
       {/* Academic Year Summary */}
       <DashboardScreenAdmissionSummaryByAcademicYear />
     </>

@@ -1,6 +1,11 @@
-import { TrendingUp, Users, BookOpen, Layers } from "lucide-react";
-import { CartesianGrid, XAxis, Line, LineChart, YAxis } from "recharts";
+import { useSelector } from "react-redux";
+import { TrendingUp } from "lucide-react";
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
 
+import _ from "lodash";
+import moment from "moment";
+
+import { ChartContainer, ChartTooltip } from "@MEShadcnComponents/chart";
 import {
   Card,
   CardContent,
@@ -9,63 +14,65 @@ import {
   CardHeader,
   CardTitle,
 } from "@MEShadcnComponents/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@MEShadcnComponents/chart";
+
+const CustomTooltip = ({ active, payload, label, chartConfig }) => {
+  if (active && payload && payload.length) {
+    // Format label using moment
+    const formatLabel = () => {
+      if (typeof label === 'number') {
+        return moment().month(label - 1).format('MMMM');
+      }
+      return moment(label).format('MMMM');
+    };
+
+    return (
+      <div className="bg-white border border-primary rounded-lg p-2 sm:p-3 md:p-4 shadow-lg max-w-xs">
+        <p className="font-semibold text-primary mb-1 sm:mb-2 text-xs capitalize">
+          {formatLabel()}
+        </p>
+        {payload.map((entry, index) => (
+          <p
+            key={index}
+            style={{ color: entry.color }}
+            className="text-xs mt-1"
+          >
+            {chartConfig[entry.dataKey]?.label}:{" "}
+            <span className="font-bold">{entry.value}</span>
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
+};
 
 const DashboardScreenAdmissionSummaryByMonth = () => {
-  const lineChartData = [
-    { month: "January", approved: 12, pending: 8, rejected: 2, withdrawn: 1 },
-    { month: "February", approved: 28, pending: 15, rejected: 4, withdrawn: 2 },
-    { month: "March", approved: 45, pending: 22, rejected: 6, withdrawn: 3 },
-    { month: "April", approved: 68, pending: 35, rejected: 10, withdrawn: 4 },
-    { month: "May", approved: 89, pending: 45, rejected: 14, withdrawn: 5 },
-    { month: "June", approved: 156, pending: 52, rejected: 18, withdrawn: 6 },
-    { month: "July", approved: 178, pending: 60, rejected: 20, withdrawn: 7 },
-    { month: "August", approved: 190, pending: 70, rejected: 22, withdrawn: 8 },
-    {
-      month: "September",
-      approved: 210,
-      pending: 80,
-      rejected: 25,
-      withdrawn: 9,
-    },
-    {
-      month: "October",
-      approved: 230,
-      pending: 90,
-      rejected: 28,
-      withdrawn: 10,
-    },
-    {
-      month: "November",
-      approved: 250,
-      pending: 100,
-      rejected: 30,
-      withdrawn: 11,
-    },
-    {
-      month: "December",
-      approved: 270,
-      pending: 110,
-      rejected: 32,
-      withdrawn: 12,
-    },
-  ];
+  const { dashboardSummary } = useSelector((state) => state.dashboard);
+
+  const chartData = dashboardSummary?.admissionByMonth || [];
+
+  // Calculate sums using lodash
+  const calculateSum = (key) => {
+    return _.sumBy(chartData, key);
+  };
+
+  const totalApproved = calculateSum("approvedApplication");
+  const totalUnderReview = calculateSum("underReviewApplication");
+  const totalRejected = calculateSum("rejectedApplication");
+  const totalWithdrawn = calculateSum("withdrawnApplication");
+  const totalAdmissions = calculateSum("admissionApplication");
 
   const chartConfig = {
-    approved: {
+    approvedApplication: {
       label: "Approved",
     },
-    pending: {
-      label: "Pending",
+    underReviewApplication: {
+      label: "Under Review",
     },
-    rejected: {
+    rejectedApplication: {
       label: "Rejected",
     },
-    withdrawn: {
+    withdrawnApplication: {
       label: "Withdrawn",
     },
   };
@@ -74,71 +81,87 @@ const DashboardScreenAdmissionSummaryByMonth = () => {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Application Status Trend</CardTitle>
-          <CardDescription>
-            Monthly Application Status Over Time
-          </CardDescription>
+          <CardTitle>Admission by Month</CardTitle>
+          <CardDescription>Monthly Application Status Distribution</CardDescription>
         </CardHeader>
 
         <CardContent>
-          <ChartContainer config={chartConfig}>
-            <LineChart accessibilityLayer data={lineChartData}>
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <YAxis stroke="#64748b" />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent indicator="dashed" />}
-              />
-              <Line
-                type="monotone"
-                dataKey="approved"
-                stroke="#31694E"
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-              <Line
-                type="monotone"
-                dataKey="pending"
-                stroke="#658C58"
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-              <Line
-                type="monotone"
-                dataKey="rejected"
-                stroke="#662549"
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-              <Line
-                type="monotone"
-                dataKey="withdrawn"
-                stroke="#872341"
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
-              />
-            </LineChart>
-          </ChartContainer>
+          {!chartData || chartData.length === 0 ? (
+            <div className="w-full h-64 flex items-center justify-center bg-danger/10  border border-danger/50  rounded-lg">
+              <p className="text-danger  font-medium">
+                Admission summary chart data is not available at the moment.
+              </p>
+            </div>
+          ) : (
+            <ChartContainer config={chartConfig}>
+              <LineChart accessibilityLayer data={chartData} margin={{ bottom: 30 }}>
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  tickMargin={10}
+                  axisLine={false}
+                  tickFormatter={(value) => {
+                    // If value is a number (1-12), convert to month name
+                    if (typeof value === 'number') {
+                      return moment().month(value - 1).format('MMM');
+                    }
+                    // If value is a string, try to parse it
+                    return moment(value).format('MMM');
+                  }}
+                />
+                <YAxis stroke="#64748b" />
+                <ChartTooltip
+                  cursor={false}
+                  content={<CustomTooltip chartConfig={chartConfig} />}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="approvedApplication"
+                  stroke="#31694E"
+                  strokeWidth={2}
+                  dot={{ r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="underReviewApplication"
+                  stroke="#658C58"
+                  strokeWidth={2}
+                  dot={{ r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="rejectedApplication"
+                  stroke="#662549"
+                  strokeWidth={2}
+                  dot={{ r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="withdrawnApplication"
+                  stroke="#872341"
+                  strokeWidth={2}
+                  dot={{ r: 4 }}
+                  activeDot={{ r: 6 }}
+                />
+              </LineChart>
+            </ChartContainer>
+          )}
         </CardContent>
 
         <CardFooter className="flex-col items-start gap-2 text-sm">
           <div className="flex gap-2 leading-none font-medium">
-            Applications growing steadily
+            Total Admissions: {totalAdmissions}
             <TrendingUp className="h-4 w-4" />
           </div>
+          <div className="text-muted-foreground leading-none text-xs">
+            Approved: {totalApproved} | Under Review: {totalUnderReview} | Rejected: {totalRejected} | Withdrawn: {totalWithdrawn}
+          </div>
           <div className="text-muted-foreground leading-none">
-            Showing application trends by status over last 6 months
+            Showing admission application status across all months.
           </div>
         </CardFooter>
       </Card>

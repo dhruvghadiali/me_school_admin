@@ -1,43 +1,17 @@
-import { FileCheck, CheckCircle2, XCircle, Clock, Trash2 } from "lucide-react";
+import { useSelector } from "react-redux";
+
+import _ from "lodash";
+
 import { Card, CardContent } from "@MEShadcnComponents/card";
 
 const DashboardScreenStatsData = () => {
-  const statsData = [
-    {
-      id: 1,
-      label: "Total Application Submitted",
-      value: "156",
-      icon: FileCheck,
-    },
-    {
-      id: 2,
-      label: "Total Selected Application",
-      value: "89",
-      icon: CheckCircle2,
-    },
-    {
-      id: 3,
-      label: "Total Rejected Application",
-      value: "18",
-      icon: XCircle,
-    },
-    {
-      id: 4,
-      label: "Total In Progress Application",
-      value: "49",
-      icon: Clock,
-    },
-    {
-      id: 5,
-      label: "Total Withdrawn Application",
-      value: "0",
-      icon: Trash2,
-    },
-  ];
+  const { dashboardSummary } = useSelector((state) => state.dashboard);
 
-  return (
-    <div className="mt-8 mb-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
-      {statsData.map((stat) => {
+  return dashboardSummary &&
+    dashboardSummary.statsData &&
+    _.size(dashboardSummary.statsData) > 0 ? (
+    <div className="mt-8 mb-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-4">
+      {_.map(dashboardSummary.statsData, (stat) => {
         const IconComponent = stat.icon;
         return (
           <Card key={stat.id} className="border">
@@ -59,6 +33,12 @@ const DashboardScreenStatsData = () => {
           </Card>
         );
       })}
+    </div>
+  ) : (
+    <div className="mt-8 mb-8 p-6 bg-danger/10  border border-danger/50  rounded-lg">
+      <p className="text-danger  font-medium">
+        Error: Unable to load some summary data. Please try again later.
+      </p>
     </div>
   );
 };
