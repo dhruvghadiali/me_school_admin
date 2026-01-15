@@ -1,22 +1,27 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import MESidebar from "@MECommonComponents/sidebar/meSidebar";
+
+import { getAdmissionApplications } from "@MERedux/admission/admissionAction";
+
 import AdmissionScreenHeader from "@MEScreenComponents/admission/header";
 import AdmissionScreenTableData from "@MEScreenComponents/admission/tableData";
 import AdmissionScreenTableDataLoader from "@MEScreenComponents/admission/tableData/tableDataLoader";
 
 const AdmissionPage = () => {
-  // You can use Redux state here when API is ready
-  // const dispatch = useDispatch();
-  // const { admissionLoader } = useSelector((state) => state.admission);
+  const dispatch = useDispatch();
 
-  // For now, we'll show the table directly
-  const showLoader = false;
+  const { admissionApplicationsLoader } = useSelector(
+    (state) => state.admissionApplication
+  );
+
+  useEffect(() => {
+    dispatch(getAdmissionApplications());
+  }, [dispatch]);
 
   return (
     <>
       <AdmissionScreenHeader />
-      {showLoader ? (
+      {admissionApplicationsLoader ? (
         <AdmissionScreenTableDataLoader />
       ) : (
         <AdmissionScreenTableData />

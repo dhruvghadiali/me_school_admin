@@ -5,3 +5,4 @@ export * from "@MEUtils/apiResponse/facilityAPIResponse";
 export * from "@MEUtils/apiResponse/academicClassResponse";
 export * from "@MEUtils/apiResponse/dashboardSummaryResponse";
 export * from "@MEUtils/apiResponse/admissionDocumentAPIResponse";
+export * from "@MEUtils/apiResponse/admissionApplicationResponse";
