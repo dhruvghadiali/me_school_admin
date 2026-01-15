@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getAdmissionApplications } from "@MERedux/admission/admissionAction";
+
+import { currentAcademicSession } from "@MEUtils/utility";
+import {
+  getAdmissionApplications,
+  getAcademicClasses,
+} from "@MERedux/admission/admissionAction";
 
 import AdmissionScreenHeader from "@MEScreenComponents/admission/header";
 import AdmissionScreenTableData from "@MEScreenComponents/admission/tableData";
@@ -15,7 +20,8 @@ const AdmissionPage = () => {
   );
 
   useEffect(() => {
-    dispatch(getAdmissionApplications());
+    dispatch(getAcademicClasses());
+    dispatch(getAdmissionApplications(`academic_year=${currentAcademicSession()}`));
   }, [dispatch]);
 
   return (

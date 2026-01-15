@@ -1,15 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getAdmissionApplications } from "@/slice/admission/admissionAction";
+import {
+  getAcademicClasses,
+  getAdmissionApplications,
+} from "@/slice/admission/admissionAction";
 
 export const admissionApplicationSlice = createSlice({
   name: "admissionApplication",
   initialState: {
     admissionApplications: [],
+    eductionBoardsWithAcademicClasses: [],
     admissionApplicationsLoader: false,
     admissionApplicationsError: "",
+    selectedEductionBoard: "",
+    selectedAcademicClass: "",
   },
-  reducers: {},
+  reducers: {
+    setEductionBoard: (state, action) => {
+      state.selectedEductionBoard = action.payload;
+    },
+    setSelectedAcademicClass: (state, action) => {
+      state.selectedAcademicClass = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAdmissionApplications.pending, (state, _) => {
@@ -26,10 +39,23 @@ export const admissionApplicationSlice = createSlice({
         state.admissionApplicationsLoader = false;
         state.admissionApplicationsError = action.payload.error;
         state.admissionApplications = [];
+      })
+      .addCase(getAcademicClasses.pending, (state) => {
+        state.eductionBoardsWithAcademicClasses = [];
+      })
+      .addCase(getAcademicClasses.fulfilled, (state, action) => {
+        state.eductionBoardsWithAcademicClasses =
+          action.payload.eductionBoardsWithAcademicClasses;
+      })
+      .addCase(getAcademicClasses.rejected, (state, action) => {
+        state.eductionBoardsWithAcademicClasses = [];
       });
   },
 });
 
-export const {} = admissionApplicationSlice.actions;
+export const {
+  setEductionBoard,
+  setSelectedAcademicClass,
+} = admissionApplicationSlice.actions;
 
 export default admissionApplicationSlice.reducer;
