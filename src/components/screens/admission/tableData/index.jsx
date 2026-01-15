@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { Eye, Trash2, CheckCircle, Clock, XCircle } from "lucide-react";
 
-
 import { Button } from "@MEShadcnComponents/button";
 
 import MEDataTable from "@/components/common/table/meDataTable";
@@ -15,8 +14,7 @@ const AdmissionScreenTableData = () => {
     {
       headerName: "Actions",
       field: "actions",
-      flex: 1,
-      minWidth: 150,
+      width: 100,
       cellRenderer: (params) => (
         <div className="flex gap-2">
           <Button
@@ -30,29 +28,43 @@ const AdmissionScreenTableData = () => {
         </div>
       ),
     },
-    { headerName: "Student Name", field: "applicantName", filter: true, sortable: true },
     {
-      headerName: "Application Number",
-      field: "applicationNumber",
+      headerName: "Student Name",
+      field: "applicantName",
+      width: 400,
       filter: true,
       sortable: true,
     },
-    { headerName: "Academic Class", field: "academicClass", filter: true, sortable: true },
+    {
+      headerName: "Application Number",
+      field: "applicationNumber",
+      width: 300,
+      filter: true,
+      sortable: true,
+    },
+    {
+      headerName: "Academic Class",
+      field: "academicClass",
+      width: 250,
+      filter: true,
+      sortable: true,
+    },
     {
       headerName: "Applied Date",
       field: "createdAt",
-      filter: true,
+      width: 250,
       filterType: "dateColumnFilter",
-      sortable: true
+      filter: true,
+      sortable: true,
     },
     {
       headerName: "Status",
       field: "status",
+      width: 200,
       filter: true,
       sortable: true,
     },
   ];
-
 
   return (
     <div className="mt-5">
