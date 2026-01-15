@@ -22,18 +22,10 @@ const AdmissionScreenTableData = () => {
           <Button
             size="icon"
             variant="link"
-            className="text-primary"
+            className="text-primary cursor-pointer"
             onClick={() => {}}
           >
             <Eye />
-          </Button>
-          <Button
-            size="icon"
-            variant="link"
-            className="text-danger"
-            onClick={() => {}}
-          >
-            <Trash2 />
           </Button>
         </div>
       ),
