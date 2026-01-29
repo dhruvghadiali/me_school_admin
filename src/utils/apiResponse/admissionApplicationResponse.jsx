@@ -166,6 +166,10 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
         _.isObject(_.get(application, "school_academic_class.academic_class"))
         ? _.upperCase(_.get(application, "school_academic_class.academic_class.academic_class", ""))
         : "",
+      educationBoard: _.isObject(_.get(application, "school_academic_class")) &&
+        _.isObject(_.get(application, "school_academic_class.education_board"))
+        ? _.upperCase(_.get(application, "school_academic_class.education_board.education_board", ""))
+        : "",
     };
 
     // Validate required fields

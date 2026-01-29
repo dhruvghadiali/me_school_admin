@@ -4,9 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { currentAcademicSession } from "@MEUtils/utility";
 import {
-  getAdmissionApplications,
   getAcademicClasses,
+  getAdmissionApplications,
 } from "@MERedux/admission/admissionAction";
+import {
+  setAcademicYears,
+  setSelectedAcademicYear,
+} from "@MERedux/admission/admissionSlice";
 
 import AdmissionScreenHeader from "@MEScreenComponents/admission/header";
 import AdmissionScreenTableData from "@MEScreenComponents/admission/tableData";
@@ -20,8 +24,11 @@ const AdmissionPage = () => {
   );
 
   useEffect(() => {
+    let year = currentAcademicSession();
     dispatch(getAcademicClasses());
-    dispatch(getAdmissionApplications(`academic_year=${currentAcademicSession()}`));
+    dispatch(getAdmissionApplications(`academic_year=${year}`));
+    dispatch(setAcademicYears(currentAcademicSession(3)));
+    dispatch(setSelectedAcademicYear(year));
   }, [dispatch]);
 
   return (
