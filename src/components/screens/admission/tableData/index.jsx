@@ -107,7 +107,7 @@ const AdmissionScreenTableData = () => {
         <div className="bg-white dark:bg-gray-900 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700 mb-4">
           <div className="flex items-start sm:items-center justify-between gap-3">
             <div className="flex items-start sm:items-center gap-2 sm:gap-3 min-w-0 flex-1">
-              <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-primary shrink-0 mt-0.5 sm:mt-0" />
+              <Filter className="w-4 h-4 text-primary shrink-0 mt-0.5 sm:mt-0" />
               <div className="flex flex-col sm:flex-row sm:items-center gap-2 min-w-0 flex-1">
                 <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white whitespace-nowrap">
                   Filter Applications
