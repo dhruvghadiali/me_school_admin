@@ -13,11 +13,13 @@ export const admissionApplicationSlice = createSlice({
     eductionBoardsWithAcademicClasses: [],
     showMasterFilter: false,
     admissionApplicationsLoader: false,
+    showAdmissionApplicationSheet: false,
     admissionApplicationsError: "",
     selectedEductionBoard: "",
     selectedAcademicClass: "",
     selectedApplicationStatus: "",
     selectedAcademicYear: "",
+    selectedAdmissionApplication: {},
   },
   reducers: {
     setEductionBoard: (state, action) => {
@@ -26,7 +28,7 @@ export const admissionApplicationSlice = createSlice({
     setSelectedAcademicClass: (state, action) => {
       state.selectedAcademicClass = action.payload;
     },
-    setSelectedApplicationStatus: (state, action) => {
+    setSelectedAdmissionApplicationStatus: (state, action) => {
       state.selectedApplicationStatus = action.payload;
     },
     setSelectedAcademicYear: (state, action) => {
@@ -35,8 +37,14 @@ export const admissionApplicationSlice = createSlice({
     setAcademicYears: (state, action) => {
       state.academicYears = action.payload;
     },
+    setSelectedAdmissionApplication: (state, action) => {
+      state.selectedAdmissionApplication = action.payload;
+    },
     toggleMasterFilter: (state) => {
       state.showMasterFilter = !state.showMasterFilter;
+    },
+    toggleAdmissionApplicationSheet: (state) => {
+      state.showAdmissionApplicationSheet = !state.showAdmissionApplicationSheet;
     },
   },
   extraReducers: (builder) => {
@@ -75,7 +83,9 @@ export const {
   toggleMasterFilter,
   setSelectedAcademicYear,
   setSelectedAcademicClass,
-  setSelectedApplicationStatus,
+  setSelectedAdmissionApplicationStatus,
+  toggleAdmissionApplicationSheet,
+  setSelectedAdmissionApplication,
 } = admissionApplicationSlice.actions;
 
 export default admissionApplicationSlice.reducer;

@@ -9,6 +9,7 @@ import {
 } from "@MERedux/admission/admissionAction";
 import {
   setAcademicYears,
+  setSelectedAdmissionApplication,
   setSelectedAcademicYear,
 } from "@MERedux/admission/admissionSlice";
 
@@ -29,6 +30,7 @@ const AdmissionPage = () => {
     dispatch(getAdmissionApplications(`academic_year=${year}`));
     dispatch(setAcademicYears(currentAcademicSession(3)));
     dispatch(setSelectedAcademicYear(year));
+    dispatch(setSelectedAdmissionApplication({}));
   }, [dispatch]);
 
   return (

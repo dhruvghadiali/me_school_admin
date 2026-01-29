@@ -4,13 +4,19 @@ import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 
 import { Button } from "@MEShadcnComponents/button";
-import { toggleMasterFilter } from "@MERedux/admission/admissionSlice";
+import {
+  toggleMasterFilter,
+  setSelectedAdmissionApplication,
+  toggleAdmissionApplicationSheet,
+} from "@MERedux/admission/admissionSlice";
 
 import MEDataTable from "@/components/common/table/meDataTable";
+import AdmissionScreenAdmissionFormSheet from "@MEScreenComponents/admission/admissionFormSheet";
 import AdmissionScreenTableMasterFilter from "@MEScreenComponents/admission/tableData/tableMasterFilter";
 
 const AdmissionScreenTableData = () => {
   const dispatch = useDispatch();
+
   const {
     admissionApplications,
     showMasterFilter,
@@ -29,6 +35,11 @@ const AdmissionScreenTableData = () => {
     return count;
   };
 
+  const handleViewApplication = (admissionApplication) => {
+    dispatch(toggleAdmissionApplicationSheet());
+    dispatch(setSelectedAdmissionApplication(admissionApplication));
+  };
+
   const colDefs = [
     {
       headerName: "Actions",
@@ -40,7 +51,7 @@ const AdmissionScreenTableData = () => {
             size="icon"
             variant="link"
             className="text-primary cursor-pointer"
-            onClick={() => {}}
+            onClick={() => handleViewApplication(params)}
           >
             <Eye />
           </Button>
@@ -138,6 +149,8 @@ const AdmissionScreenTableData = () => {
       <div className="w-full h-[50vh] sm:h-[60vh] md:h-[70vh] lg:h-[75vh] px-2 sm:px-4">
         <MEDataTable rows={admissionApplications} columns={colDefs} />
       </div>
+
+      <AdmissionScreenAdmissionFormSheet/>
     </>
   );
 };

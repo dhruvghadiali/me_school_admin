@@ -11,7 +11,7 @@ import {
   toggleMasterFilter,
   setSelectedAcademicYear,
   setSelectedAcademicClass,
-  setSelectedApplicationStatus,
+  setSelectedAdmissionApplicationStatus,
 } from "@MERedux/admission/admissionSlice";
 
 import MESelect from "@MECommonComponents/form/select/meSelect";
@@ -54,7 +54,7 @@ const AdmissionScreenTableMasterFilter = () => {
     dispatch(setSelectedAcademicYear(year));
     dispatch(setEductionBoard(""));
     dispatch(setSelectedAcademicClass(""));
-    dispatch(setSelectedApplicationStatus(""));
+    dispatch(setSelectedAdmissionApplicationStatus(""));
     
     // Apply filters with cleared values immediately
     const query = `academic_year=${year}`;
@@ -155,7 +155,7 @@ const AdmissionScreenTableMasterFilter = () => {
               labelvariant={variants.DARK}
               clearable={true}
               onValueChange={(value) =>
-                dispatch(setSelectedApplicationStatus(value))
+                dispatch(setSelectedAdmissionApplicationStatus(value))
               }
             />
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">
