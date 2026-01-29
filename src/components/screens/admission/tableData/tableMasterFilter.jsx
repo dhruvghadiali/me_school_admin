@@ -45,17 +45,21 @@ const AdmissionScreenTableMasterFilter = () => {
         : `status=${selectedApplicationStatus}`;
     }
     dispatch(getAdmissionApplications(query));
-    dispatch(toggleMasterFilter(""));
+    dispatch(toggleMasterFilter());
   };
 
   const handleClearFilters = () => {
-    let year = currentAcademicSession();
+    const year = currentAcademicSession();
 
     dispatch(setSelectedAcademicYear(year));
     dispatch(setEductionBoard(""));
     dispatch(setSelectedAcademicClass(""));
     dispatch(setSelectedApplicationStatus(""));
-    handleApplyFilters();
+    
+    // Apply filters with cleared values immediately
+    const query = `academic_year=${year}`;
+    dispatch(getAdmissionApplications(query));
+    dispatch(toggleMasterFilter());
   };
 
   return (
