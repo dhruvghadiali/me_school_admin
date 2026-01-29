@@ -3,14 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 
 import { variants } from "@MEUtils/enums";
+import { currentAcademicSession } from "@MEUtils/utility";
+import { getAdmissionApplications } from "@MERedux/admission/admissionAction";
+import { ADMISSION_APPLICATION_STATUS } from "@MEHelpers/enums/admissionEnum";
 import {
   setEductionBoard,
+  toggleMasterFilter,
   setSelectedAcademicYear,
   setSelectedAcademicClass,
   setSelectedApplicationStatus,
 } from "@MERedux/admission/admissionSlice";
-import { getAdmissionApplications } from "@MERedux/admission/admissionAction";
-import { ADMISSION_APPLICATION_STATUS } from "@MEHelpers/enums/admissionEnum";
 
 import MESelect from "@MECommonComponents/form/select/meSelect";
 import MEButton from "@MECommonComponents/form/button/meButton";
@@ -43,6 +45,17 @@ const AdmissionScreenTableMasterFilter = () => {
         : `status=${selectedApplicationStatus}`;
     }
     dispatch(getAdmissionApplications(query));
+    dispatch(toggleMasterFilter(""));
+  };
+
+  const handleClearFilters = () => {
+    let year = currentAcademicSession();
+
+    dispatch(setSelectedAcademicYear(year));
+    dispatch(setEductionBoard(""));
+    dispatch(setSelectedAcademicClass(""));
+    dispatch(setSelectedApplicationStatus(""));
+    handleApplyFilters();
   };
 
   return (
@@ -68,6 +81,7 @@ const AdmissionScreenTableMasterFilter = () => {
               selectVariant={variants.DARK}
               selectedVariant={variants.DARK}
               labelvariant={variants.DARK}
+              clearable={true}
               onValueChange={(value) =>
                 dispatch(setSelectedAcademicYear(value))
               }
@@ -87,6 +101,7 @@ const AdmissionScreenTableMasterFilter = () => {
               selectVariant={variants.DARK}
               selectedVariant={variants.DARK}
               labelvariant={variants.DARK}
+              clearable={true}
               onValueChange={(value) => dispatch(setEductionBoard(value))}
             />
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">
@@ -109,6 +124,7 @@ const AdmissionScreenTableMasterFilter = () => {
               selectVariant={variants.DARK}
               selectedVariant={variants.DARK}
               labelvariant={variants.DARK}
+              clearable={true}
               onValueChange={(value) =>
                 dispatch(setSelectedAcademicClass(value))
               }
@@ -151,6 +167,12 @@ const AdmissionScreenTableMasterFilter = () => {
             onClick={handleApplyFilters}
           >
             Apply Filters
+          </MEButton>
+          <MEButton
+            buttonVariant={variants.PRIMARY}
+            onClick={handleClearFilters}
+          >
+            Clear Filters
           </MEButton>
         </div>
       </div>
