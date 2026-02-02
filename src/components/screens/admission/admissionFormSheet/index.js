@@ -20,14 +20,17 @@ import DocumentsTab from "./documentsTab";
 import AppointmentsTab from "./appointmentsTab";
 import FeePaymentsTab from "./feePaymentsTab";
 
+import AdmissionScreenAdmissionForm from "@MEScreenComponents/admission/admissionFormSheet/admissionForm";
+
 const AdmissionScreenAdmissionFormSheet = (props) => {
   const dispatch = useDispatch();
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState("basic");
 
   const { showAdmissionApplicationSheet, selectedAdmissionApplication } =
     useSelector((state) => state.admissionApplication);
 
   const tabs = [
+    { id: "basic", label: "Form Details" },
     { id: "profile", label: "Profile" },
     { id: "status-history", label: "Status History" },
     { id: "documents", label: "Documents" },
@@ -37,6 +40,8 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case "basic":
+        return <AdmissionBasicDetails />;
       case "profile":
         return <ProfileTab />;
       case "status-history":
@@ -76,9 +81,8 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {/* Basic Details */}
           <div className="px-4 sm:px-6 pt-4 sm:pt-6">
-            <AdmissionBasicDetails />
+            <AdmissionScreenAdmissionForm />
           </div>
 
           {/* Sticky Tabs Navigation */}

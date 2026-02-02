@@ -20,13 +20,13 @@ const getAdmissionApplications = createAsyncThunk(
         payload
           ? `${admissionApplicationsAPIRoute}?${payload}`
           : admissionApplicationsAPIRoute,
-        { state: getState() }
+        { state: getState() },
       );
 
       if (apiResponseHaveData(response)) {
         return {
           admissionApplications: admissionApplicationsAPIResponse(
-            response.data
+            response.data,
           ),
           error: "",
         };
@@ -47,7 +47,7 @@ const getAdmissionApplications = createAsyncThunk(
         error: errMsg,
       });
     }
-  }
+  },
 );
 
 const getAcademicClasses = createAsyncThunk(
@@ -73,7 +73,7 @@ const getAcademicClasses = createAsyncThunk(
 
           const response = await axiosInstance.get(
             `${schoolAcademicClassesAPIRoute}/${school}`,
-            { state: getState() }
+            { state: getState() },
           );
 
           if (apiResponseHaveData(response)) {
@@ -109,7 +109,135 @@ const getAcademicClasses = createAsyncThunk(
         "Get academic classes request failed";
       return rejectWithValue({ error: errMsg });
     }
-  }
+  },
 );
 
-export { getAdmissionApplications, getAcademicClasses };
+const updateAdmissionApplicationStatus = createAsyncThunk(
+  "admission/updateAdmissionApplicationStatus",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const { applicationId, status, remarks } = payload;
+      const response = await axiosInstance.put(
+        `${admissionApplicationsAPIRoute}/${applicationId}/status`,
+        { status, remarks },
+        { state: getState() },
+      );
+
+      console.log("Update response:", response);
+      // if (apiResponseHaveData(response)) {
+      //   return {
+      //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
+      //       response.data,
+      //     )[0],
+      //     error: "",
+      //   };
+      // } else {
+      //   return {
+      //     updatedAdmissionApplication: null,
+      //     error:
+      //       response && response.message
+      //         ? response.message
+      //         : "Update admission application status request failed",
+      //   };
+      // }
+      return { error: "" };
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Update admission application status request failed";
+      return rejectWithValue({
+        error: errMsg,
+      });
+    }
+  },
+);
+
+const documentVerificationAppointmentBooking = createAsyncThunk(
+  "admission/documentVerificationAppointmentBooking",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const { applicationId, scheduled_date, scheduled_time_slot, remarks } =
+        payload;
+      const response = await axiosInstance.put(
+        `${admissionApplicationsAPIRoute}/${applicationId}/document-verification-appointment-booking`,
+        { scheduled_date, scheduled_time_slot, remarks },
+        { state: getState() },
+      );
+
+      console.log("Update response:", response);
+      // if (apiResponseHaveData(response)) {
+      //   return {
+      //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
+      //       response.data,
+      //     )[0],
+      //     error: "",
+      //   };
+      // } else {
+      //   return {
+      //     updatedAdmissionApplication: null,
+      //     error:
+      //       response && response.message
+      //         ? response.message
+      //         : "Update admission application status request failed",
+      //   };
+      // }
+      return { error: "" };
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Document verification appointment booking request failed";
+      return rejectWithValue({
+        error: errMsg,
+      });
+    }
+  },
+);
+
+const rescheduleDocumentVerificationAppointmentBooking = createAsyncThunk(
+  "admission/rescheduleDocumentVerificationAppointmentBooking",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const { applicationId, scheduled_date, scheduled_time_slot, remarks } =
+        payload;
+      const response = await axiosInstance.put(
+        `${admissionApplicationsAPIRoute}/${applicationId}/reschedule-document-verification-appointment`,
+        { scheduled_date, scheduled_time_slot, remarks },
+        { state: getState() },
+      );
+
+      console.log("Update response:", response);
+      // if (apiResponseHaveData(response)) {
+      //   return {
+      //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
+      //       response.data,
+      //     )[0],
+      //     error: "",
+      //   };
+      // } else {
+      //   return {
+      //     updatedAdmissionApplication: null,
+      //     error:
+      //       response && response.message
+      //         ? response.message
+      //         : "Update admission application status request failed",
+      //   };
+      // }
+      return { error: "" };
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Document verification appointment booking request failed";
+      return rejectWithValue({
+        error: errMsg,
+      });
+    }
+  },
+);
+
+export {
+  getAcademicClasses,
+  getAdmissionApplications,
+  updateAdmissionApplicationStatus,
+  documentVerificationAppointmentBooking,
+  rescheduleDocumentVerificationAppointmentBooking,
+};

@@ -139,6 +139,7 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
       academicSession: _.get(application, "academic_session", ""),
       applicationNumber: _.get(application, "application_number", ""),
       status: _.upperCase(_.get(application, "status", "")),
+      applicationStatus: _.get(application, "status", ""),
       createdBy: _.get(application, "created_by", ""),
       updatedBy: _.get(application, "updated_by", ""),
       createdAt: _.isString(_.get(application, "created_at", null))

@@ -3,6 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getAcademicClasses,
   getAdmissionApplications,
+  updateAdmissionApplicationStatus,
+  documentVerificationAppointmentBooking,
+  rescheduleDocumentVerificationAppointmentBooking,
 } from "@/slice/admission/admissionAction";
 
 export const admissionApplicationSlice = createSlice({
@@ -20,6 +23,8 @@ export const admissionApplicationSlice = createSlice({
     selectedApplicationStatus: "",
     selectedAcademicYear: "",
     selectedAdmissionApplication: {},
+    admissionFormError: "",
+    admissionFormLoader: false,
   },
   reducers: {
     setEductionBoard: (state, action) => {
@@ -39,12 +44,15 @@ export const admissionApplicationSlice = createSlice({
     },
     setSelectedAdmissionApplication: (state, action) => {
       state.selectedAdmissionApplication = action.payload;
+      state.admissionFormError = "";
+      state.admissionFormLoader = false;
     },
     toggleMasterFilter: (state) => {
       state.showMasterFilter = !state.showMasterFilter;
     },
     toggleAdmissionApplicationSheet: (state) => {
-      state.showAdmissionApplicationSheet = !state.showAdmissionApplicationSheet;
+      state.showAdmissionApplicationSheet =
+        !state.showAdmissionApplicationSheet;
     },
   },
   extraReducers: (builder) => {
@@ -73,7 +81,58 @@ export const admissionApplicationSlice = createSlice({
       })
       .addCase(getAcademicClasses.rejected, (state, action) => {
         state.eductionBoardsWithAcademicClasses = [];
-      });
+      })
+      .addCase(updateAdmissionApplicationStatus.pending, (state) => {
+        state.admissionFormError = "";
+        state.admissionFormLoader = true;
+      })
+      .addCase(updateAdmissionApplicationStatus.fulfilled, (state, action) => {
+        state.admissionFormError = action.payload.error;
+        state.admissionFormLoader = false;
+      })
+      .addCase(updateAdmissionApplicationStatus.rejected, (state, action) => {
+        state.admissionFormError = action.payload.error;
+        state.admissionFormLoader = false;
+      })
+      .addCase(documentVerificationAppointmentBooking.pending, (state) => {
+        state.admissionFormError = "";
+        state.admissionFormLoader = true;
+      })
+      .addCase(
+        documentVerificationAppointmentBooking.fulfilled,
+        (state, action) => {
+          state.admissionFormError = action.payload.error;
+          state.admissionFormLoader = false;
+        },
+      )
+      .addCase(
+        documentVerificationAppointmentBooking.rejected,
+        (state, action) => {
+          state.admissionFormError = action.payload.error;
+          state.admissionFormLoader = false;
+        },
+      )
+      .addCase(
+        rescheduleDocumentVerificationAppointmentBooking.pending,
+        (state) => {
+          state.admissionFormError = "";
+          state.admissionFormLoader = true;
+        },
+      )
+      .addCase(
+        rescheduleDocumentVerificationAppointmentBooking.fulfilled,
+        (state, action) => {
+          state.admissionFormError = action.payload.error;
+          state.admissionFormLoader = false;
+        },
+      )
+      .addCase(
+        rescheduleDocumentVerificationAppointmentBooking.rejected,
+        (state, action) => {
+          state.admissionFormError = action.payload.error;
+          state.admissionFormLoader = false;
+        },
+      );
   },
 });
 
