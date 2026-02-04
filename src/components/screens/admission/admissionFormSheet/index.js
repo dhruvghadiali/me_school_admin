@@ -69,31 +69,31 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
         side="bottom"
         className="h-screen w-full overflow-hidden flex flex-col p-0"
       >
-        <div className="border-b border-primary/50 px-8 shadow-sm shadow-primary/10">
-          <SheetHeader>
-            <SheetTitle className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold">
+        <div className="border-b border-primary/50 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 shadow-sm shadow-primary/10">
+          <SheetHeader className="space-y-1 sm:space-y-1.5">
+            <SheetTitle className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-left">
               Application Details
             </SheetTitle>
-            <SheetDescription className="text-xs sm:text-sm mt-1">
+            <SheetDescription className="text-xs sm:text-sm text-left">
               View detailed information about the admission application
             </SheetDescription>
           </SheetHeader>
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="px-4 sm:px-6 pt-4 sm:pt-6">
+          <div className="px-3 sm:px-4 md:px-6 pt-3 sm:pt-4 md:pt-6">
             <AdmissionScreenAdmissionForm />
           </div>
 
           {/* Sticky Tabs Navigation */}
-          <div className="sticky top-0 z-10 bg-primary/90 shadow-lg shadow-primary/50 mt-4 sm:mt-6 mx-5 rounded">
-            <div className="overflow-x-auto px-4 sm:px-6">
+          <div className="sticky top-0 z-10 bg-primary/90 shadow-lg shadow-primary/50 mt-3 sm:mt-4 md:mt-6 mx-3 sm:mx-4 md:mx-5 rounded">
+            <div className="overflow-x-auto px-2 sm:px-4 md:px-6">
               <nav className="flex min-w-max sm:min-w-0" aria-label="Tabs">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex-1 sm:flex-none whitespace-nowrap px-4 py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors ${
+                    className={`flex-1 sm:flex-none whitespace-nowrap px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors ${
                       activeTab === tab.id
                         ? "border-white text-white bg-white/10"
                         : "border-transparent text-white/70 hover:text-white hover:bg-white/5"
@@ -107,7 +107,7 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
           </div>
 
           {/* Tab Content */}
-          <div className="px-4 sm:px-6 py-4 sm:py-6">{renderTabContent()}</div>
+          <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6">{renderTabContent()}</div>
         </div>
       </SheetContent>
     </Sheet>
