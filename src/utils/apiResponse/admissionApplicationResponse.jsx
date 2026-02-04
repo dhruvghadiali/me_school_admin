@@ -32,27 +32,27 @@ const formatApplicantUser = (applicantUser) => {
         hasHearingIssue: _.get(
           studentProfile,
           "medical_info.has_hearing_issue",
-          false
+          false,
         ),
         hasVisionIssue: _.get(
           studentProfile,
           "medical_info.has_vision_issue",
-          false
+          false,
         ),
         hasPhysicalIssue: _.get(
           studentProfile,
           "medical_info.has_physical_issue",
-          false
+          false,
         ),
         hasMentalIssue: _.get(
           studentProfile,
           "medical_info.has_mental_issue",
-          false
+          false,
         ),
         hasAllergies: _.get(
           studentProfile,
           "medical_info.has_allergies",
-          false
+          false,
         ),
         allergies: _.get(studentProfile, "medical_info.allergies", []),
       },
@@ -131,7 +131,7 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
 
     // Transform and return only required fields
     const formattedApplicantUser = formatApplicantUser(
-      _.get(application, "applicant_user", {})
+      _.get(application, "applicant_user", {}),
     );
 
     const transformedApplication = {
@@ -144,12 +144,12 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
       updatedBy: _.get(application, "updated_by", ""),
       createdAt: _.isString(_.get(application, "created_at", null))
         ? moment(_.get(application, "created_at")).format(
-            "DD MMMM YYYY hh:mm A"
+            "DD MMMM YYYY hh:mm A",
           )
         : "",
       updatedAt: _.isString(_.get(application, "updated_at", null))
         ? moment(_.get(application, "updated_at")).format(
-            "DD MMMM YYYY hh:mm A"
+            "DD MMMM YYYY hh:mm A",
           )
         : "",
       applicantUser: formattedApplicantUser,
@@ -157,20 +157,57 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
         ? _.truncate(
             _.trim(
               `${_.startCase(
-                _.get(formattedApplicantUser, "firstName", "")
-              )} ${_.startCase(_.get(formattedApplicantUser, "lastName", ""))}`
+                _.get(formattedApplicantUser, "firstName", ""),
+              )} ${_.startCase(_.get(formattedApplicantUser, "lastName", ""))}`,
             ),
-            { length: 50, omission: "..." }
+            { length: 50, omission: "..." },
           )
         : "",
-      academicClass: _.isObject(_.get(application, "school_academic_class")) &&
+      academicClass:
+        _.isObject(_.get(application, "school_academic_class")) &&
         _.isObject(_.get(application, "school_academic_class.academic_class"))
-        ? _.upperCase(_.get(application, "school_academic_class.academic_class.academic_class", ""))
-        : "",
-      educationBoard: _.isObject(_.get(application, "school_academic_class")) &&
+          ? _.upperCase(
+              _.get(
+                application,
+                "school_academic_class.academic_class.academic_class",
+                "",
+              ),
+            )
+          : "",
+      educationBoard:
+        _.isObject(_.get(application, "school_academic_class")) &&
         _.isObject(_.get(application, "school_academic_class.education_board"))
-        ? _.upperCase(_.get(application, "school_academic_class.education_board.education_board", ""))
-        : "",
+          ? _.upperCase(
+              _.get(
+                application,
+                "school_academic_class.education_board.education_board",
+                "",
+              ),
+            )
+          : "",
+      statusHistory: _.map(
+        _.orderBy(
+          _.get(application, "status_history", []),
+          [(history) => _.get(history, "changed_at")],
+          ["desc"],
+        ),
+        (history) => ({
+          id: _.get(history, "_id", ""),
+          status: _.upperCase(_.get(history, "status", "")),
+          changedBy: {
+            id: _.get(history, "changed_by.id", ""),
+            firstName: _.get(history, "changed_by.first_name", ""),
+            lastName: _.get(history, "changed_by.last_name", ""),
+            username: _.get(history, "changed_by.username", ""),
+          },
+          changedAt: _.isString(_.get(history, "changed_at"))
+            ? moment(_.get(history, "changed_at")).format(
+                "DD MMMM YYYY hh:mm A",
+              )
+            : "",
+          remarks: _.get(history, "remarks", ""),
+        }),
+      ),
     };
 
     // Validate required fields
@@ -182,4 +219,35 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
   }).filter((app) => app !== null); // Remove null entries from invalid objects
 };
 
-export { admissionApplicationsAPIResponse, formatApplicantUser };
+const updatedAdmissionApplicationStatusAPIResponse = (application) => {
+  return {
+    id: _.get(application, "id", ""),
+    status: _.upperCase(_.get(application, "status", "")),
+    applicationStatus: _.get(application, "status", ""),
+    statusHistory: _.map(
+      _.orderBy(
+        _.get(application, "status_history", []),
+        [(history) => _.get(history, "changed_at")],
+        ["desc"],
+      ),
+      (history) => ({
+        id: _.get(history, "_id", ""),
+        status: _.upperCase(_.get(history, "status", "")),
+        changedBy: {
+          id: _.get(history, "changed_by.id", ""),
+          firstName: _.get(history, "changed_by.first_name", ""),
+          lastName: _.get(history, "changed_by.last_name", ""),
+          username: _.get(history, "changed_by.username", ""),
+        },
+        changedAt: _.isString(_.get(history, "changed_at"))
+          ? moment(_.get(history, "changed_at")).format(
+              "DD MMMM YYYY hh:mm A",
+            )
+          : "",
+        remarks: _.get(history, "remarks", ""),
+      }),
+    ),
+  };
+};
+
+export { admissionApplicationsAPIResponse, formatApplicantUser, updatedAdmissionApplicationStatusAPIResponse };

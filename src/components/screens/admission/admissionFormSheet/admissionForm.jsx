@@ -102,7 +102,11 @@ const AdmissionScreenAdmissionForm = () => {
             scheduled_time_slot: `${moment(values.appointmentDate).format("h:mm A")} - ${moment(values.appointmentDate).add(1, "hour").format("h:mm A")}`,
             remarks: values.remarks,
           }),
-        );
+        ).then((result) => {
+          if (result.type.endsWith("/fulfilled") && !result.payload?.error) {
+            formik.resetForm();
+          }
+        });
       } else if (
         values.status === ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED
       ) {
@@ -113,7 +117,11 @@ const AdmissionScreenAdmissionForm = () => {
             scheduled_time_slot: `${moment(values.appointmentDate).format("h:mm A")} - ${moment(values.appointmentDate).add(1, "hour").format("h:mm A")}`,
             remarks: values.remarks,
           }),
-        );
+        ).then((result) => {
+          if (result.type.endsWith("/fulfilled") && !result.payload?.error) {
+            formik.resetForm();
+          }
+        });
       } else {
         dispatch(
           updateAdmissionApplicationStatus({
@@ -121,7 +129,11 @@ const AdmissionScreenAdmissionForm = () => {
             status: values.status,
             remarks: values.remarks,
           }),
-        );
+        ).then((result) => {
+          if (result.type.endsWith("/fulfilled") && !result.payload?.error) {
+            formik.resetForm();
+          }
+        });
       }
     },
   });

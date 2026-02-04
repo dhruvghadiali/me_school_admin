@@ -89,6 +89,8 @@ export const admissionApplicationSlice = createSlice({
       .addCase(updateAdmissionApplicationStatus.fulfilled, (state, action) => {
         state.admissionFormError = action.payload.error;
         state.admissionFormLoader = false;
+        state.admissionApplications = action.payload.admissionApplications;
+        state.selectedAdmissionApplication = action.payload.selectedAdmissionApplication;
       })
       .addCase(updateAdmissionApplicationStatus.rejected, (state, action) => {
         state.admissionFormError = action.payload.error;

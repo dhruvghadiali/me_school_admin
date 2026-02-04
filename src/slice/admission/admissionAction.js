@@ -10,6 +10,7 @@ import {
 import {
   admissionApplicationsAPIResponse,
   eductionBoardsWithAcademicClassesAPIResponse,
+  updatedAdmissionApplicationStatusAPIResponse,
 } from "@MEUtils/apiResponse";
 
 const getAdmissionApplications = createAsyncThunk(
@@ -117,30 +118,43 @@ const updateAdmissionApplicationStatus = createAsyncThunk(
   async (payload, { getState, rejectWithValue }) => {
     try {
       const { applicationId, status, remarks } = payload;
+      let admissionApplications =
+        getState()?.admissionApplication?.admissionApplications || [];
+      let selectedAdmissionApplication =
+        getState()?.admissionApplication?.selectedAdmissionApplication || {};
       const response = await axiosInstance.put(
         `${admissionApplicationsAPIRoute}/${applicationId}/status`,
         { status, remarks },
         { state: getState() },
       );
 
-      console.log("Update response:", response);
-      // if (apiResponseHaveData(response)) {
-      //   return {
-      //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
-      //       response.data,
-      //     )[0],
-      //     error: "",
-      //   };
-      // } else {
-      //   return {
-      //     updatedAdmissionApplication: null,
-      //     error:
-      //       response && response.message
-      //         ? response.message
-      //         : "Update admission application status request failed",
-      //   };
-      // }
-      return { error: "" };
+      if (apiResponseHaveData(response)) {
+        if (response.data?.[0]) {
+          const admissionFormData =
+            updatedAdmissionApplicationStatusAPIResponse(response.data[0]);
+          admissionApplications = _.map(admissionApplications, (application) =>
+            application.id === admissionFormData.id
+              ? { ...application, ...admissionFormData }
+              : application,
+          );
+          selectedAdmissionApplication = {...selectedAdmissionApplication, ...admissionFormData };
+        }
+
+        return {
+          admissionApplications,
+          selectedAdmissionApplication,
+          error: "",
+        };
+      } else {
+        return {
+          admissionApplications: admissionApplications,
+          selectedAdmissionApplication: selectedAdmissionApplication,
+          error:
+            response && response.message
+              ? response.message
+              : "Update admission application status request failed",
+        };
+      }
     } catch (error) {
       const errMsg =
         (error && (error.message || error.error)) ||

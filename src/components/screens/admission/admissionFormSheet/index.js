@@ -45,7 +45,7 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
       case "profile":
         return <ProfileTab />;
       case "status-history":
-        return <StatusHistoryTab application={selectedAdmissionApplication} />;
+        return <StatusHistoryTab />;
       case "documents":
         return <DocumentsTab application={selectedAdmissionApplication} />;
       case "appointments":
