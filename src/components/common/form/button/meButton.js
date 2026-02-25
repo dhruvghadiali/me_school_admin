@@ -3,11 +3,11 @@ import { buttonClassNameByVariant } from "@MECommonComponents/form/button/meButt
 
 import PropTypes from "prop-types";
 
-const MEButton = ({ buttonVariant, ...props }) => {
+const MEButton = ({ buttonVariant, buttonClassName, ...props }) => {
   return (
     <Button
       disabled={props.disabled}
-      className={`${buttonClassNameByVariant(buttonVariant)} cursor-pointer hover:cursor-pointer`}
+      className={`${buttonClassNameByVariant(buttonVariant)} ${buttonClassName} cursor-pointer hover:cursor-pointer`}
       {...props}
     />
   );
@@ -15,6 +15,7 @@ const MEButton = ({ buttonVariant, ...props }) => {
 
 MEButton.propTypes = {
   buttonVariant: PropTypes.string,
+  buttonClassName: PropTypes.string,
 };
 
 export default MEButton;

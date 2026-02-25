@@ -1,5 +1,5 @@
 const signInFormHeader= "Welcome!";
-const signInFormSubtitle = "Sign In to your account";
+const signInFormSubtitle = "Sign in to your account";
 const signInButtonLabel = "Sign In";
 const passwordInputLabel = "Password";
 const usernameInputLabel = "Username";

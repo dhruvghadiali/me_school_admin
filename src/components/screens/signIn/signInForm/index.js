@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useFormik } from "formik";
 import { CircleAlertIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +20,7 @@ import {
   usernameRequired,
 } from "@MEUtils/validationMessage";
 
+import _ from "lodash";
 import * as Yup from "yup";
 
 import MEInput from "@MECommonComponents/form/input/meInput";
@@ -28,7 +30,9 @@ import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 const SignInForm = () => {
   const { loader, error } = useSelector((state) => state.authentication);
   const { t } = useTranslation();
+
   const dispatch = useDispatch();
+  const passwordInputRef = useRef(null);
 
   const formik = useFormik({
     initialValues: {
@@ -82,16 +86,36 @@ const SignInForm = () => {
     // setValidatingField(null);
   };
 
+  // Handle Enter key press on username field to move to password
+  const handleUsernameKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      passwordInputRef.current?.focus();
+    }
+  };
+
+  // Handle Enter key press on password field to hide keyboard on mobile
+  const handlePasswordKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.target.blur(); // Hide keyboard on mobile
+    }
+  };
+
   return (
     <>
-      <div className="py-3" />
       {error && (
-        <div className="bg-danger mb-2 flex items-center  rounded-md">
-          <CircleAlertIcon className="text-accent ml-2" />
-          <p className="text-accent p-2 text-center">{error}</p>
+        <div className="bg-danger/10 border border-danger/20 mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3 rounded-lg p-2.5 sm:p-3 md:p-3.5 backdrop-blur-sm">
+          <CircleAlertIcon className="text-danger w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+          <p className="text-danger text-xs sm:text-sm md:text-base font-medium">
+            {error}
+          </p>
         </div>
       )}
-      <form onSubmit={formik.handleSubmit}>
+      <form
+        onSubmit={formik.handleSubmit}
+        className="space-y-3 sm:space-y-4 md:space-y-5"
+      >
         <MEInput
           id="username"
           name="username"
@@ -107,6 +131,7 @@ const SignInForm = () => {
           messagevariant={variants.DANGER}
           onChange={handleFieldChange}
           onBlur={() => handleFieldBlur("username")}
+          onKeyDown={handleUsernameKeyDown}
           placeholder={t("usernameInputLabel", {
             defaultValue: usernameInputLabel,
           })}
@@ -115,6 +140,7 @@ const SignInForm = () => {
           })}
         />
         <MEInput
+          ref={passwordInputRef}
           id="password"
           name="password"
           type={"password"}
@@ -129,6 +155,7 @@ const SignInForm = () => {
           messagevariant={variants.DANGER}
           onChange={handleFieldChange}
           onBlur={() => handleFieldBlur("password")}
+          onKeyDown={handlePasswordKeyDown}
           placeholder={t("passwordInputLabel", {
             defaultValue: passwordInputLabel,
           })}
@@ -137,15 +164,20 @@ const SignInForm = () => {
           })}
         />
 
-        <div className="py-2">
+        <div className="mt-10">
           <MEButton
             type="submit"
             disabled={loader}
             buttonVariant={variants.SUCCESS}
+            buttonClassName="w-full"
           >
-            {t("signInButtonLabel", {
-              defaultValue: signInButtonLabel,
-            })}
+            {_.toUpper(
+              _.toLower(
+                t("signInButtonLabel", {
+                  defaultValue: signInButtonLabel,
+                }),
+              ),
+            )}
             {loader && <MELoaderIcon />}
           </MEButton>
         </div>

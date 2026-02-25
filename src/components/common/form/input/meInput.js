@@ -1,3 +1,5 @@
+import { forwardRef } from "react";
+
 import { Input } from "@MEShadcnComponents/input";
 import { Label } from "@MEShadcnComponents/label";
 import {
@@ -7,7 +9,7 @@ import {
 
 import PropTypes from "prop-types";
 
-const MEInput = (props) => {
+const MEInput = forwardRef((props, ref) => {
   const {
     required,
     label,
@@ -24,13 +26,14 @@ const MEInput = (props) => {
       </Label>
       <div className="relative">
         <Input
+          ref={ref}
           className={`${inputClassNameByVariant(inputvariant)}`}
           {...props}
         />
       </div>
       <p
         className={`mt-2 mb-5 text-xs ${inputMessageClassNameByVariant(
-          messagevariant
+          messagevariant,
         )}`}
         role="alert"
         aria-live="polite"
@@ -39,7 +42,9 @@ const MEInput = (props) => {
       </p>
     </div>
   );
-};
+});
+
+MEInput.displayName = "MEInput";
 
 MEInput.propTypes = {
   required: PropTypes.bool,
