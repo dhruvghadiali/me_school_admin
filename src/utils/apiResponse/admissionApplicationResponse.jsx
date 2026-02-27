@@ -208,6 +208,16 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
           remarks: _.get(history, "remarks", ""),
         }),
       ),
+      documents: _.map(
+        _.get(application, "verified_documents", []),
+        (doc) => ({
+          id: _.get(doc, "school_admission_document.admission_document._id", ""),
+          admissionDocument: _.get(doc, "school_admission_document.admission_document.admission_document", ""),
+          isRequired: _.get(doc, "school_admission_document.is_required", false),
+          isVerified: _.get(doc, "is_verified", false),
+          notes: _.get(doc, "notes", ""),
+        }),
+      ),
     };
 
     // Validate required fields

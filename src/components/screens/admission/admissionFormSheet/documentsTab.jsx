@@ -20,54 +20,49 @@ const DocumentsTab = ({ application }) => {
       {documents.map((doc, index) => (
         <div
           key={doc.id || index}
-          className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+          className="bg-secondary/10 rounded-lg p-4 border border-primary/50 shadow-lg shadow-primary/50 hover:shadow-md hover:cursor-pointer"
         >
           <div className="flex items-start gap-3">
             <div
               className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
                 doc.isVerified
-                  ? "bg-green-100 dark:bg-green-900/30"
-                  : "bg-gray-100 dark:bg-gray-800"
+                  ? "bg-success/20 "
+                  : "bg-danger/20 "
               }`}
             >
               {doc.isVerified ? (
-                <FileCheck className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <FileCheck className="w-5 h-5 text-success" />
               ) : (
-                <FileX className="w-5 h-5 text-gray-400" />
+                <FileX className="w-5 h-5 text-danger" />
               )}
             </div>
             <div className="flex-1 min-w-0">
               <h5 className="text-sm font-semibold text-gray-900 dark:text-white mb-1 truncate">
-                {doc.documentName || "N/A"}
+                {_.toUpper(_.get(doc, "admissionDocument", "N/A"))}
               </h5>
               <div className="flex items-center gap-2 flex-wrap">
                 <span
                   className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
                     doc.required
-                      ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
-                      : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                      ? "bg-danger text-secondary"
+                      : "bg-warning text-secondary"
                   }`}
                 >
                   {doc.required ? "Required" : "Optional"}
                 </span>
-                {doc.isVerified && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                    Verified
-                  </span>
-                )}
               </div>
-              {doc.verifiedBy && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                  Verified by: {doc.verifiedBy}
-                </p>
-              )}
-              {doc.verifiedAt && (
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  {doc.verifiedAt}
-                </p>
-              )}
             </div>
           </div>
+          {doc.notes && (
+            <div className="mt-3 pt-2.5 border-t border-primary/20">
+              <p className="text-xs sm:text-xs font-semibold text-primary/60 uppercase tracking-wide mb-1">
+                Notes
+              </p>
+              <p className="text-xs sm:text-xs text-primary leading-relaxed">
+                {_.truncate(doc.notes, { length: 80, omission: "..." })}
+              </p>
+            </div>
+          )}
         </div>
       ))}
     </div>

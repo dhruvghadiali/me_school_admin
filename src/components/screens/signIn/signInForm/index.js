@@ -99,6 +99,7 @@ const SignInForm = () => {
     if (event.key === "Enter") {
       event.preventDefault();
       event.target.blur(); // Hide keyboard on mobile
+      formik.handleSubmit(); // Submit the form
     }
   };
 

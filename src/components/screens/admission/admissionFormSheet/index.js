@@ -67,9 +67,9 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
     >
       <SheetContent
         side="bottom"
-        className="h-screen w-full overflow-hidden flex flex-col p-0"
+        className="h-full w-full overflow-hidden flex flex-col p-0"
       >
-        <div className="border-b border-primary/50 px-4 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 shadow-sm shadow-primary/10">
+        <div className="border-b border-primary/50 px-4 sm:px-6 md:px-8 shadow-lg shadow-primary/80">
           <SheetHeader className="space-y-1 sm:space-y-1.5">
             <SheetTitle className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-left">
               Application Details

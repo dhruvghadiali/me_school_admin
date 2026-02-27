@@ -172,7 +172,7 @@ const AdmissionScreenAdmissionForm = () => {
   return (
     <div className="w-full h-full flex items-start justify-center">
       <div className="w-full mx-auto">
-        <div className="bg-secondary/10 rounded-lg p-6 md:p-8 lg:p-10 border border-primary/50 shadow-lg shadow-primary/50">
+        <div className="bg-secondary/10 rounded-lg p-6 md:p-8 lg:p-10 border border-primary/50 shadow-sm shadow-primary/80">
           {admissionFormError && (
             <div className="bg-danger/90 backdrop-blur-sm mb-8 flex items-center gap-3 rounded-xl p-4 border border-danger/50 shadow-md ">
               <CircleAlertIcon className="text-accent shrink-0 w-5 h-5 animate-pulse" />
@@ -261,17 +261,20 @@ const AdmissionScreenAdmissionForm = () => {
             </div>
 
             {/* Action Section */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-primary/20 mt-8">
-              <div className="hidden lg:block text-sm text-muted-foreground">
-                <p>Please review the changes before submitting</p>
+            <div className="flex flex-col gap-3 pt-5 border-t border-primary/20 mt-6">
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Please review the changes before submitting
+              </p>
+              <div className="flex items-center">
+                <MEButton
+                  buttonVariant={variants.SUCCESS}
+                  type="submit"
+                  disabled={admissionFormLoader}
+                  buttonClassName="w-full sm:w-auto px-6 sm:px-8"
+                >
+                  {admissionFormLoader && <MELoaderIcon />} Change Status
+                </MEButton>
               </div>
-              <MEButton
-                buttonVariant={variants.SUCCESS}
-                type="submit"
-                disabled={admissionFormLoader}
-              >
-                {admissionFormLoader && <MELoaderIcon />} Change Status
-              </MEButton>
             </div>
           </form>
         </div>
