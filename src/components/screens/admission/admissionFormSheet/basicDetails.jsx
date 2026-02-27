@@ -7,8 +7,6 @@ const AdmissionBasicDetails = () => {
     (state) => state.admissionApplication,
   );
 
-  console.log("selectedAdmissionApplication", selectedAdmissionApplication);
-
   const detailsData = [
     { label: "Application Number", value: selectedAdmissionApplication.applicationNumber },
     { label: "Academic Session", value: selectedAdmissionApplication.academicSession },

@@ -1,9 +1,14 @@
 import _ from "lodash";
+import { useSelector } from "react-redux";
 import { FileCheck, FileX } from "lucide-react";
 
-const DocumentsTab = ({ application }) => {
+const DocumentsTab = () => {
+  const { selectedAdmissionApplication } = useSelector(
+    (state) => state.admissionApplication,
+  );
+
   // Mock data for now - replace with actual data from application
-  const documents = _.get(application, "documents", []);
+  const documents = _.get(selectedAdmissionApplication, "documents", []);
 
   if (!documents || documents.length === 0) {
     return (

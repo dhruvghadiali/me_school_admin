@@ -218,7 +218,43 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
           notes: _.get(doc, "notes", ""),
         }),
       ),
-    };
+      documentVerificationAppointments: _.map(
+        _.get(application, "document_verification_appointment", []),
+        (appointment) => ({
+          id: _.get(appointment, "_id", ""),
+          scheduledDate: _.isString(_.get(appointment, "scheduled_date"))
+            ? moment(_.get(appointment, "scheduled_date")).format("DD MMMM YYYY hh:mm A")
+            : "",
+          scheduledTimeSlot: _.get(appointment, "scheduled_time_slot", ""),
+          bookedAt: _.isString(_.get(appointment, "booked_at"))
+            ? moment(_.get(appointment, "booked_at")).format("DD MMMM YYYY hh:mm A")
+            : "",
+          bookedBy: _.get(appointment, "booked_by")
+            ? _.trim(
+                `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
+              )
+            : "",
+          remarks: _.get(appointment, "remarks", ""),
+        }),
+      ),      feePaymentAppointments: _.map(
+        _.get(application, "fee_payment_appointment", []),
+        (appointment) => ({
+          id: _.get(appointment, "_id", ""),
+          scheduledDate: _.isString(_.get(appointment, "scheduled_date"))
+            ? moment(_.get(appointment, "scheduled_date")).format("DD MMMM YYYY")
+            : "",
+          scheduledTimeSlot: _.get(appointment, "scheduled_time_slot", ""),
+          bookedAt: _.isString(_.get(appointment, "booked_at"))
+            ? moment(_.get(appointment, "booked_at")).format("DD MMMM YYYY hh:mm A")
+            : "",
+          bookedBy: _.get(appointment, "booked_by")
+            ? _.trim(
+                `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
+              )
+            : "",
+          remarks: _.get(appointment, "remarks", ""),
+        }),
+      ),    };
 
     // Validate required fields
     if (!transformedApplication.id) {

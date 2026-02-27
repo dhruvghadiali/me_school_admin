@@ -97,7 +97,7 @@ const StatusHistoryTab = () => {
                   </div>
 
                   {history.remarks && (
-                    <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-primary/50 ">
+                    <div className="mt-3 md:mt-4 pt-3 md:pt-4 border-t border-primary/20">
                       <p className="text-xs font-semibold text-primary mb-1.5 md:mb-2 uppercase tracking-wide">
                         Remarks
                       </p>

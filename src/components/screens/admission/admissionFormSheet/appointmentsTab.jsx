@@ -1,171 +1,209 @@
 import _ from "lodash";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import { useSelector } from "react-redux";
+import { Calendar, Clock, User, MessageSquare } from "lucide-react";
 
-const AppointmentsTab = ({ application }) => {
-  // Mock data for now - replace with actual data from application
-  const documentVerificationAppointment = _.get(
-    application,
-    "documentVerificationAppointment",
-    null
+const AppointmentsTab = () => {
+  const { selectedAdmissionApplication } = useSelector(
+    (state) => state.admissionApplication,
   );
-  const feePaymentAppointment = _.get(
-    application,
-    "feePaymentAppointment",
-    null
+
+  const documentVerificationAppointments = _.get(
+    selectedAdmissionApplication,
+    "documentVerificationAppointments",
+    [],
+  );
+
+  const feePaymentAppointments = _.get(
+    selectedAdmissionApplication,
+    "feePaymentAppointments",
+    [],
   );
 
   return (
-    <div className="space-y-6">
-      {/* Document Verification Appointment */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-        <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Document Verification Appointment
+    <div className="space-y-4 sm:space-y-5 md:space-y-6">
+      {/* Document Verification Appointments */}
+      <div className="bg-secondary/10 rounded-lg p-4 sm:p-5 md:p-6 border border-primary/20 shadow-sm shadow-primary/10">
+        <h4 className="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-primary mb-3 sm:mb-4 pb-2 border-b border-primary/20">
+          Document Verification Appointments
         </h4>
-        {documentVerificationAppointment ? (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-start gap-3">
-                <Calendar className="w-5 h-5 text-primary mt-0.5" />
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                    Date
-                  </p>
-                  <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                    {documentVerificationAppointment.date || "N/A"}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-primary mt-0.5" />
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                    Time
-                  </p>
-                  <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                    {documentVerificationAppointment.time || "N/A"}
-                  </p>
-                </div>
-              </div>
-              {documentVerificationAppointment.location && (
-                <div className="flex items-start gap-3 sm:col-span-2">
-                  <MapPin className="w-5 h-5 text-primary mt-0.5" />
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Location
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {documentVerificationAppointment.location}
-                    </p>
+
+        {_.isArray(documentVerificationAppointments) &&
+          _.size(documentVerificationAppointments) > 0 ? (
+          <div className="space-y-3 sm:space-y-4">
+            {_.map(documentVerificationAppointments, (appointment, index) => (
+              <div
+                key={appointment.id || index}
+                className="bg-secondary/20 rounded-lg p-3 sm:p-4 border border-primary/10"
+              >
+                {/* Appointment number badge */}
+                <p className="text-[10px] sm:text-xs font-semibold text-primary/60 uppercase tracking-wide mb-3">
+                  Appointment #{index + 1}
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                  {/* Scheduled Date */}
+                  <div className="flex items-start gap-2">
+                    <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Date
+                      </p>
+                      <p className="text-xs sm:text-sm font-semibold text-foreground mt-0.5">
+                        {appointment.scheduledDate || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Time Slot */}
+                  <div className="flex items-start gap-2">
+                    <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Time Slot
+                      </p>
+                      <p className="text-xs sm:text-sm font-semibold text-foreground mt-0.5">
+                        {appointment.scheduledTimeSlot || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Booked By */}
+                  <div className="flex items-start gap-2">
+                    <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Booked By
+                      </p>
+                      <p className="text-xs sm:text-sm font-semibold text-foreground mt-0.5 wrap-break-word">
+                        {appointment.bookedBy || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Booked At */}
+                  <div className="flex items-start gap-2">
+                    <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Booked At
+                      </p>
+                      <p className="text-xs sm:text-sm font-semibold text-foreground mt-0.5">
+                        {appointment.bookedAt || "N/A"}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
-            {documentVerificationAppointment.status && (
-              <div>
-                <span
-                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                    documentVerificationAppointment.status === "completed"
-                      ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                      : documentVerificationAppointment.status === "scheduled"
-                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                      : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                  }`}
-                >
-                  {_.startCase(documentVerificationAppointment.status)}
-                </span>
+
+                {/* Remarks */}
+                {appointment.remarks && (
+                  <div className="mt-3 pt-2.5 border-t border-primary/20 flex items-start gap-2">
+                    <MessageSquare className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-[10px] sm:text-xs font-semibold text-primary/60 uppercase tracking-wide mb-0.5">
+                        Remarks
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
+                        {appointment.remarks}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-            {documentVerificationAppointment.notes && (
-              <div>
-                <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                  Notes
-                </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  {documentVerificationAppointment.notes}
-                </p>
-              </div>
-            )}
+            ))}
           </div>
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            No appointment scheduled
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            No appointments scheduled
           </p>
         )}
       </div>
 
-      {/* Fee Payment Appointment */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-        <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Fee Payment Appointment
+      {/* Fee Payment Appointments */}
+      <div className="bg-secondary/10 rounded-lg p-4 sm:p-5 md:p-6 border border-primary/20 shadow-sm shadow-primary/10">
+        <h4 className="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-primary mb-3 sm:mb-4 pb-2 border-b border-primary/20">
+          Fee Payment Appointments
         </h4>
-        {feePaymentAppointment ? (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex items-start gap-3">
-                <Calendar className="w-5 h-5 text-primary mt-0.5" />
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                    Date
-                  </p>
-                  <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                    {feePaymentAppointment.date || "N/A"}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-primary mt-0.5" />
-                <div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                    Time
-                  </p>
-                  <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                    {feePaymentAppointment.time || "N/A"}
-                  </p>
-                </div>
-              </div>
-              {feePaymentAppointment.location && (
-                <div className="flex items-start gap-3 sm:col-span-2">
-                  <MapPin className="w-5 h-5 text-primary mt-0.5" />
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Location
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {feePaymentAppointment.location}
-                    </p>
+
+        {_.isArray(feePaymentAppointments) && _.size(feePaymentAppointments) > 0 ? (
+          <div className="space-y-3 sm:space-y-4">
+            {_.map(feePaymentAppointments, (appointment, index) => (
+              <div
+                key={appointment.id || index}
+                className="bg-secondary/20 rounded-lg p-3 sm:p-4 border border-primary/10"
+              >
+                <p className="text-[10px] sm:text-xs font-semibold text-primary/60 uppercase tracking-wide mb-3">
+                  Appointment #{index + 1}
+                </p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="flex items-start gap-2">
+                    <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Date
+                      </p>
+                      <p className="text-xs sm:text-sm font-semibold text-foreground mt-0.5">
+                        {appointment.scheduledDate || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Time Slot
+                      </p>
+                      <p className="text-xs sm:text-sm font-semibold text-foreground mt-0.5">
+                        {appointment.scheduledTimeSlot || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Booked By
+                      </p>
+                      <p className="text-xs sm:text-sm font-semibold text-foreground mt-0.5 wrap-break-word">
+                        {appointment.bookedBy || "N/A"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                        Booked At
+                      </p>
+                      <p className="text-xs sm:text-sm font-semibold text-foreground mt-0.5">
+                        {appointment.bookedAt || "N/A"}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              )}
-            </div>
-            {feePaymentAppointment.status && (
-              <div>
-                <span
-                  className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                    feePaymentAppointment.status === "completed"
-                      ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                      : feePaymentAppointment.status === "scheduled"
-                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                      : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
-                  }`}
-                >
-                  {_.startCase(feePaymentAppointment.status)}
-                </span>
+
+                {appointment.remarks && (
+                  <div className="mt-3 pt-2.5 border-t border-primary/20 flex items-start gap-2">
+                    <MessageSquare className="w-3.5 h-3.5 text-primary mt-0.5 shrink-0" />
+                    <div>
+                      <p className="text-[10px] sm:text-xs font-semibold text-primary/60 uppercase tracking-wide mb-0.5">
+                        Remarks
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-muted-foreground leading-relaxed">
+                        {appointment.remarks}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-            {feePaymentAppointment.notes && (
-              <div>
-                <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                  Notes
-                </p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">
-                  {feePaymentAppointment.notes}
-                </p>
-              </div>
-            )}
+            ))}
           </div>
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            No appointment scheduled
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            No appointments scheduled
           </p>
         )}
       </div>

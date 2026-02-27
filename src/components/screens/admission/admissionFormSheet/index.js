@@ -47,13 +47,13 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
       case "status-history":
         return <StatusHistoryTab />;
       case "documents":
-        return <DocumentsTab application={selectedAdmissionApplication} />;
+        return <DocumentsTab />;
       case "appointments":
-        return <AppointmentsTab application={selectedAdmissionApplication} />;
+        return <AppointmentsTab />;
       case "fee-payments":
-        return <FeePaymentsTab application={selectedAdmissionApplication} />;
+        return <FeePaymentsTab />;
       default:
-        return <ProfileTab application={selectedAdmissionApplication} />;
+        return <ProfileTab />;
     }
   };
 
