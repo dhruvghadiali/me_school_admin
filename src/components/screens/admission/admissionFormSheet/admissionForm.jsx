@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { CircleAlertIcon } from "lucide-react";
+import { CircleAlertIcon, AlertTriangle } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 
 import _ from "lodash";
@@ -20,6 +20,7 @@ import MESelect from "@MECommonComponents/form/select/meSelect";
 import MEButton from "@MECommonComponents/form/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import MEDatePicker from "@MECommonComponents/form/input/meDatePicker";
+import MEActionAlertDialog from "@MECommonComponents/alertDialog/actionAlertDialog";
 
 const AdmissionScreenAdmissionForm = () => {
   const dispatch = useDispatch();
@@ -66,7 +67,7 @@ const AdmissionScreenAdmissionForm = () => {
     ],
     [ADMISSION_APPLICATION_STATUS.APPROVED]: [
       ADMISSION_APPLICATION_STATUS.REJECTED,
-      ADMISSION_APPLICATION_STATUS.FEES_PENDING,
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
     ],
     [ADMISSION_APPLICATION_STATUS.REJECTED]: [
       ADMISSION_APPLICATION_STATUS.APPROVED,
@@ -86,7 +87,7 @@ const AdmissionScreenAdmissionForm = () => {
 
   const getAppointmentPayload = (values) => ({
     applicationId: selectedAdmissionApplication.id,
-    scheduled_date: moment(values.appointmentDate).format("DD/MM/YYYY"),
+    scheduled_date: moment(values.appointmentDate).format("YYYY-MM-DD"),
     scheduled_time_slot: `${moment(values.appointmentDate).format("h:mm A")} - ${moment(values.appointmentDate).add(1, "hour").format("h:mm A")}`,
     remarks: values.remarks,
   });
@@ -109,7 +110,7 @@ const AdmissionScreenAdmissionForm = () => {
       );
     }
 
-    if(values.status === ADMISSION_APPLICATION_STATUS.FEES_PENDING) {
+    if (values.status === ADMISSION_APPLICATION_STATUS.FEES_PENDING) {
       return feePaymentAppointmentBooking(
         getAppointmentPayload(values),
       );
@@ -145,26 +146,34 @@ const AdmissionScreenAdmissionForm = () => {
   const showAppointmentDateField = () => {
     if (
       selectedAdmissionApplication.applicationStatus ===
-        ADMISSION_APPLICATION_STATUS.UNDER_REVIEW &&
+      ADMISSION_APPLICATION_STATUS.UNDER_REVIEW &&
       formik.values.status ===
-        ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING
     ) {
       return true;
-    } else if (
+    }else if (
       selectedAdmissionApplication.applicationStatus ===
-        ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING &&
+      ADMISSION_APPLICATION_STATUS.APPROVED &&
+      formik.values.status ===
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING
+    ) {
+      return true;
+    } 
+    else if (
+      selectedAdmissionApplication.applicationStatus ===
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING &&
       formik.values.status === ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED
     ) {
       return true;
     } else if (
       selectedAdmissionApplication.applicationStatus ===
-        ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED &&
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED &&
       formik.values.status === ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED
     ) {
       return true;
     } else if (
       selectedAdmissionApplication.applicationStatus ===
-        ADMISSION_APPLICATION_STATUS.APPROVED &&
+      ADMISSION_APPLICATION_STATUS.APPROVED &&
       formik.values.status === ADMISSION_APPLICATION_STATUS.FEES_PENDING
     ) {
       return true;
@@ -172,6 +181,34 @@ const AdmissionScreenAdmissionForm = () => {
 
     return false;
   };
+
+  const alertDialogConfig = {
+    icon: <AlertTriangle className="text-primary" size={20} />,
+    title: "Are you sure?",
+    description:
+      <span>
+        You are about to change the application status to{" "}
+        <span className="font-semibold text-primary">
+          {formik.values.status
+            ? _.startCase(formik.values.status)
+            : "N/A"}
+        </span>
+        . Please confirm to proceed.
+      </span>,
+    actions: [
+      {
+        label: "Cancel",
+        className: "bg-primary hover:bg-primary/90 text-white",
+        onClick: () => { },
+      },
+      {
+        label: "Confirm",
+        className: "bg-success hover:bg-success/90 text-white",
+        onClick: () => formik.handleSubmit(),
+      },
+    ],
+
+  }
 
   return (
     <div className="w-full h-full flex items-start justify-center">
@@ -202,7 +239,7 @@ const AdmissionScreenAdmissionForm = () => {
                   placeholder={"Select Application Status"}
                   items={_.map(
                     ALLOWED_TRANSITIONS[
-                      selectedAdmissionApplication.applicationStatus
+                    selectedAdmissionApplication.applicationStatus
                     ] || [],
                     (status) => ({
                       label: _.startCase(status),
@@ -270,14 +307,19 @@ const AdmissionScreenAdmissionForm = () => {
                 Please review the changes before submitting
               </p>
               <div className="flex items-center">
-                <MEButton
-                  buttonVariant={variants.SUCCESS}
-                  type="submit"
-                  disabled={admissionFormLoader}
-                  buttonClassName="w-full sm:w-auto px-6 sm:px-8"
+                <MEActionAlertDialog
+                  {...alertDialogConfig}
                 >
-                  {admissionFormLoader && <MELoaderIcon />} Change Status
-                </MEButton>
+                  <MEButton
+                    buttonVariant={variants.SUCCESS}
+                    type="button"
+                    disabled={admissionFormLoader}
+                    buttonClassName="w-full sm:w-auto px-6 sm:px-8"
+                  >
+                    {admissionFormLoader && <MELoaderIcon />} Change Status
+                  </MEButton>
+                </MEActionAlertDialog>
+
               </div>
             </div>
           </form>

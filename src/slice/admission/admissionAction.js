@@ -14,6 +14,7 @@ import {
   admissionApplicationsAPIResponse,
   eductionBoardsWithAcademicClassesAPIResponse,
   updatedAdmissionApplicationStatusAPIResponse,
+  updateDocumentVerificationAppointmentBookingAPIResponse,
 } from "@MEUtils/apiResponse";
 
 const getAdmissionApplications = createAsyncThunk(
@@ -140,7 +141,10 @@ const updateAdmissionApplicationStatus = createAsyncThunk(
               ? { ...application, ...admissionFormData }
               : application,
           );
-          selectedAdmissionApplication = {...selectedAdmissionApplication, ...admissionFormData };
+          selectedAdmissionApplication = {
+            ...selectedAdmissionApplication,
+            ...admissionFormData,
+          };
         }
 
         return {
@@ -175,30 +179,53 @@ const documentVerificationAppointmentBooking = createAsyncThunk(
     try {
       const { applicationId, scheduled_date, scheduled_time_slot, remarks } =
         payload;
+      let admissionApplications =
+        getState()?.admissionApplication?.admissionApplications || [];
+      let selectedAdmissionApplication =
+        getState()?.admissionApplication?.selectedAdmissionApplication || {};
       const response = await axiosInstance.put(
         `${admissionApplicationsAPIRoute}/${applicationId}${documentVerificationAppointmentBookingAPIRoute}`,
         { scheduled_date, scheduled_time_slot, remarks },
         { state: getState() },
       );
 
-      console.log("Update response:", response);
-      // if (apiResponseHaveData(response)) {
-      //   return {
-      //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
-      //       response.data,
-      //     )[0],
-      //     error: "",
-      //   };
-      // } else {
-      //   return {
-      //     updatedAdmissionApplication: null,
-      //     error:
-      //       response && response.message
-      //         ? response.message
-      //         : "Update admission application status request failed",
-      //   };
-      // }
-      return { error: "" };
+      if (apiResponseHaveData(response)) {
+        if (response.data?.[0]) {
+          const admissionFormData =
+            updateDocumentVerificationAppointmentBookingAPIResponse(
+              response.data[0],
+            );
+
+          console.log("Updated Admission Form Data:", admissionFormData);
+          
+          admissionApplications = _.map(admissionApplications, (application) =>
+            application.id === admissionFormData.id
+              ? { ...application, ...admissionFormData }
+              : application,
+          );
+          selectedAdmissionApplication = {
+            ...selectedAdmissionApplication,
+            ...admissionFormData,
+          };
+
+          console.log("Updated Admission Form Data:", selectedAdmissionApplication);
+        }
+
+        return {
+          admissionApplications,
+          selectedAdmissionApplication,
+          error: "",
+        };
+      } else {
+        return {
+          admissionApplications: admissionApplications,
+          selectedAdmissionApplication: selectedAdmissionApplication,
+          error:
+            response && response.message
+              ? response.message
+              : "Document verification appointment booking request failed",
+        };
+      }
     } catch (error) {
       const errMsg =
         (error && (error.message || error.error)) ||

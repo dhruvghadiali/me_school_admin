@@ -23,7 +23,6 @@ const ProfileTab = () => {
     (parent) => _.toLower(parent.parentType) === "mother",
   );
 
-  console.log("applicantUser", selectedAdmissionApplication);
   return (
     <div className="space-y-6">
       {/* Student Information */}

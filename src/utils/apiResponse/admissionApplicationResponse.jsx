@@ -144,46 +144,46 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
       updatedBy: _.get(application, "updated_by", ""),
       createdAt: _.isString(_.get(application, "created_at", null))
         ? moment(_.get(application, "created_at")).format(
-          "DD MMMM YYYY hh:mm A",
-        )
+            "DD MMMM YYYY hh:mm A",
+          )
         : "",
       updatedAt: _.isString(_.get(application, "updated_at", null))
         ? moment(_.get(application, "updated_at")).format(
-          "DD MMMM YYYY hh:mm A",
-        )
+            "DD MMMM YYYY hh:mm A",
+          )
         : "",
       applicantUser: formattedApplicantUser,
       applicantName: formattedApplicantUser
         ? _.truncate(
-          _.trim(
-            `${_.startCase(
-              _.get(formattedApplicantUser, "firstName", ""),
-            )} ${_.startCase(_.get(formattedApplicantUser, "lastName", ""))}`,
-          ),
-          { length: 50, omission: "..." },
-        )
+            _.trim(
+              `${_.startCase(
+                _.get(formattedApplicantUser, "firstName", ""),
+              )} ${_.startCase(_.get(formattedApplicantUser, "lastName", ""))}`,
+            ),
+            { length: 50, omission: "..." },
+          )
         : "",
       academicClass:
         _.isObject(_.get(application, "school_academic_class")) &&
-          _.isObject(_.get(application, "school_academic_class.academic_class"))
+        _.isObject(_.get(application, "school_academic_class.academic_class"))
           ? _.upperCase(
-            _.get(
-              application,
-              "school_academic_class.academic_class.academic_class",
-              "",
-            ),
-          )
+              _.get(
+                application,
+                "school_academic_class.academic_class.academic_class",
+                "",
+              ),
+            )
           : "",
       educationBoard:
         _.isObject(_.get(application, "school_academic_class")) &&
-          _.isObject(_.get(application, "school_academic_class.education_board"))
+        _.isObject(_.get(application, "school_academic_class.education_board"))
           ? _.upperCase(
-            _.get(
-              application,
-              "school_academic_class.education_board.education_board",
-              "",
-            ),
-          )
+              _.get(
+                application,
+                "school_academic_class.education_board.education_board",
+                "",
+              ),
+            )
           : "",
       statusHistory: _.map(
         _.orderBy(
@@ -202,56 +202,73 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
           },
           changedAt: _.isString(_.get(history, "changed_at"))
             ? moment(_.get(history, "changed_at")).format(
-              "DD MMMM YYYY hh:mm A",
-            )
+                "DD MMMM YYYY hh:mm A",
+              )
             : "",
           remarks: _.get(history, "remarks", ""),
         }),
       ),
-      documents: _.map(
-        _.get(application, "verified_documents", []),
-        (doc) => ({
-          id: _.get(doc, "school_admission_document.admission_document._id", ""),
-          admissionDocument: _.get(doc, "school_admission_document.admission_document.admission_document", ""),
-          isRequired: _.get(doc, "school_admission_document.is_required", false),
-          isVerified: _.get(doc, "is_verified", false),
-          notes: _.get(doc, "notes", ""),
-        }),
-      ),
+      documents: _.map(_.get(application, "verified_documents", []), (doc) => ({
+        id: _.get(doc, "school_admission_document.admission_document._id", ""),
+        admissionDocument: _.get(
+          doc,
+          "school_admission_document.admission_document.admission_document",
+          "",
+        ),
+        isRequired: _.get(doc, "school_admission_document.is_required", false),
+        isVerified: _.get(doc, "is_verified", false),
+        notes: _.get(doc, "notes", ""),
+      })),
       documentVerificationAppointments: _.map(
-        _.get(application, "document_verification_appointment", []),
+        _.orderBy(
+          _.get(application, "document_verification_appointment", []),
+          [(appointment) => _.get(appointment, "booked_at")],
+          ["desc"],
+        ),
         (appointment) => ({
           id: _.get(appointment, "_id", ""),
           scheduledDate: _.isString(_.get(appointment, "scheduled_date"))
-            ? moment(_.get(appointment, "scheduled_date")).format("DD MMMM YYYY hh:mm A")
+            ? moment(_.get(appointment, "scheduled_date")).format(
+                "DD MMMM YYYY hh:mm A",
+              )
             : "",
           scheduledTimeSlot: _.get(appointment, "scheduled_time_slot", ""),
           bookedAt: _.isString(_.get(appointment, "booked_at"))
-            ? moment(_.get(appointment, "booked_at")).format("DD MMMM YYYY hh:mm A")
+            ? moment(_.get(appointment, "booked_at")).format(
+                "DD MMMM YYYY hh:mm A",
+              )
             : "",
           bookedBy: _.get(appointment, "booked_by")
             ? _.trim(
-              `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
-            )
+                `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
+              )
             : "",
           remarks: _.get(appointment, "remarks", ""),
         }),
       ),
       feePaymentAppointments: _.map(
-        _.get(application, "fee_payment_appointment", []),
+        _.orderBy(
+          _.get(application, "fee_payment_appointment", []),
+          [(appointment) => _.get(appointment, "booked_at")],
+          ["desc"],
+        ),
         (appointment) => ({
           id: _.get(appointment, "_id", ""),
           scheduledDate: _.isString(_.get(appointment, "scheduled_date"))
-            ? moment(_.get(appointment, "scheduled_date")).format("DD MMMM YYYY")
+            ? moment(_.get(appointment, "scheduled_date")).format(
+                "DD MMMM YYYY",
+              )
             : "",
           scheduledTimeSlot: _.get(appointment, "scheduled_time_slot", ""),
           bookedAt: _.isString(_.get(appointment, "booked_at"))
-            ? moment(_.get(appointment, "booked_at")).format("DD MMMM YYYY hh:mm A")
+            ? moment(_.get(appointment, "booked_at")).format(
+                "DD MMMM YYYY hh:mm A",
+              )
             : "",
           bookedBy: _.get(appointment, "booked_by")
             ? _.trim(
-              `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
-            )
+                `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
+              )
             : "",
           remarks: _.get(appointment, "remarks", ""),
         }),
@@ -288,9 +305,7 @@ const updatedAdmissionApplicationStatusAPIResponse = (application) => {
           username: _.get(history, "changed_by.username", ""),
         },
         changedAt: _.isString(_.get(history, "changed_at"))
-          ? moment(_.get(history, "changed_at")).format(
-            "DD MMMM YYYY hh:mm A",
-          )
+          ? moment(_.get(history, "changed_at")).format("DD MMMM YYYY hh:mm A")
           : "",
         remarks: _.get(history, "remarks", ""),
       }),
@@ -298,4 +313,81 @@ const updatedAdmissionApplicationStatusAPIResponse = (application) => {
   };
 };
 
-export { admissionApplicationsAPIResponse, formatApplicantUser, updatedAdmissionApplicationStatusAPIResponse };
+const updateDocumentVerificationAppointmentBookingAPIResponse = (
+  application,
+) => {
+  return {
+    id: _.get(application, "id", ""),
+    status: _.upperCase(_.get(application, "status", "")),
+    applicationStatus: _.get(application, "status", ""),
+    statusHistory: _.map(
+      _.orderBy(
+        _.get(application, "status_history", []),
+        [(history) => _.get(history, "changed_at")],
+        ["desc"],
+      ),
+      (history) => ({
+        id: _.get(history, "_id", ""),
+        status: _.upperCase(_.get(history, "status", "")),
+        changedBy: {
+          id: _.get(history, "changed_by.id", ""),
+          firstName: _.get(history, "changed_by.first_name", ""),
+          lastName: _.get(history, "changed_by.last_name", ""),
+          username: _.get(history, "changed_by.username", ""),
+        },
+        changedAt: _.isString(_.get(history, "changed_at"))
+          ? moment(_.get(history, "changed_at")).format("DD MMMM YYYY hh:mm A")
+          : "",
+        remarks: _.get(history, "remarks", ""),
+      }),
+    ),
+    documents: _.map(
+      _.orderBy(
+        _.get(application, "document_verification_appointment", []),
+        [(appointment) => _.get(appointment, "booked_at")],
+        ["desc"],
+      ),
+      (doc) => ({
+        id: _.get(doc, "school_admission_document.admission_document._id", ""),
+        admissionDocument: _.get(
+          doc,
+          "school_admission_document.admission_document.admission_document",
+          "",
+        ),
+        isRequired: _.get(doc, "school_admission_document.is_required", false),
+        isVerified: _.get(doc, "is_verified", false),
+        notes: _.get(doc, "notes", ""),
+      }),
+    ),
+    documentVerificationAppointments: _.map(
+      _.get(application, "document_verification_appointment", []),
+      (appointment) => ({
+        id: _.get(appointment, "_id", ""),
+        scheduledDate: _.isString(_.get(appointment, "scheduled_date"))
+          ? moment(_.get(appointment, "scheduled_date")).format(
+              "DD MMMM YYYY hh:mm A",
+            )
+          : "",
+        scheduledTimeSlot: _.get(appointment, "scheduled_time_slot", ""),
+        bookedAt: _.isString(_.get(appointment, "booked_at"))
+          ? moment(_.get(appointment, "booked_at")).format(
+              "DD MMMM YYYY hh:mm A",
+            )
+          : "",
+        bookedBy: _.get(appointment, "booked_by")
+          ? _.trim(
+              `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
+            )
+          : "",
+        remarks: _.get(appointment, "remarks", ""),
+      }),
+    ),
+  };
+};
+
+export {
+  admissionApplicationsAPIResponse,
+  formatApplicantUser,
+  updatedAdmissionApplicationStatusAPIResponse,
+  updateDocumentVerificationAppointmentBookingAPIResponse,
+};
