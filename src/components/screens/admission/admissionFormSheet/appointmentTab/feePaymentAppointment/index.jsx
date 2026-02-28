@@ -23,7 +23,7 @@ const FeePaymentAppointmentComponent = () => {
     return (
         <Collapsible defaultOpen={false}>
         <div className="bg-secondary/10 rounded-lg p-4 sm:p-5 md:p-6 border border-primary/20 shadow-sm shadow-primary/10">
-          <CollapsibleTrigger className="flex items-center justify-between w-full cursor-pointer pb-2 border-b border-primary/20 mb-3 sm:mb-4 group">
+          <CollapsibleTrigger className="flex items-center justify-between w-full cursor-pointer group">
             <h4 className="text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-primary">
               Fee Payment Appointments
             </h4>

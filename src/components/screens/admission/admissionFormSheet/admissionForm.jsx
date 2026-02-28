@@ -9,6 +9,7 @@ import moment from "moment";
 import { variants } from "@MEUtils/enums";
 import { ADMISSION_APPLICATION_STATUS } from "@MEHelpers/enums/admissionEnum";
 import {
+  feePaymentAppointmentBooking,
   updateAdmissionApplicationStatus,
   documentVerificationAppointmentBooking,
   rescheduleDocumentVerificationAppointmentBooking,
@@ -109,7 +110,9 @@ const AdmissionScreenAdmissionForm = () => {
     }
 
     if(values.status === ADMISSION_APPLICATION_STATUS.FEES_PENDING) {
-
+      return feePaymentAppointmentBooking(
+        getAppointmentPayload(values),
+      );
     }
 
     return updateAdmissionApplicationStatus({

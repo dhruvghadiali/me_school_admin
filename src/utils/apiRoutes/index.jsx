@@ -9,3 +9,6 @@ export const admissionApplicationsAPIRoute = `/admission-applications`;
 export const schoolAcademicClassesAPIRoute = `/school-academic-classes`;
 export const schoolAdmissionDocumentsAPIRoute = `/school-admission-documents`;
 export const admissionApplicationSummaryAPIRoute = `/admission-applications/summary`;
+export const feePaymentAppointmentBookingAPIRoute = `/fee-payment-appointment-booking`;
+export const documentVerificationAppointmentBookingAPIRoute = `/document-verification-appointment-booking`;
+export const rescheduleDocumentVerificationAppointmentAPIRoute = `/reschedule-document-verification-appointment`;

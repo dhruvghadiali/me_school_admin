@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getAcademicClasses,
   getAdmissionApplications,
+  feePaymentAppointmentBooking,
   updateAdmissionApplicationStatus,
   documentVerificationAppointmentBooking,
   rescheduleDocumentVerificationAppointmentBooking,
@@ -130,6 +131,27 @@ export const admissionApplicationSlice = createSlice({
       )
       .addCase(
         rescheduleDocumentVerificationAppointmentBooking.rejected,
+        (state, action) => {
+          state.admissionFormError = action.payload.error;
+          state.admissionFormLoader = false;
+        },
+      )
+      .addCase(
+        feePaymentAppointmentBooking.pending,
+        (state) => {
+          state.admissionFormError = "";
+          state.admissionFormLoader = true;
+        },
+      )
+      .addCase(
+        feePaymentAppointmentBooking.fulfilled,
+        (state, action) => {
+          state.admissionFormError = action.payload.error;
+          state.admissionFormLoader = false;
+        },
+      )
+      .addCase(
+        feePaymentAppointmentBooking.rejected,
         (state, action) => {
           state.admissionFormError = action.payload.error;
           state.admissionFormLoader = false;

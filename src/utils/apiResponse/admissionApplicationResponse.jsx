@@ -144,46 +144,46 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
       updatedBy: _.get(application, "updated_by", ""),
       createdAt: _.isString(_.get(application, "created_at", null))
         ? moment(_.get(application, "created_at")).format(
-            "DD MMMM YYYY hh:mm A",
-          )
+          "DD MMMM YYYY hh:mm A",
+        )
         : "",
       updatedAt: _.isString(_.get(application, "updated_at", null))
         ? moment(_.get(application, "updated_at")).format(
-            "DD MMMM YYYY hh:mm A",
-          )
+          "DD MMMM YYYY hh:mm A",
+        )
         : "",
       applicantUser: formattedApplicantUser,
       applicantName: formattedApplicantUser
         ? _.truncate(
-            _.trim(
-              `${_.startCase(
-                _.get(formattedApplicantUser, "firstName", ""),
-              )} ${_.startCase(_.get(formattedApplicantUser, "lastName", ""))}`,
-            ),
-            { length: 50, omission: "..." },
-          )
+          _.trim(
+            `${_.startCase(
+              _.get(formattedApplicantUser, "firstName", ""),
+            )} ${_.startCase(_.get(formattedApplicantUser, "lastName", ""))}`,
+          ),
+          { length: 50, omission: "..." },
+        )
         : "",
       academicClass:
         _.isObject(_.get(application, "school_academic_class")) &&
-        _.isObject(_.get(application, "school_academic_class.academic_class"))
+          _.isObject(_.get(application, "school_academic_class.academic_class"))
           ? _.upperCase(
-              _.get(
-                application,
-                "school_academic_class.academic_class.academic_class",
-                "",
-              ),
-            )
+            _.get(
+              application,
+              "school_academic_class.academic_class.academic_class",
+              "",
+            ),
+          )
           : "",
       educationBoard:
         _.isObject(_.get(application, "school_academic_class")) &&
-        _.isObject(_.get(application, "school_academic_class.education_board"))
+          _.isObject(_.get(application, "school_academic_class.education_board"))
           ? _.upperCase(
-              _.get(
-                application,
-                "school_academic_class.education_board.education_board",
-                "",
-              ),
-            )
+            _.get(
+              application,
+              "school_academic_class.education_board.education_board",
+              "",
+            ),
+          )
           : "",
       statusHistory: _.map(
         _.orderBy(
@@ -202,8 +202,8 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
           },
           changedAt: _.isString(_.get(history, "changed_at"))
             ? moment(_.get(history, "changed_at")).format(
-                "DD MMMM YYYY hh:mm A",
-              )
+              "DD MMMM YYYY hh:mm A",
+            )
             : "",
           remarks: _.get(history, "remarks", ""),
         }),
@@ -231,12 +231,13 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
             : "",
           bookedBy: _.get(appointment, "booked_by")
             ? _.trim(
-                `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
-              )
+              `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
+            )
             : "",
           remarks: _.get(appointment, "remarks", ""),
         }),
-      ),      feePaymentAppointments: _.map(
+      ),
+      feePaymentAppointments: _.map(
         _.get(application, "fee_payment_appointment", []),
         (appointment) => ({
           id: _.get(appointment, "_id", ""),
@@ -249,12 +250,13 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
             : "",
           bookedBy: _.get(appointment, "booked_by")
             ? _.trim(
-                `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
-              )
+              `${_.startCase(_.get(appointment, "booked_by.first_name", ""))} ${_.startCase(_.get(appointment, "booked_by.last_name", ""))} (${_.get(appointment, "booked_by.username", "")})`,
+            )
             : "",
           remarks: _.get(appointment, "remarks", ""),
         }),
-      ),    };
+      ),
+    };
 
     // Validate required fields
     if (!transformedApplication.id) {
@@ -287,8 +289,8 @@ const updatedAdmissionApplicationStatusAPIResponse = (application) => {
         },
         changedAt: _.isString(_.get(history, "changed_at"))
           ? moment(_.get(history, "changed_at")).format(
-              "DD MMMM YYYY hh:mm A",
-            )
+            "DD MMMM YYYY hh:mm A",
+          )
           : "",
         remarks: _.get(history, "remarks", ""),
       }),

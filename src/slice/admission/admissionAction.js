@@ -6,6 +6,9 @@ import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
 import {
   admissionApplicationsAPIRoute,
   schoolAcademicClassesAPIRoute,
+  feePaymentAppointmentBookingAPIRoute,
+  documentVerificationAppointmentBookingAPIRoute,
+  rescheduleDocumentVerificationAppointmentAPIRoute,
 } from "@MEUtils/apiRoutes";
 import {
   admissionApplicationsAPIResponse,
@@ -173,7 +176,7 @@ const documentVerificationAppointmentBooking = createAsyncThunk(
       const { applicationId, scheduled_date, scheduled_time_slot, remarks } =
         payload;
       const response = await axiosInstance.put(
-        `${admissionApplicationsAPIRoute}/${applicationId}/document-verification-appointment-booking`,
+        `${admissionApplicationsAPIRoute}/${applicationId}${documentVerificationAppointmentBookingAPIRoute}`,
         { scheduled_date, scheduled_time_slot, remarks },
         { state: getState() },
       );
@@ -214,7 +217,7 @@ const rescheduleDocumentVerificationAppointmentBooking = createAsyncThunk(
       const { applicationId, scheduled_date, scheduled_time_slot, remarks } =
         payload;
       const response = await axiosInstance.put(
-        `${admissionApplicationsAPIRoute}/${applicationId}/reschedule-document-verification-appointment`,
+        `${admissionApplicationsAPIRoute}/${applicationId}${rescheduleDocumentVerificationAppointmentAPIRoute}`,
         { scheduled_date, scheduled_time_slot, remarks },
         { state: getState() },
       );
@@ -248,9 +251,51 @@ const rescheduleDocumentVerificationAppointmentBooking = createAsyncThunk(
   },
 );
 
+const feePaymentAppointmentBooking = createAsyncThunk(
+  "admission/feePaymentAppointmentBooking",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const { applicationId, scheduled_date, scheduled_time_slot, remarks } =
+        payload;
+      const response = await axiosInstance.put(
+        `${admissionApplicationsAPIRoute}/${applicationId}${feePaymentAppointmentBookingAPIRoute}`,
+        { scheduled_date, scheduled_time_slot, remarks },
+        { state: getState() },
+      );
+
+      console.log("Update response:", response);
+      // if (apiResponseHaveData(response)) {
+      //   return {
+      //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
+      //       response.data,
+      //     )[0],
+      //     error: "",
+      //   };
+      // } else {
+      //   return {
+      //     updatedAdmissionApplication: null,
+      //     error:
+      //       response && response.message
+      //         ? response.message
+      //         : "Update admission application status request failed",
+      //   };
+      // }
+      return { error: "" };
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Fee payment appointment booking request failed";
+      return rejectWithValue({
+        error: errMsg,
+      });
+    }
+  },
+);
+
 export {
   getAcademicClasses,
   getAdmissionApplications,
+  feePaymentAppointmentBooking,
   updateAdmissionApplicationStatus,
   documentVerificationAppointmentBooking,
   rescheduleDocumentVerificationAppointmentBooking,
