@@ -13,13 +13,12 @@ import {
   toggleAdmissionApplicationSheet,
 } from "@MERedux/admission/admissionSlice";
 
-import AdmissionBasicDetails from "./basicDetails";
-import ProfileTab from "./profileTab";
-import StatusHistoryTab from "./statusHistoryTab";
-import DocumentsTab from "./documentsTab";
-import AppointmentsTab from "./appointmentsTab";
-import FeePaymentsTab from "./feePaymentsTab";
-
+import ProfileTab from "@MEScreenComponents/admission/admissionFormSheet/profileTab";
+import DocumentsTab from "@MEScreenComponents/admission/admissionFormSheet/documentsTab";
+import FeePaymentsTab from "@MEScreenComponents/admission/admissionFormSheet/feePaymentsTab";
+import AppointmentsTab from "@MEScreenComponents/admission/admissionFormSheet/appointmentTab";
+import StatusHistoryTab from "@MEScreenComponents/admission/admissionFormSheet/statusHistoryTab";
+import AdmissionBasicDetails from "@MEScreenComponents/admission/admissionFormSheet/basicDetails";
 import AdmissionScreenAdmissionForm from "@MEScreenComponents/admission/admissionFormSheet/admissionForm";
 
 const AdmissionScreenAdmissionFormSheet = (props) => {
