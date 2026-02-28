@@ -1,8 +1,17 @@
 import { useSelector } from "react-redux";
 
 import _ from "lodash";
+import { FileCheck, CheckCircle2, XCircle, Clock, Trash2 } from "lucide-react";
 
 import { Card, CardContent } from "@MEShadcnComponents/card";
+
+const ICON_MAP = {
+  FileCheck,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  Trash2,
+};
 
 const DashboardScreenStatsData = () => {
   const { dashboardSummary } = useSelector((state) => state.dashboard);
@@ -12,7 +21,7 @@ const DashboardScreenStatsData = () => {
     _.size(dashboardSummary.statsData) > 0 ? (
     <div className="mt-8 mb-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-4">
       {_.map(dashboardSummary.statsData, (stat) => {
-        const IconComponent = stat.icon;
+        const IconComponent = ICON_MAP[stat.icon];
         return (
           <Card key={stat.id} className="border">
             <CardContent className="pt-6">

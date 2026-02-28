@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { FileCheck, CheckCircle2, XCircle, Clock, Trash2 } from "lucide-react";
 
 const dashboardSummaryAPIResponse = (dashboardSummary) => {
   return {
@@ -22,31 +21,31 @@ const formateStatsData = (data) => {
       id: 1,
       label: "Total Application Submitted",
       value: _.get(data, "admission_application", "N/A"),
-      icon: FileCheck,
+      icon: "FileCheck",
     },
     {
       id: 2,
       label: "Total Selected Application",
       value: _.get(data, "selected_application", "N/A"),
-      icon: CheckCircle2,
+      icon: "CheckCircle2",
     },
     {
       id: 3,
       label: "Total Rejected Application",
       value: _.get(data, "rejected_application", "N/A"),
-      icon: XCircle,
+      icon: "XCircle",
     },
     {
       id: 4,
       label: "Total In Progress Application",
       value: _.get(data, "under_review_application", "N/A"),
-      icon: Clock,
+      icon: "Clock",
     },
     {
       id: 5,
       label: "Total Withdrawn Application",
       value: _.get(data, "withdraw_application", "N/A"),
-      icon: Trash2,
+      icon: "Trash2",
     },
   ];
 };
