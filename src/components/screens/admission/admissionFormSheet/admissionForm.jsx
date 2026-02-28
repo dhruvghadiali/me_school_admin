@@ -81,6 +81,50 @@ const AdmissionScreenAdmissionForm = () => {
     ],
   };
 
+  const getAppointmentPayload = (values) => ({
+    applicationId: selectedAdmissionApplication.id,
+    scheduled_date: moment(values.appointmentDate).format("DD/MM/YYYY"),
+    scheduled_time_slot: `${moment(values.appointmentDate).format("h:mm A")} - ${moment(values.appointmentDate).add(1, "hour").format("h:mm A")}`,
+    remarks: values.remarks,
+  });
+
+  const getStatusAction = (values) => {
+    if (
+      values.status ===
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING
+    ) {
+      return documentVerificationAppointmentBooking(
+        getAppointmentPayload(values),
+      );
+    }
+
+    if (
+      values.status === ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED
+    ) {
+      return rescheduleDocumentVerificationAppointmentBooking(
+        getAppointmentPayload(values),
+      );
+    }
+
+    if(values.status === ADMISSION_APPLICATION_STATUS.FEES_PENDING) {
+      
+    }
+
+    return updateAdmissionApplicationStatus({
+      applicationId: selectedAdmissionApplication.id,
+      status: values.status,
+      remarks: values.remarks,
+    });
+  };
+
+  const handleFormSubmit = (values) => {
+    dispatch(getStatusAction(values)).then((result) => {
+      if (result.type.endsWith("/fulfilled") && !result.payload?.error) {
+        formik.resetForm();
+      }
+    });
+  };
+
   const formik = useFormik({
     initialValues: {
       status: "",
@@ -90,52 +134,7 @@ const AdmissionScreenAdmissionForm = () => {
     validationSchema: AdmissionFormSchema,
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (values) => {
-      if (
-        values.status ===
-        ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING
-      ) {
-        dispatch(
-          documentVerificationAppointmentBooking({
-            applicationId: selectedAdmissionApplication.id,
-            scheduled_date: moment(values.appointmentDate).format("DD/MM/YYYY"),
-            scheduled_time_slot: `${moment(values.appointmentDate).format("h:mm A")} - ${moment(values.appointmentDate).add(1, "hour").format("h:mm A")}`,
-            remarks: values.remarks,
-          }),
-        ).then((result) => {
-          if (result.type.endsWith("/fulfilled") && !result.payload?.error) {
-            formik.resetForm();
-          }
-        });
-      } else if (
-        values.status === ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED
-      ) {
-        dispatch(
-          rescheduleDocumentVerificationAppointmentBooking({
-            applicationId: selectedAdmissionApplication.id,
-            scheduled_date: moment(values.appointmentDate).format("DD/MM/YYYY"),
-            scheduled_time_slot: `${moment(values.appointmentDate).format("h:mm A")} - ${moment(values.appointmentDate).add(1, "hour").format("h:mm A")}`,
-            remarks: values.remarks,
-          }),
-        ).then((result) => {
-          if (result.type.endsWith("/fulfilled") && !result.payload?.error) {
-            formik.resetForm();
-          }
-        });
-      } else {
-        dispatch(
-          updateAdmissionApplicationStatus({
-            applicationId: selectedAdmissionApplication.id,
-            status: values.status,
-            remarks: values.remarks,
-          }),
-        ).then((result) => {
-          if (result.type.endsWith("/fulfilled") && !result.payload?.error) {
-            formik.resetForm();
-          }
-        });
-      }
-    },
+    onSubmit: handleFormSubmit,
   });
 
   const showAppointmentDateField = () => {

@@ -146,7 +146,7 @@ export default function MEDatePicker({
           align="start"
           side="bottom"
           sideOffset={8}
-          className="z-50 w-auto p-0 bg-popover border border-border rounded-md shadow-lg"
+          className="z-50 w-auto max-h-(--radix-popover-content-available-height) overflow-y-auto p-0 bg-popover border border-border rounded-md shadow-lg"
         >
           <Calendar
             classNames={{
