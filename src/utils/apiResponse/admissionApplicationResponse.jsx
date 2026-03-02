@@ -248,14 +248,7 @@ const updateDocumentVerificationAppointmentBookingAPIResponse = (application) =>
   status:            _.upperCase(_.get(application, "status", "")),
   applicationStatus: _.get(application, "status", ""),
   statusHistory:     formatStatusHistory(_.get(application, "status_history", [])),
-  documents:         _.map(
-    _.orderBy(
-      _.get(application, "document_verification_appointment", []),
-      [(a) => _.get(a, "booked_at")],
-      ["desc"],
-    ),
-    formatDocument,
-  ),
+  documents:         _.map(_.get(application, "verified_documents", []), formatDocument),
   documentVerificationAppointments: formatAppointmentList(
     _.get(application, "document_verification_appointment", []),
   ),

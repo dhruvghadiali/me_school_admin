@@ -134,7 +134,9 @@ const DocumentVerificationField = ({
               label=""
               disabled={false}
               direction={ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_LIST_DIRECTION.ROW}
-              checkboxDirection={ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_DIRECTION.RIGHT}
+              checkboxDirection={
+                ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_DIRECTION.RIGHT
+              }
               labelVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
               checkboxVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
               messageVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
@@ -153,7 +155,9 @@ const DocumentVerificationField = ({
               label=""
               disabled={false}
               direction={ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_LIST_DIRECTION.ROW}
-              checkboxDirection={ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_DIRECTION.RIGHT}
+              checkboxDirection={
+                ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_DIRECTION.RIGHT
+              }
               labelVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
               checkboxVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
               messageVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
@@ -252,8 +256,8 @@ const AdmissionScreenAdmissionForm = () => {
 
   const buildAppointmentPayload = (values) => ({
     applicationId: selectedAdmissionApplication.id,
-    scheduled_date: moment(values.appointmentDate).format("YYYY-MM-DD"),
-    scheduled_time_slot: `${moment(values.appointmentDate).format("h:mm A")} - ${moment(values.appointmentDate).add(1, "hour").format("h:mm A")}`,
+    scheduledDate: moment(values.appointmentDate).format("YYYY-MM-DD"),
+    scheduledTimeSlot: `${moment(values.appointmentDate).format("h:mm A")} - ${moment(values.appointmentDate).add(1, "hour").format("h:mm A")}`,
     remarks: values.remarks,
   });
 
@@ -315,28 +319,36 @@ const AdmissionScreenAdmissionForm = () => {
     !!APPOINTMENT_DATE_REQUIRED[currentStatus]?.has(nextStatus);
 
   const showDocumentVerification =
-    currentStatus ===
-      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING &&
+    (currentStatus ===
+      ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING ||
+      currentStatus === ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED) &&
     nextStatus === ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED;
 
   // For APPROVED, next transitions depend on whether docs were ever verified.
   // statusHistory items use _.upperCase() format (e.g. "DOCUMENTS VERIFIED").
   const hasDocumentsVerified = _.some(
     selectedAdmissionApplication.statusHistory,
-    (h) => h.status === _.upperCase(ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED),
+    (h) =>
+      h.status === _.upperCase(ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED),
   );
 
   const allowedNextStatuses =
     currentStatus === ADMISSION_APPLICATION_STATUS.APPROVED
       ? hasDocumentsVerified
-        ? [ADMISSION_APPLICATION_STATUS.FEES_PENDING, ADMISSION_APPLICATION_STATUS.REJECTED]
-        : [ADMISSION_APPLICATION_STATUS.REJECTED, ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING]
+        ? [
+            ADMISSION_APPLICATION_STATUS.FEES_PENDING,
+            ADMISSION_APPLICATION_STATUS.REJECTED,
+          ]
+        : [
+            ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
+            ADMISSION_APPLICATION_STATUS.REJECTED,
+          ]
       : (ALLOWED_TRANSITIONS[currentStatus] ?? []);
 
-  const statusSelectItems = _.map(
-    allowedNextStatuses,
-    (status) => ({ label: _.startCase(status), value: status }),
-  );
+  const statusSelectItems = _.map(allowedNextStatuses, (status) => ({
+    label: _.startCase(status),
+    value: status,
+  }));
 
   const changeStatusAlertConfig = {
     icon: <AlertTriangle className="text-primary" size={20} />,

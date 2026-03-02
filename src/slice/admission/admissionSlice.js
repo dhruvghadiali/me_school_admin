@@ -130,6 +130,8 @@ export const admissionApplicationSlice = createSlice({
         (state, action) => {
           state.admissionFormError = action.payload.error;
           state.admissionFormLoader = false;
+          state.admissionApplications = action.payload.admissionApplications;
+          state.selectedAdmissionApplication = action.payload.selectedAdmissionApplication;
         },
       )
       .addCase(

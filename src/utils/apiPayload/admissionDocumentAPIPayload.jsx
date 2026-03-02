@@ -46,8 +46,17 @@ const updateDocumentVerificationAPIPayload = (documentList) => {
   };
 };
 
+const documentVerificationAppointmentBookingAPIPayload = (appointmentDetail) => { 
+  return {
+      remarks: appointmentDetail.remarks,
+      scheduled_date: appointmentDetail.scheduledDate,
+      scheduled_time_slot: appointmentDetail.scheduledTimeSlot,
+    };
+};
+
 export {
   addAdmissionDocumentAPIPayload,
   updateAdmissionDocumentAPIPayload,
   updateDocumentVerificationAPIPayload,
+  documentVerificationAppointmentBookingAPIPayload, 
 };

@@ -18,6 +18,10 @@ import {
   updatedAdmissionApplicationStatusAPIResponse,
   updateDocumentVerificationAppointmentBookingAPIResponse,
 } from "@MEUtils/apiResponse";
+import {
+  updateDocumentVerificationAPIPayload,
+  documentVerificationAppointmentBookingAPIPayload,
+} from "@MEUtils/apiPayload";
 
 const getAdmissionApplications = createAsyncThunk(
   "admission/getAdmissionApplications",
@@ -179,15 +183,14 @@ const documentVerificationAppointmentBooking = createAsyncThunk(
   "admission/documentVerificationAppointmentBooking",
   async (payload, { getState, rejectWithValue }) => {
     try {
-      const { applicationId, scheduled_date, scheduled_time_slot, remarks } =
-        payload;
+      const { applicationId } = payload;
       let admissionApplications =
         getState()?.admissionApplication?.admissionApplications || [];
       let selectedAdmissionApplication =
         getState()?.admissionApplication?.selectedAdmissionApplication || {};
       const response = await axiosInstance.put(
         `${admissionApplicationsAPIRoute}/${applicationId}${documentVerificationAppointmentBookingAPIRoute}`,
-        { scheduled_date, scheduled_time_slot, remarks },
+        documentVerificationAppointmentBookingAPIPayload(payload),
         { state: getState() },
       );
 
@@ -239,35 +242,54 @@ const rescheduleDocumentVerificationAppointmentBooking = createAsyncThunk(
   "admission/rescheduleDocumentVerificationAppointmentBooking",
   async (payload, { getState, rejectWithValue }) => {
     try {
-      const { applicationId, scheduled_date, scheduled_time_slot, remarks } =
-        payload;
+      const { applicationId } = payload;
+      let admissionApplications =
+        getState()?.admissionApplication?.admissionApplications || [];
+      let selectedAdmissionApplication =
+        getState()?.admissionApplication?.selectedAdmissionApplication || {};
       const response = await axiosInstance.put(
         `${admissionApplicationsAPIRoute}/${applicationId}${rescheduleDocumentVerificationAppointmentAPIRoute}`,
-        { scheduled_date, scheduled_time_slot, remarks },
+        documentVerificationAppointmentBookingAPIPayload(payload),
         { state: getState() },
       );
 
-      // if (apiResponseHaveData(response)) {
-      //   return {
-      //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
-      //       response.data,
-      //     )[0],
-      //     error: "",
-      //   };
-      // } else {
-      //   return {
-      //     updatedAdmissionApplication: null,
-      //     error:
-      //       response && response.message
-      //         ? response.message
-      //         : "Update admission application status request failed",
-      //   };
-      // }
-      return { error: "" };
+      if (apiResponseHaveData(response)) {
+        if (response.data?.[0]) {
+          const admissionFormData =
+            updateDocumentVerificationAppointmentBookingAPIResponse(
+              response.data[0],
+            );
+
+          admissionApplications = _.map(admissionApplications, (application) =>
+            application.id === admissionFormData.id
+              ? { ...application, ...admissionFormData }
+              : application,
+          );
+          selectedAdmissionApplication = {
+            ...selectedAdmissionApplication,
+            ...admissionFormData,
+          };
+        }
+
+        return {
+          admissionApplications,
+          selectedAdmissionApplication,
+          error: "",
+        };
+      } else {
+        return {
+          admissionApplications: admissionApplications,
+          selectedAdmissionApplication: selectedAdmissionApplication,
+          error:
+            response && response.message
+              ? response.message
+              : "Document verification reschedule appointment booking request failed",
+        };
+      }
     } catch (error) {
       const errMsg =
         (error && (error.message || error.error)) ||
-        "Document verification appointment booking request failed";
+        "Document verification reschedule appointment booking request failed";
       return rejectWithValue({
         error: errMsg,
       });
