@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useFormik } from "formik";
 import {
   CircleAlertIcon,
@@ -108,6 +107,7 @@ const DocumentVerificationField = ({
   documentList,
   onDocumentListChange,
   disabled,
+  error,
 }) => {
   const verifiedCount = _.size(_.filter(documentList, (doc) => doc.isSelected));
   const totalCount = _.size(documentList);
@@ -160,7 +160,7 @@ const DocumentVerificationField = ({
               labelVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
               checkboxVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
               messageVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
-              checkboxList={requiredDocs}
+              checkboxList={optionalDocs}
               leadingIcon={<FileClockIcon className="text-primary" size={15} />}
               onChange={handleCheckboxChange}
             />
@@ -213,6 +213,12 @@ const DocumentVerificationField = ({
         </button>
       </MEActionAlertDialog>
 
+      {error && (
+        <p className="text-xs text-danger" role="alert" aria-live="polite">
+          {error}
+        </p>
+      )}
+
       <p className="mt-2 mb-5 text-xs text-primary flex flex-wrap gap-x-3 gap-y-0.5">
         <span>
           <span className="font-semibold">{totalCount}</span> total
@@ -242,10 +248,6 @@ const AdmissionScreenAdmissionForm = () => {
     admissionFormLoader,
     selectedAdmissionApplication,
   } = useSelector((state) => state.admissionApplication);
-
-  const [documentList, setDocumentList] = useState(
-    () => selectedAdmissionApplication.documentVerificationList ?? [],
-  );
 
   // ---------------------------------------------------------------------------
   // Helpers
@@ -284,7 +286,12 @@ const AdmissionScreenAdmissionForm = () => {
   // ---------------------------------------------------------------------------
 
   const formik = useFormik({
-    initialValues: { status: "", appointmentDate: null, remarks: "" },
+    initialValues: {
+      status: "",
+      appointmentDate: null,
+      remarks: "",
+      documentList: selectedAdmissionApplication.documentVerificationList ?? [],
+    },
     validationSchema: AdmissionFormSchema,
     validateOnChange: false,
     validateOnBlur: false,
@@ -432,9 +439,13 @@ const AdmissionScreenAdmissionForm = () => {
               {showDocumentVerification && (
                 <div className="col-span-2">
                   <DocumentVerificationField
-                    documentList={documentList}
-                    onDocumentListChange={setDocumentList}
+                    documentList={formik.values.documentList}
+                    onDocumentListChange={(updated) => {
+                      formik.setFieldValue("documentList", updated);
+                      formik.setFieldError("documentList", undefined);
+                    }}
                     disabled={admissionFormLoader}
+                    error={formik.errors.documentList}
                   />
                 </div>
               )}
@@ -467,6 +478,23 @@ const AdmissionScreenAdmissionForm = () => {
 
 const AdmissionFormSchema = Yup.object().shape({
   status: Yup.string().required("Status is required"),
+  documentList: Yup.array().when("status", {
+    is: ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED,
+    then: (schema) =>
+      schema.test("required-docs-verified", "", function (list) {
+        const unverified = _.filter(
+          list,
+          (doc) => doc.isRequired && !doc.isSelected,
+        );
+        if (_.size(unverified) > 0) {
+          return this.createError({
+            message: `${_.size(unverified)} required document(s) must be verified before proceeding.`,
+          });
+        }
+        return true;
+      }),
+    otherwise: (schema) => schema,
+  }),
   appointmentDate: Yup.date().when("status", {
     is: (status) =>
       status === ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING ||
