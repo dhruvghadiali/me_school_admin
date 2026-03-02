@@ -52,6 +52,8 @@ const formatDocument = (doc) => ({
 });
 
 const formatDocumentVerificationItem = (doc) => ({
+  id: _.get(doc, "school_admission_document.admission_document._id", ""),
+  schoolAdmissionDocumentId: _.get(doc, "school_admission_document._id", ""),
   isRequired: _.get(doc, "school_admission_document.is_required", false),
   isSelected: _.get(doc, "is_verified", false),
   label: `${_.upperFirst(_.get(doc, "school_admission_document.admission_document.admission_document", ""))} - (${_.get(doc, "school_admission_document.is_required", false) ? "Required" : "Optional"})`,
@@ -260,12 +262,31 @@ const updateDocumentVerificationAppointmentBookingAPIResponse = (application) =>
 });
 
 // ---------------------------------------------------------------------------
+// UpdateDocumentVerificationAPIResponse
+// ---------------------------------------------------------------------------
+const updateDocumentVerificationAPIResponse = (application) => ({
+  id:                _.get(application, "id", ""),
+  status:            _.upperCase(_.get(application, "status", "")),
+  applicationStatus: _.get(application, "status", ""),
+  statusHistory:     formatStatusHistory(_.get(application, "status_history", [])),
+  documents:         _.map(
+    _.orderBy(
+      _.get(application, "verified_documents", []),
+      [(d) => _.get(d, "updated_at")],
+      ["desc"],
+    ),
+    formatDocument,
+  ),
+});
+
+// ---------------------------------------------------------------------------
 // Exports
 // ---------------------------------------------------------------------------
 
 export {
-  admissionApplicationsAPIResponse,
   formatApplicantUser,
+  admissionApplicationsAPIResponse,
+  updateDocumentVerificationAPIResponse,
   updatedAdmissionApplicationStatusAPIResponse,
   updateDocumentVerificationAppointmentBookingAPIResponse,
 };

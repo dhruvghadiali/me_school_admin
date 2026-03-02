@@ -14,7 +14,6 @@ const addAdmissionDocumentAPIPayload = (payload) => {
     : admissionDocumentPayload;
 };
 
-
 const updateAdmissionDocumentAPIPayload = (payload, id) => {
   const { academicClass, admissionDocument, isRequired, notes } = payload;
 
@@ -28,10 +27,27 @@ const updateAdmissionDocumentAPIPayload = (payload, id) => {
     ? { ...admissionDocumentPayload, notes: _.trim(notes) }
     : admissionDocumentPayload;
 
-  return{
+  return {
     id: id,
-    data: admissionDocumentPayload
-  }
+    data: admissionDocumentPayload,
+  };
 };
 
-export { addAdmissionDocumentAPIPayload, updateAdmissionDocumentAPIPayload };
+const updateDocumentVerificationAPIPayload = (documentList) => {
+  return {
+    verified_documents: _.map(documentList, (document) => ({
+      school_admission_document: document.schoolAdmissionDocumentId,
+      is_verified: document.isSelected,
+      notes: document.isSelected
+        ? "Document verified via admin"
+        : "Document marked as unverified via admin",
+      id: document.id,
+    })),
+  };
+};
+
+export {
+  addAdmissionDocumentAPIPayload,
+  updateAdmissionDocumentAPIPayload,
+  updateDocumentVerificationAPIPayload,
+};

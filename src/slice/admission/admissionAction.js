@@ -4,6 +4,7 @@ import _ from "lodash";
 
 import { axiosInstance, apiResponseHaveData } from "@MEUtils/axiosInstance";
 import {
+  verifyDocumentsAPIRoute,
   admissionApplicationsAPIRoute,
   schoolAcademicClassesAPIRoute,
   feePaymentAppointmentBookingAPIRoute,
@@ -12,6 +13,7 @@ import {
 } from "@MEUtils/apiRoutes";
 import {
   admissionApplicationsAPIResponse,
+  updateDocumentVerificationAPIResponse,
   eductionBoardsWithAcademicClassesAPIResponse,
   updatedAdmissionApplicationStatusAPIResponse,
   updateDocumentVerificationAppointmentBookingAPIResponse,
@@ -196,8 +198,6 @@ const documentVerificationAppointmentBooking = createAsyncThunk(
               response.data[0],
             );
 
-          console.log("Updated Admission Form Data:", admissionFormData);
-          
           admissionApplications = _.map(admissionApplications, (application) =>
             application.id === admissionFormData.id
               ? { ...application, ...admissionFormData }
@@ -207,8 +207,6 @@ const documentVerificationAppointmentBooking = createAsyncThunk(
             ...selectedAdmissionApplication,
             ...admissionFormData,
           };
-
-          console.log("Updated Admission Form Data:", selectedAdmissionApplication);
         }
 
         return {
@@ -249,7 +247,6 @@ const rescheduleDocumentVerificationAppointmentBooking = createAsyncThunk(
         { state: getState() },
       );
 
-      console.log("Update response:", response);
       // if (apiResponseHaveData(response)) {
       //   return {
       //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
@@ -278,6 +275,64 @@ const rescheduleDocumentVerificationAppointmentBooking = createAsyncThunk(
   },
 );
 
+const updatedVerifiedDocument = createAsyncThunk(
+  "admission/updatedVerifiedDocument",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const { applicationId, documentList } = payload;
+      let admissionApplications =
+        getState()?.admissionApplication?.admissionApplications || [];
+      let selectedAdmissionApplication =
+        getState()?.admissionApplication?.selectedAdmissionApplication || {};
+      const response = await axiosInstance.put(
+        `${admissionApplicationsAPIRoute}/${applicationId}${verifyDocumentsAPIRoute}`,
+        updateDocumentVerificationAPIPayload(documentList),
+        { state: getState() },
+      );
+
+      if (apiResponseHaveData(response)) {
+        if (response.data?.[0]) {
+          const admissionFormData = updateDocumentVerificationAPIResponse(
+            response.data[0],
+          );
+
+          admissionApplications = _.map(admissionApplications, (application) =>
+            application.id === admissionFormData.id
+              ? { ...application, ...admissionFormData }
+              : application,
+          );
+          selectedAdmissionApplication = {
+            ...selectedAdmissionApplication,
+            ...admissionFormData,
+          };
+        }
+
+        return {
+          admissionApplications,
+          selectedAdmissionApplication,
+          error: "",
+        };
+      } else {
+        return {
+          admissionApplications: admissionApplications,
+          selectedAdmissionApplication: selectedAdmissionApplication,
+          error:
+            response && response.message
+              ? response.message
+              : "Document verification appointment booking request failed",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Update verified document request failed";
+      return rejectWithValue({
+        error: errMsg,
+      });
+    }
+  },
+);
+
 const feePaymentAppointmentBooking = createAsyncThunk(
   "admission/feePaymentAppointmentBooking",
   async (payload, { getState, rejectWithValue }) => {
@@ -290,7 +345,6 @@ const feePaymentAppointmentBooking = createAsyncThunk(
         { state: getState() },
       );
 
-      console.log("Update response:", response);
       // if (apiResponseHaveData(response)) {
       //   return {
       //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
@@ -321,6 +375,7 @@ const feePaymentAppointmentBooking = createAsyncThunk(
 
 export {
   getAcademicClasses,
+  updatedVerifiedDocument,
   getAdmissionApplications,
   feePaymentAppointmentBooking,
   updateAdmissionApplicationStatus,

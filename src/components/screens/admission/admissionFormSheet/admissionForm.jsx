@@ -18,6 +18,7 @@ import { variants } from "@MEUtils/enums";
 import { ME_CHECKBOX_COMPONENT_ENUM } from "@MEHelpers/enums";
 import { ADMISSION_APPLICATION_STATUS } from "@MEHelpers/enums/admissionEnum";
 import {
+  updatedVerifiedDocument,
   feePaymentAppointmentBooking,
   updateAdmissionApplicationStatus,
   documentVerificationAppointmentBooking,
@@ -58,10 +59,6 @@ const ALLOWED_TRANSITIONS = {
   [ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED]: [
     ADMISSION_APPLICATION_STATUS.APPROVED,
     ADMISSION_APPLICATION_STATUS.REJECTED,
-  ],
-  [ADMISSION_APPLICATION_STATUS.APPROVED]: [
-    ADMISSION_APPLICATION_STATUS.REJECTED,
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
   ],
   [ADMISSION_APPLICATION_STATUS.REJECTED]: [
     ADMISSION_APPLICATION_STATUS.APPROVED,
@@ -271,7 +268,10 @@ const AdmissionScreenAdmissionForm = () => {
       case ADMISSION_APPLICATION_STATUS.FEES_PENDING:
         return feePaymentAppointmentBooking(payload);
       case ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED:
-      // call redux action
+        return updatedVerifiedDocument({
+          applicationId: selectedAdmissionApplication.id,
+          documentList: values.documentList,
+        });
       default:
         return updateAdmissionApplicationStatus({
           applicationId: selectedAdmissionApplication.id,
@@ -319,8 +319,22 @@ const AdmissionScreenAdmissionForm = () => {
       ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING &&
     nextStatus === ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED;
 
+  // For APPROVED, next transitions depend on whether docs were ever verified.
+  // statusHistory items use _.upperCase() format (e.g. "DOCUMENTS VERIFIED").
+  const hasDocumentsVerified = _.some(
+    selectedAdmissionApplication.statusHistory,
+    (h) => h.status === _.upperCase(ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED),
+  );
+
+  const allowedNextStatuses =
+    currentStatus === ADMISSION_APPLICATION_STATUS.APPROVED
+      ? hasDocumentsVerified
+        ? [ADMISSION_APPLICATION_STATUS.FEES_PENDING, ADMISSION_APPLICATION_STATUS.REJECTED]
+        : [ADMISSION_APPLICATION_STATUS.REJECTED, ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING]
+      : (ALLOWED_TRANSITIONS[currentStatus] ?? []);
+
   const statusSelectItems = _.map(
-    ALLOWED_TRANSITIONS[currentStatus] ?? [],
+    allowedNextStatuses,
     (status) => ({ label: _.startCase(status), value: status }),
   );
 
