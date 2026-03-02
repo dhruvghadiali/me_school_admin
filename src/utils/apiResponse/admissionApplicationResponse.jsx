@@ -219,6 +219,14 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
         isVerified: _.get(doc, "is_verified", false),
         notes: _.get(doc, "notes", ""),
       })),
+      documentVerificationList: _.map(
+        _.get(application, "verified_documents", []),
+        (doc) => ({
+          isRequired: _.get(doc, "school_admission_document.is_required", false),
+          isSelected: _.get(doc, "is_verified", false),
+          label: `${_.upperFirst(_.get(doc, "school_admission_document.admission_document.admission_document", ""))} - (${_.get(doc, "school_admission_document.is_required", false) ? "Required" : "Optional"})`,
+        }),
+      ),
       documentVerificationAppointments: _.map(
         _.orderBy(
           _.get(application, "document_verification_appointment", []),
