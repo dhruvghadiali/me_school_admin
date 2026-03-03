@@ -383,10 +383,10 @@ const AdmissionScreenAdmissionForm = () => {
   return (
     <div className="w-full h-full flex items-start justify-center">
       <div className="w-full mx-auto">
-        <div className="bg-secondary/10 rounded-lg p-6 md:p-8 lg:p-10 border border-primary/50 shadow-sm shadow-primary/80">
+        <div className="bg-secondary/10 rounded-lg py-6 px-10 border border-primary/50 shadow-sm shadow-primary/80">
           {/* Error Banner */}
           {admissionFormError && (
-            <div className="bg-danger/90 backdrop-blur-sm mb-8 flex items-center gap-3 rounded-xl p-4 border border-danger/50 shadow-md">
+            <div className="bg-danger/90 backdrop-blur-sm mb-5 flex items-center gap-3 rounded-xl p-3 border border-danger/90 shadow-md">
               <CircleAlertIcon className="text-accent shrink-0 w-5 h-5 animate-pulse" />
               <p className="text-accent text-sm md:text-base font-medium">
                 {admissionFormError}
@@ -394,7 +394,7 @@ const AdmissionScreenAdmissionForm = () => {
             </div>
           )}
 
-          <form onSubmit={formik.handleSubmit} className="space-y-8">
+          <form onSubmit={formik.handleSubmit} className="">
             {/* Heading */}
             <div className="mb-6">
               <h3 className="text-lg md:text-xl font-semibold text-primary mb-2">
@@ -478,7 +478,7 @@ const AdmissionScreenAdmissionForm = () => {
             </div>
 
             {/* Action */}
-            <div className="flex flex-col gap-3 pt-5 border-t border-primary/20 mt-6">
+            <div className="flex flex-col gap-3 pt-5 border-t border-primary/20">
               <p className="text-xs sm:text-sm text-muted-foreground">
                 Please review the changes before submitting
               </p>

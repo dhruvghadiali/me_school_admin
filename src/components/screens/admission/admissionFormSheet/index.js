@@ -69,8 +69,8 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
         className="h-full w-full overflow-hidden flex flex-col p-0"
       >
         <div className="border-b border-primary/50 px-4 sm:px-6 md:px-8 shadow-lg shadow-primary/80">
-          <SheetHeader className="space-y-1 sm:space-y-1.5">
-            <SheetTitle className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-left">
+          <SheetHeader className="space-y-1 sm:space-y-1.5 p-1 m-2">
+            <SheetTitle className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-left m-0 p-0">
               Application Details
             </SheetTitle>
             <SheetDescription className="text-xs sm:text-sm text-left">
@@ -80,12 +80,12 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <div className="px-3 sm:px-4 md:px-6 pt-3 sm:pt-4 md:pt-6">
+          <div className="px-5 py-2">
             <AdmissionScreenAdmissionForm />
           </div>
 
           {/* Sticky Tabs Navigation */}
-          <div className="sticky top-0 z-10 bg-primary/90 shadow-lg shadow-primary/50 mt-3 sm:mt-4 md:mt-6 mx-3 sm:mx-4 md:mx-5 rounded">
+          <div className="sticky top-0 z-10 bg-primary/90 shadow-lg shadow-primary/50 mt-2 mx-5 rounded">
             <div className="overflow-x-auto px-2 sm:px-4 md:px-6">
               <nav className="flex min-w-max sm:min-w-0" aria-label="Tabs">
                 {tabs.map((tab) => (
@@ -106,7 +106,9 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
           </div>
 
           {/* Tab Content */}
-          <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6">{renderTabContent()}</div>
+          <div className="px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6">
+            {renderTabContent()}
+          </div>
         </div>
       </SheetContent>
     </Sheet>

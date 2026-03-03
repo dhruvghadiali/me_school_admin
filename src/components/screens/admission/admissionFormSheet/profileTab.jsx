@@ -1,13 +1,19 @@
 import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 
+import MEInformationCardComponent from "@MECommonComponents/card/informationCard";
+import MENestedInformationCardComponent from "@MECommonComponents/card/nestedInformationCard";
+
 const ProfileTab = () => {
   const { selectedAdmissionApplication } = useSelector(
     (state) => state.admissionApplication,
   );
 
-
-  const applicantUser = _.get(selectedAdmissionApplication, "applicantUser", {});
+  const applicantUser = _.get(
+    selectedAdmissionApplication,
+    "applicantUser",
+    {},
+  );
   const studentProfile = _.get(applicantUser, "studentProfile", {});
   const parentProfiles = _.get(applicantUser, "parentProfiles", []);
   const siblingProfiles = _.get(applicantUser, "siblingProfiles", []);
@@ -26,488 +32,254 @@ const ProfileTab = () => {
   return (
     <div className="space-y-6">
       {/* Student Information */}
-      <div className="bg-white dark:bg-gray-900 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-        <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-          Student Information
-        </h4>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div>
-            <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-              Full Name
-            </p>
-            <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-              {`${applicantUser?.firstName || "-"} ${applicantUser?.lastName || "-"}`}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-              Date of Birth
-            </p>
-            <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-              {studentProfile.dateOfBirth || "N/A"}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-              Gender
-            </p>
-            <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-              {_.startCase(studentProfile.gender) || "N/A"}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-              Blood Group
-            </p>
-            <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-              {studentProfile.bloodGroup || "N/A"}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-              Aadhaar Number
-            </p>
-            <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-              {studentProfile.aadhaarNumber || "N/A"}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-              Nationality
-            </p>
-            <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-              {studentProfile.nationality || "N/A"}
-            </p>
-          </div>
-        </div>
+      <MEInformationCardComponent
+        title={"Student Information"}
+        informationList={[
+          {
+            label: "Full Name",
+            value: `${applicantUser.firstName || "-"} ${applicantUser.lastName || "-"}`,
+          },
+          {
+            label: "Date of Birth",
+            value: studentProfile.dateOfBirth || "N/A",
+          },
+          {
+            label: "Gender",
+            value: _.startCase(studentProfile.gender) || "N/A",
+          },
+          { label: "Blood Group", value: studentProfile.bloodGroup || "N/A" },
+          {
+            label: "Aadhaar Number",
+            value: studentProfile.aadhaarNumber || "N/A",
+          },
+          { label: "Nationality", value: studentProfile.nationality || "N/A" },
+        ]}
+      />
 
-        {/* Medical Information */}
-        {studentProfile.medicalInfo && (
-          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-            <h5 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-3">
-              Medical Information
-            </h5>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={studentProfile.medicalInfo.hasHearingIssue}
-                  disabled
-                  className="cursor-not-allowed"
-                />
-                <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                  Has Hearing Issue
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={studentProfile.medicalInfo.hasVisionIssue}
-                  disabled
-                  className="cursor-not-allowed"
-                />
-                <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                  Has Vision Issue
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={studentProfile.medicalInfo.hasPhysicalIssue}
-                  disabled
-                  className="cursor-not-allowed"
-                />
-                <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                  Has Physical Issue
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={studentProfile.medicalInfo.hasMentalIssue}
-                  disabled
-                  className="cursor-not-allowed"
-                />
-                <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                  Has Mental Issue
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={studentProfile.medicalInfo.hasAllergies}
-                  disabled
-                  className="cursor-not-allowed"
-                />
-                <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                  Has Allergies
-                </span>
-              </div>
-              {studentProfile.medicalInfo.hasAllergies &&
-                studentProfile.medicalInfo.allergies?.length > 0 && (
-                  <div className="ml-6 mt-2">
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Allergies:
-                    </p>
-                    <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
-                      {studentProfile.medicalInfo.allergies.join(", ")}
-                    </p>
-                  </div>
-                )}
-            </div>
-          </div>
-        )}
-      </div>
+      {/* Student Medical Information */}
+      <MEInformationCardComponent
+        title={"Student Medical Information"}
+        informationList={[
+          {
+            label: "Has Hearing Issue",
+            value: studentProfile.medicalInfo?.hasHearingIssue ? "Yes" : "No",
+          },
+          {
+            label: "Has Vision Issue",
+            value: studentProfile.medicalInfo?.hasVisionIssue ? "Yes" : "No",
+          },
+          {
+            label: "Has Physical Issue",
+            value: studentProfile.medicalInfo?.hasPhysicalIssue ? "Yes" : "No",
+          },
+          {
+            label: "Has Mental Issue",
+            value: studentProfile.medicalInfo?.hasMentalIssue ? "Yes" : "No",
+          },
+          {
+            label: "Has Allergies",
+            value: studentProfile.medicalInfo?.hasAllergies ? "Yes" : "No",
+          },
+          ...(studentProfile.medicalInfo?.hasAllergies &&
+          studentProfile.medicalInfo.allergies
+            ? [
+                {
+                  label: "Allergies",
+                  value: studentProfile.medicalInfo.allergies.join(", "),
+                },
+              ]
+            : []),
+        ]}
+      />
 
       {/* Father Information */}
       {fatherProfile && (
-        <div className="bg-white dark:bg-gray-900 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Father Information
-          </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Full Name
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {`${fatherProfile.firstName} ${fatherProfile.lastName}`}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Phone Number
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {fatherProfile.phoneNumber || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Email
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white break-all">
-                {fatherProfile.email || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Aadhaar Number
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {fatherProfile.aadhaarNumber || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Occupation
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {fatherProfile.occupation || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Education
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {fatherProfile.education || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Annual Income
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {fatherProfile.annualIncome
-                  ? `₹${fatherProfile.annualIncome.toLocaleString()}`
-                  : "N/A"}
-              </p>
-            </div>
-          </div>
-        </div>
+        <MEInformationCardComponent
+          title={"Father Information"}
+          informationList={[
+            {
+              label: "Full Name",
+              value: `${fatherProfile.firstName || "-"} ${
+                fatherProfile.lastName || "-"
+              }`,
+            },
+            {
+              label: "Phone Number",
+              value: fatherProfile.phoneNumber || "N/A",
+            },
+            { label: "Email", value: fatherProfile.email || "N/A" },
+            {
+              label: "Aadhaar Number",
+              value: fatherProfile.aadhaarNumber || "N/A",
+            },
+            { label: "Occupation", value: fatherProfile.occupation || "N/A" },
+            { label: "Education", value: fatherProfile.education || "N/A" },
+            {
+              label: "Annual Income",
+              value: fatherProfile.annualIncome
+                ? `₹${fatherProfile.annualIncome.toLocaleString()}`
+                : "N/A",
+            },
+          ]}
+        />
       )}
 
       {/* Mother Information */}
       {motherProfile && (
-        <div className="bg-white dark:bg-gray-900 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Mother Information
-          </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Full Name
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {`${motherProfile.firstName} ${motherProfile.lastName}`}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Phone Number
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {motherProfile.phoneNumber || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Email
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white break-all">
-                {motherProfile.email || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Aadhaar Number
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {motherProfile.aadhaarNumber || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Occupation
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {motherProfile.occupation || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Education
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {motherProfile.education || "N/A"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                Annual Income
-              </p>
-              <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                {motherProfile.annualIncome
-                  ? `₹${motherProfile.annualIncome.toLocaleString()}`
-                  : "N/A"}
-              </p>
-            </div>
-          </div>
-        </div>
+        <MEInformationCardComponent
+          title={"Mother Information"}
+          informationList={[
+            {
+              label: "Full Name",
+              value: `${motherProfile.firstName || "-"} ${
+                motherProfile.lastName || "-"
+              }`,
+            },
+            {
+              label: "Phone Number",
+              value: motherProfile.phoneNumber || "N/A",
+            },
+            { label: "Email", value: motherProfile.email || "N/A" },
+            {
+              label: "Aadhaar Number",
+              value: motherProfile.aadhaarNumber || "N/A",
+            },
+            { label: "Occupation", value: motherProfile.occupation || "N/A" },
+            { label: "Education", value: motherProfile.education || "N/A" },
+            {
+              label: "Annual Income",
+              value: motherProfile.annualIncome
+                ? `₹${motherProfile.annualIncome.toLocaleString()}`
+                : "N/A",
+            },
+          ]}
+        />
       )}
 
       {/* Sibling Profiles */}
       {siblingProfiles && siblingProfiles.length > 0 && (
-        <div className="bg-white dark:bg-gray-900 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Sibling Information
-          </h4>
-          <div className="space-y-4">
-            {siblingProfiles.map((sibling, index) => (
-              <div
-                key={sibling.id || index}
-                className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Full Name
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {`${sibling.firstName} ${sibling.lastName}`}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Gender
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {_.startCase(sibling.gender) || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Date of Birth
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {sibling.dateOfBirth || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Studying In Class
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {sibling.studyingInClass || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Same School
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {sibling.sameSchool ? "Yes" : "No"}
-                    </p>
-                  </div>
-                  {!sibling.sameSchool && (
-                    <div>
-                      <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                        School Name
-                      </p>
-                      <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                        {sibling.schoolName || "N/A"}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <MENestedInformationCardComponent
+          title={"Sibling Information"}
+          informationList={_.map(siblingProfiles, (sibling, index) => {
+            return {
+              title: "Sibling " + (index + 1),
+              nestedInformationList: [
+                {
+                  label: "Full Name",
+                  value: `${sibling.firstName || "-"} ${sibling.lastName || "-"}`,
+                },
+                {
+                  label: "Gender",
+                  value: _.startCase(sibling.gender) || "N/A",
+                },
+                {
+                  label: "Date of Birth",
+                  value: sibling.dateOfBirth || "N/A",
+                },
+                {
+                  label: "Studying In Class",
+                  value: sibling.studyingInClass || "N/A",
+                },
+                {
+                  label: "Same School",
+                  value: sibling.sameSchool ? "Yes" : "No",
+                },
+                ...(!sibling.sameSchool
+                  ? [
+                      {
+                        label: "School Name",
+                        value: sibling.schoolName || "N/A",
+                      },
+                    ]
+                  : []),
+              ],
+            };
+          })}
+        />
       )}
 
       {/* Addresses */}
       {addresses && addresses.length > 0 && (
-        <div className="bg-white dark:bg-gray-900 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Address Information
-          </h4>
-          <div className="space-y-4">
-            {addresses.map((address, index) => (
-              <div
-                key={address.id || index}
-                className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
-              >
-                <p className="text-sm font-medium text-primary mb-2">
-                  {_.startCase(address.userType)} Address
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="sm:col-span-2">
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Address
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {address.address || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      State
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {address.state || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      District
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {address.district || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      City
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {address.city || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Area Name
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {address.areaName || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Zipcode
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {address.zipcode || "N/A"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <MENestedInformationCardComponent
+          title={"Address Information"}
+          informationList={_.map(addresses, (address, index) => {
+            return {
+              title: `${_.startCase(address.userType)} Address`,
+              nestedInformationList: [
+                {
+                  label: "Address",
+                  value: address.address || "N/A",
+                },
+                {
+                  label: "State",
+                  value: address.state || "N/A",
+                },
+                {
+                  label: "District",
+                  value: address.district || "N/A",
+                },
+                {
+                  label: "City",
+                  value: address.city || "N/A",
+                },
+                {
+                  label: "Area Name",
+                  value: address.areaName || "N/A",
+                },
+                {
+                  label: "Zipcode",
+                  value: address.zipcode || "N/A",
+                },
+              ],
+            };
+          })}
+        />
       )}
 
       {/* Emergency Contacts */}
       {emergencyContacts && emergencyContacts.length > 0 && (
-        <div className="bg-white dark:bg-gray-900 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
-          <h4 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Emergency Contacts
-          </h4>
-          <div className="space-y-4">
-            {emergencyContacts.map((contact, index) => (
-              <div
-                key={contact.id || index}
-                className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Name
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {contact.name || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Relation
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {_.startCase(contact.relation) || "N/A"}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Phone Number
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {contact.phoneNumber || "N/A"}
-                    </p>
-                  </div>
-                  {contact.alternatePhone && (
-                    <div>
-                      <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Alternate Phone
-                      </p>
-                      <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                        {contact.alternatePhone}
-                      </p>
-                    </div>
-                  )}
-                  {contact.email && (
-                    <div>
-                      <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Email
-                      </p>
-                      <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white break-all">
-                        {contact.email}
-                      </p>
-                    </div>
-                  )}
-                  <div className="sm:col-span-2">
-                    <p className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Address
-                    </p>
-                    <p className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
-                      {contact.address || "N/A"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <MENestedInformationCardComponent
+          title={"Emergency Contact Information"}
+          informationList={_.map(emergencyContacts, (contact, index) => {
+            return {
+              title: `Contact ${index + 1}`,
+              nestedInformationList: [
+                {
+                  label: "Name",
+                  value: contact.name || "N/A",
+                },
+                {
+                  label: "Relation",
+                  value: _.startCase(contact.relation) || "N/A",
+                },
+                {
+                  label: "Phone Number",
+                  value: contact.phoneNumber || "N/A",
+                },
+                ...(contact.alternatePhone
+                  ? [
+                      {
+                        label: "Alternate Phone",
+                        value: contact.alternatePhone,
+                      },
+                    ]
+                  : []),
+                ...(contact.email
+                  ? [
+                      {
+                        label: "Email",
+                        value: contact.email,
+                      },
+                    ]
+                  : []),
+                {
+                  label: "Address",
+                  value: contact.address || "N/A",
+                },  
+              ],
+            };
+          })}
+        />
       )}
     </div>
   );
