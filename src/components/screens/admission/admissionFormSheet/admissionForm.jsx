@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Label } from "@MEShadcnComponents/label";
 import { useSelector, useDispatch } from "react-redux";
+import {Card} from "@MEShadcnComponents/card";
 
 import _ from "lodash";
 import * as Yup from "yup";
@@ -383,7 +384,7 @@ const AdmissionScreenAdmissionForm = () => {
   return (
     <div className="w-full h-full flex items-start justify-center">
       <div className="w-full mx-auto">
-        <div className="bg-secondary/10 rounded-lg py-6 px-10 border border-primary/50 shadow-sm shadow-primary/80">
+        <Card className="bg-secondary/50 shadow-lg shadow-primary/50 py-6 px-10">
           {/* Error Banner */}
           {admissionFormError && (
             <div className="bg-danger/90 backdrop-blur-sm mb-5 flex items-center gap-3 rounded-xl p-3 border border-danger/90 shadow-md">
@@ -496,7 +497,7 @@ const AdmissionScreenAdmissionForm = () => {
               </div>
             </div>
           </form>
-        </div>
+        </Card>
       </div>
     </div>
   );

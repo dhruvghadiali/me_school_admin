@@ -85,7 +85,7 @@ const AdmissionScreenAdmissionFormSheet = (props) => {
           </div>
 
           {/* Sticky Tabs Navigation */}
-          <div className="sticky top-0 z-10 bg-primary/90 shadow-lg shadow-primary/50 mt-2 mx-5 rounded">
+          <div className="sticky top-0 z-10 bg-primary shadow-lg shadow-primary/50 mt-2 mx-5 rounded">
             <div className="overflow-x-auto px-2 sm:px-4 md:px-6">
               <nav className="flex min-w-max sm:min-w-0" aria-label="Tabs">
                 {tabs.map((tab) => (
