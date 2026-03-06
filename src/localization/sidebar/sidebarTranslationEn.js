@@ -12,5 +12,5 @@ export const sidebarMenuLabel = {
 
 export const sidebar = {
     titleDynamic: "Hello!! {{username}}",
-    titleStatic: "Hello!! "
+    titleStatic: "my edu x"
 }

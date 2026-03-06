@@ -28,8 +28,11 @@ import {
 } from "@MEShadcnComponents/sidebar";
 import { Separator } from "@MEShadcnComponents/separator";
 import { sidebarMenuLabel, sidebar } from "@MELocalization/en";
-import PropTypes from "prop-types";
+
 import _ from "lodash";
+import PropTypes from "prop-types";
+
+import logo from "@MEAssets/logo.png";
 
 const MainContent = ({ children }) => {
   const { open, isMobile } = useSidebar();
@@ -90,10 +93,11 @@ const MESidebar = ({ children }) => {
         }
       `}</style>
       <Sidebar collapsible="icon" className="border-r">
-        <SidebarHeader className="h-14 border-b bg-danger">
-          <div className="flex h-full items-center justify-center px-2">
+        <SidebarHeader className="h-14 border-b bg-primary">
+          <div className="flex h-full items-center justify-start">
+            <img src={logo} alt="Logo" className="h-10 w-10 mr-2" />
             <h2 className="text-white font-bold text-sm truncate group-data-[collapsible=icon]:hidden">
-              {t('titleStatic', { defaultValue: sidebar.titleStatic })}
+              {_.upperCase(t('titleStatic', { defaultValue: sidebar.titleStatic }))}
             </h2>
           </div>
         </SidebarHeader>
