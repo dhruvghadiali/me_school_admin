@@ -39,11 +39,11 @@ const FeePaymentsTab = () => {
           return (
             <div
               key={field}
-              className="flex items-center rounded-lg border border-border bg-card px-4 py-3 shadow-sm"
+              className="flex items-center rounded-lg border border-border bg-secondary/50 shadow-md shadow-primary/50 px-4 py-3"
             >
               <p className="text-xs text-primary/60 mr-5">{label}</p>
-              <IndianRupeeIcon className="w-3 h-3 shrink-0 font-semibold text-primary " />
-              <p className="text-sm font-semibold text-primary">
+              <IndianRupeeIcon className="w-2.5 h-2.5 shrink-0 font-semibold text-primary " />
+              <p className="text-xs font-semibold text-primary">
                 {total.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </p>
             </div>
@@ -52,42 +52,43 @@ const FeePaymentsTab = () => {
       </div>
 
       <MEDataTable
+        filter={false}
         rows={feePayments}
         columns={[
           {
             headerName: "Fee Type",
             field: "feeType",
             width: 150,
-            filter: false,
-            sortable: false,
+            filter: true,
+            sortable: true,
           },
           {
             headerName: "Monthly Fee",
             field: "monthlyFee",
             width: 150,
-            filter: false,
-            sortable: false,
+            filter: true,
+            sortable: true,
           },
           {
             headerName: "Quarterly Fee",
             field: "quarterlyFee",
             width: 150,
-            filter: false,
-            sortable: false,
+            filter: true,
+            sortable: true,
           },
           {
             headerName: "Half Yearly Fee",
             field: "halfYearlyFee",
             width: 150,
-            filter: false,
-            sortable: false,
+            filter: true,
+            sortable: true,
           },
           {
             headerName: "Yearly Fee",
             field: "yearlyFee",
             width: 150,
-            filter: false,
-            sortable: false,
+            filter: true,
+            sortable: true,
           },
         ]}
       />

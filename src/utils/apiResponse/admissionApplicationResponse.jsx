@@ -94,7 +94,7 @@ const formatFeePaymentAppointment = (
 const formatFeePayments = (feePayments) =>
   _.map(feePayments, (payment) => ({
     id: _.get(payment, "_id", ""),
-    feeType: _.get(payment, "fee_type", ""),
+    feeType: _.startCase(_.get(payment, "fee_type", "")),
     halfYearlyFee: _.get(payment, "half_yearly_fee", 0),
     monthlyFee: _.get(payment, "monthly_fee", 0),
     quarterlyFee: _.get(payment, "quarterly_fee", 0),
