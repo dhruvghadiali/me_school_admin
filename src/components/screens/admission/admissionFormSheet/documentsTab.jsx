@@ -62,7 +62,7 @@ const DocumentsTab = () => {
                   </h5>
                   <div className="flex items-center gap-2 flex-wrap">
                     <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-xs ${
                         document.isRequired
                           ? "bg-danger text-secondary"
                           : "bg-warning text-secondary"

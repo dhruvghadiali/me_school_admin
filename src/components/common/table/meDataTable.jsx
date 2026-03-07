@@ -165,7 +165,7 @@ const MEDataTable = ({ columns, rows, emptyText = "No data available" }) => {
   };
 
   return (
-    <div className="w-full rounded-lg border border-border bg-card shadow-sm">
+    <div className="w-full h-full flex flex-col rounded-lg border border-border bg-card shadow-sm overflow-hidden">
       <div className="flex items-center justify-between p-2 sm:p-3 border-b border-border bg-muted/40">
         <div className="text-xs sm:text-sm text-muted-foreground">
           {(() => {
@@ -185,7 +185,7 @@ const MEDataTable = ({ columns, rows, emptyText = "No data available" }) => {
           <span className="hidden sm:inline">Filter</span>
         </Button>
       </div>
-      <div className="overflow-x-auto max-h-[70vh]">
+      <div className="flex-1 overflow-auto">
         <table className="min-w-full table-fixed text-xs sm:text-sm">
           <colgroup>
             {resolvedColumns.map((col) => (

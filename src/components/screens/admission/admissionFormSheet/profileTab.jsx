@@ -120,6 +120,22 @@ const ProfileTab = () => {
                 ? `₹${fatherProfile.annualIncome.toLocaleString()}`
                 : "N/A",
             },
+            {
+              label: "Is Alive?",
+              value: fatherProfile.alive.status ? "Yes" : "No",
+            },
+            ...(fatherProfile.alive.status
+              ? []
+              : [
+                  {
+                    label: "Death Date",
+                    value: fatherProfile.alive.dateOfDeath || "N/A",
+                  },
+                  {
+                    label: "Caring Child By",
+                    value: fatherProfile.alive.caringChildBy || "N/A",
+                  },
+                ]),
           ]}
         />
       )}
@@ -152,6 +168,22 @@ const ProfileTab = () => {
                 ? `₹${motherProfile.annualIncome.toLocaleString()}`
                 : "N/A",
             },
+            {
+              label: "Is Alive?",
+              value: motherProfile.alive.status ? "Yes" : "No",
+            },
+            ...(motherProfile.alive.status
+              ? []
+              : [
+                  {
+                    label: "Death Date",
+                    value: motherProfile.alive.dateOfDeath || "N/A",
+                  },
+                  {
+                    label: "Caring Child By",
+                    value: motherProfile.alive.caringChildBy || "N/A",
+                  },
+                ]),
           ]}
         />
       )}
@@ -177,10 +209,6 @@ const ProfileTab = () => {
                   value: sibling.dateOfBirth || "N/A",
                 },
                 {
-                  label: "Studying In Class",
-                  value: sibling.studyingInClass || "N/A",
-                },
-                {
                   label: "Same School",
                   value: sibling.sameSchool ? "Yes" : "No",
                 },
@@ -191,7 +219,16 @@ const ProfileTab = () => {
                         value: sibling.schoolName || "N/A",
                       },
                     ]
-                  : []),
+                  : [
+                      {
+                        label: "Admission Number",
+                        value: sibling.admissionNumber || "N/A",
+                      },
+                      {
+                        label: "Studying In Class",
+                        value: sibling.studyingInClass || "N/A",
+                      },
+                    ]),
               ],
             };
           })}
@@ -275,7 +312,7 @@ const ProfileTab = () => {
                 {
                   label: "Address",
                   value: contact.address || "N/A",
-                },  
+                },
               ],
             };
           })}

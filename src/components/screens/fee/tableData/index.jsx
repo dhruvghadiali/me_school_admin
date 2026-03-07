@@ -154,7 +154,7 @@ const FeeScreenTableData = () => {
     <>
       <div className="lg:grid lg:grid-flow-row lg:grid-cols-2 mt-5 ml-1 mb-2">
         <div className="lg:self-center lg:justify-self-start">
-          <div className="lg:grid lg:grid-flow-row lg:grid-cols-2 mt-5 ml-1 mb-2">
+          <div className="lg:grid lg:grid-flow-row lg:grid-cols-2">
             <div className="xl:w-60 lg:pr-2">
               <MESelect
                 label={_.upperFirst(
@@ -203,14 +203,14 @@ const FeeScreenTableData = () => {
           </div>
         </div>
         <div className="justify-self-end self-center lg:mt-0 lg:mb-0 mb-5 mt-6 ">
-          <div className="grid grid-flow-row grid-cols-2 mt-5 ml-1 mb-2">
+          <div className="grid grid-flow-row grid-cols-2">
             <div className="w-30 pr-2 mb-2">{/* <FeeLogSheet /> */}</div>
             <div className="w-30 pl-2"><FeeSheet /></div>
           </div>
         </div>
       </div>
 
-      <div className="ag-theme-alpine w-full h-[75vh]">
+      <div className="w-full h-[75vh]">
         <MEDataTable rows={fees} columns={colDefs} />
       </div>
     </>

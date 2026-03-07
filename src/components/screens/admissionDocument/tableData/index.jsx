@@ -186,7 +186,7 @@ const SchoolAdmissionTableData = () => {
     <>
       <div className="lg:grid lg:grid-flow-row lg:grid-cols-2 mt-5 ml-1 mb-2">
         <div className="lg:self-center lg:justify-self-start">
-          <div className="lg:grid lg:grid-flow-row lg:grid-cols-2 mt-5 ml-1 mb-2">
+          <div className="lg:grid lg:grid-flow-row lg:grid-cols-2">
             <div className="xl:w-60 lg:pr-2">
               <MESelect
                 label={_.upperFirst(
