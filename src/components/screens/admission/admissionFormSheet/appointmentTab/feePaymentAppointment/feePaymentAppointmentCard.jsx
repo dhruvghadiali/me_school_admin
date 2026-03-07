@@ -1,7 +1,11 @@
 import _ from "lodash";
 import { MessageSquare } from "lucide-react";
 
-const FeePaymentAppointmentCardComponent = ({ appointment, index }) => {
+const FeePaymentAppointmentCardComponent = ({
+  index,
+  appointmentDeatils,
+  remarks,
+}) => {
   return (
     <div className="bg-secondary/50 rounded-md p-3 border border-primary/30">
       <p className="text-xs font-semibold text-primary mb-4">

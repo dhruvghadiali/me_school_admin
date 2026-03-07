@@ -78,7 +78,7 @@ const formatFeePaymentAppointment = (
 ) =>
   _.map(_.orderBy(appointment, [(a) => _.get(a, "booked_at")], ["desc"]), (a) => ({
     id: _.get(a, "_id", ""),
-    scheduledDate: formatDate(_.get(a, "scheduled_date"), dateFormat),
+    scheduledDate: `${formatDate(_.get(a, "scheduled_date"), dateFormat)} ${_.get(a, "scheduled_time_slot", "")}`,
     scheduledTimeSlot: _.get(a, "scheduled_time_slot", ""),
     bookedAt: formatDateTime(_.get(a, "booked_at")),
     bookedBy: formatUserRef(_.get(a, "booked_by")),
@@ -333,6 +333,20 @@ const updateDocumentVerificationAPIResponse = (application) => ({
 });
 
 // ---------------------------------------------------------------------------
+// UpdateFeePaymentAppointmentBookingAPIResponse
+// ---------------------------------------------------------------------------
+const updateFeePaymentAppointmentBookingAPIResponse = (application) => ({
+  id: _.get(application, "id", ""),
+  status: _.upperCase(_.get(application, "status", "")),
+  applicationStatus: _.get(application, "status", ""),
+  statusHistory: formatStatusHistory(_.get(application, "status_history", [])),
+  feePaymentAppointments: formatFeePaymentAppointment(
+    _.get(application, "fee_payment_appointment", []),
+    "DD MMMM YYYY",
+  ),
+});
+
+// ---------------------------------------------------------------------------
 // Exports
 // ---------------------------------------------------------------------------
 
@@ -341,5 +355,6 @@ export {
   admissionApplicationsAPIResponse,
   updateDocumentVerificationAPIResponse,
   updatedAdmissionApplicationStatusAPIResponse,
+  updateFeePaymentAppointmentBookingAPIResponse,
   updateDocumentVerificationAppointmentBookingAPIResponse,
 };

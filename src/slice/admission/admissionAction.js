@@ -16,10 +16,12 @@ import {
   updateDocumentVerificationAPIResponse,
   eductionBoardsWithAcademicClassesAPIResponse,
   updatedAdmissionApplicationStatusAPIResponse,
+  updateFeePaymentAppointmentBookingAPIResponse,
   updateDocumentVerificationAppointmentBookingAPIResponse,
 } from "@MEUtils/apiResponse";
 import {
   updateDocumentVerificationAPIPayload,
+  feePaymentAppointmentBookingAPIPayload,
   documentVerificationAppointmentBookingAPIPayload,
 } from "@MEUtils/apiPayload";
 
@@ -359,31 +361,50 @@ const feePaymentAppointmentBooking = createAsyncThunk(
   "admission/feePaymentAppointmentBooking",
   async (payload, { getState, rejectWithValue }) => {
     try {
-      const { applicationId, scheduled_date, scheduled_time_slot, remarks } =
-        payload;
+      const { applicationId } = payload;
+      let admissionApplications =
+        getState()?.admissionApplication?.admissionApplications || [];
+      let selectedAdmissionApplication =
+        getState()?.admissionApplication?.selectedAdmissionApplication || {};
       const response = await axiosInstance.put(
         `${admissionApplicationsAPIRoute}/${applicationId}${feePaymentAppointmentBookingAPIRoute}`,
-        { scheduled_date, scheduled_time_slot, remarks },
+        feePaymentAppointmentBookingAPIPayload(payload),
         { state: getState() },
       );
 
-      // if (apiResponseHaveData(response)) {
-      //   return {
-      //     updatedAdmissionApplication: admissionApplicationsAPIResponse(
-      //       response.data,
-      //     )[0],
-      //     error: "",
-      //   };
-      // } else {
-      //   return {
-      //     updatedAdmissionApplication: null,
-      //     error:
-      //       response && response.message
-      //         ? response.message
-      //         : "Update admission application status request failed",
-      //   };
-      // }
-      return { error: "" };
+      if (apiResponseHaveData(response)) {
+        if (response.data?.[0]) {
+          const admissionFormData =
+            updateFeePaymentAppointmentBookingAPIResponse(
+              response.data[0],
+            );
+
+          admissionApplications = _.map(admissionApplications, (application) =>
+            application.id === admissionFormData.id
+              ? { ...application, ...admissionFormData }
+              : application,
+          );
+          selectedAdmissionApplication = {
+            ...selectedAdmissionApplication,
+            ...admissionFormData,
+          };
+        }
+
+        return {
+          admissionApplications,
+          selectedAdmissionApplication,
+          error: "",
+        };
+      } else {
+        return {
+          admissionApplications: admissionApplications,
+          selectedAdmissionApplication: selectedAdmissionApplication,
+          error:
+            response && response.message
+              ? response.message
+              : "Fee payment appointment booking request failed",
+        };
+      }
     } catch (error) {
       const errMsg =
         (error && (error.message || error.error)) ||

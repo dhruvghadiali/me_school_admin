@@ -1,7 +1,15 @@
 import { useSelector } from "react-redux";
-import { ChevronDown } from "lucide-react";
+import {
+  ChevronDown,
+  Calendar,
+  User,
+} from "lucide-react";
 
-import { ChevronDown, Calendar, User } from "@MEShadcnComponents/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@MEShadcnComponents/collapsible";
 
 import _ from "lodash";
 
@@ -52,16 +60,6 @@ const FeePaymentAppointmentComponent = () => {
                       label: "Booked At",
                       icon: <Calendar className="w-3.5 h-3.5" />,
                       value: appointment.bookedAt || "N/A",
-                    },
-                    {
-                      label: "Verified By",
-                      icon: <User className="w-3.5 h-3.5" />,
-                      value: appointment.verifiedBy || "N/A",
-                    },
-                    {
-                      label: "Verified At",
-                      icon: <Calendar className="w-3.5 h-3.5" />,
-                      value: appointment.verifiedAt || "N/A",
                     },
                   ]}
                 />
