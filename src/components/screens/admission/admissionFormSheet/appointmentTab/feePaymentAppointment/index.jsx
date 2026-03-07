@@ -3,6 +3,9 @@ import {
   ChevronDown,
   Calendar,
   User,
+  IndianRupee,
+  Wallet2Icon,
+  ReceiptIndianRupeeIcon,
 } from "lucide-react";
 
 import {
@@ -61,6 +64,26 @@ const FeePaymentAppointmentComponent = () => {
                       icon: <Calendar className="w-3.5 h-3.5" />,
                       value: appointment.bookedAt || "N/A",
                     },
+                    {
+                      label: "Paid Amount",
+                      icon: <IndianRupee className="w-3.5 h-3.5" />,
+                      value: appointment.paidAmount || "N/A",
+                    },
+                    {
+                      label: "Fee Paid By",
+                      icon: <User className="w-3.5 h-3.5" />,
+                      value: appointment.feePaidBy || "N/A",
+                    },
+                    {
+                      label: "Payment Method",
+                      icon: <Wallet2Icon className="w-3.5 h-3.5" />,
+                      value: appointment.paymentMethod || "N/A",
+                    },
+                    {
+                      label: "Transaction ID",
+                      icon: <ReceiptIndianRupeeIcon className="w-3.5 h-3.5" />,
+                      value: appointment.transactionId || "N/A",
+                    }
                   ]}
                 />
               ))}

@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import _ from "lodash";
 
 import MEInformationCardComponent from "@MECommonComponents/card/informationCard";

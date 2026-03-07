@@ -61,28 +61,44 @@ const formatDocumentVerificationAppointment = (
   appointment,
   dateFormat = "DD MMMM YYYY hh:mm A",
 ) =>
-  _.map(_.orderBy(appointment, [(a) => _.get(a, "booked_at")], ["desc"]), (a) => ({
-    id: _.get(a, "_id", ""),
-    scheduledDate: `${formatDate(_.get(a, "scheduled_date"))} ${_.get(a, "scheduled_time_slot", "")}`,
-    scheduledTimeSlot: _.get(a, "scheduled_time_slot", ""),
-    bookedAt: formatDateTime(_.get(a, "booked_at")),
-    bookedBy: formatUserRef(_.get(a, "booked_by")),
-    verifiedAt: formatDateTime(_.get(a, "verified_at")),
-    verifiedBy: formatUserRef(_.get(a, "verified_by")),
-    remarks: _.get(a, "remarks", ""),
-  }));
+  _.map(
+    _.orderBy(appointment, [(a) => _.get(a, "booked_at")], ["desc"]),
+    (a) => ({
+      id: _.get(a, "_id", ""),
+      scheduledDate: `${formatDate(_.get(a, "scheduled_date"))} ${_.get(a, "scheduled_time_slot", "")}`,
+      scheduledTimeSlot: _.get(a, "scheduled_time_slot", ""),
+      bookedAt: formatDateTime(_.get(a, "booked_at")),
+      bookedBy: formatUserRef(_.get(a, "booked_by")),
+      verifiedAt: formatDateTime(_.get(a, "verified_at")),
+      verifiedBy: formatUserRef(_.get(a, "verified_by")),
+      remarks: _.get(a, "remarks", ""),
+    }),
+  );
 
 const formatFeePaymentAppointment = (
   appointment,
   dateFormat = "DD MMMM YYYY hh:mm A",
 ) =>
-  _.map(_.orderBy(appointment, [(a) => _.get(a, "booked_at")], ["desc"]), (a) => ({
-    id: _.get(a, "_id", ""),
-    scheduledDate: `${formatDate(_.get(a, "scheduled_date"), dateFormat)} ${_.get(a, "scheduled_time_slot", "")}`,
-    scheduledTimeSlot: _.get(a, "scheduled_time_slot", ""),
-    bookedAt: formatDateTime(_.get(a, "booked_at")),
-    bookedBy: formatUserRef(_.get(a, "booked_by")),
-    remarks: _.get(a, "remarks", ""),
+  _.map(
+    _.orderBy(appointment, [(a) => _.get(a, "booked_at")], ["desc"]),
+    (a) => ({
+      id: _.get(a, "_id", ""),
+      scheduledDate: `${formatDate(_.get(a, "scheduled_date"), dateFormat)} ${_.get(a, "scheduled_time_slot", "")}`,
+      scheduledTimeSlot: _.get(a, "scheduled_time_slot", ""),
+      bookedAt: formatDateTime(_.get(a, "booked_at")),
+      bookedBy: formatUserRef(_.get(a, "booked_by")),
+      remarks: _.get(a, "remarks", ""),
+    }),
+  );
+
+const formatFeePayments = (feePayments) =>
+  _.map(feePayments, (payment) => ({
+    id: _.get(payment, "_id", ""),
+    feeType: _.get(payment, "fee_type", ""),
+    halfYearlyFee: _.get(payment, "half_yearly_fee", 0),
+    monthlyFee: _.get(payment, "monthly_fee", 0),
+    quarterlyFee: _.get(payment, "quarterly_fee", 0),
+    yearlyFee: _.get(payment, "yearly_fee", 0),
   }));
 
 // ---------------------------------------------------------------------------
@@ -158,7 +174,9 @@ const formatApplicantUser = (applicantUser) => {
       alive: {
         status: _.get(parent, "alive.status", true),
         dateOfDeath: formatDate(_.get(parent, "alive.date_of_death")) || null,
-        caringChildBy: _.upperFirst(_.get(parent, "alive.caring_child_by", null)),
+        caringChildBy: _.upperFirst(
+          _.get(parent, "alive.caring_child_by", null),
+        ),
       },
     })),
 
@@ -275,6 +293,7 @@ const admissionApplicationsAPIResponse = (admissionApplications) => {
           _.get(application, "fee_payment_appointment", []),
           "DD MMMM YYYY",
         ),
+        feePayments: formatFeePayments(_.get(application, "fee_payments", [])),
       };
 
       return transformed.id ? transformed : null;
@@ -344,6 +363,7 @@ const updateFeePaymentAppointmentBookingAPIResponse = (application) => ({
     _.get(application, "fee_payment_appointment", []),
     "DD MMMM YYYY",
   ),
+  feePayments: formatFeePayments(_.get(application, "fee_payments", [])),
 });
 
 // ---------------------------------------------------------------------------
