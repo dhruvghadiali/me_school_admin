@@ -1,23 +1,21 @@
 import { useFormik } from "formik";
-import {
-  CircleAlertIcon,
-  AlertTriangle,
-  FileSearch2Icon,
-  CheckCircle2Icon,
-  ChevronRightIcon,
-  FileClockIcon,
-} from "lucide-react";
-import { Label } from "@MEShadcnComponents/label";
 import { useSelector, useDispatch } from "react-redux";
-import {Card} from "@MEShadcnComponents/card";
+import { CircleAlertIcon, AlertTriangle } from "lucide-react";
 
 import _ from "lodash";
 import * as Yup from "yup";
 import moment from "moment";
 
 import { variants } from "@MEUtils/enums";
-import { ME_CHECKBOX_COMPONENT_ENUM } from "@MEHelpers/enums";
-import { ADMISSION_APPLICATION_STATUS } from "@MEHelpers/enums/admissionEnum";
+import { Card } from "@MEShadcnComponents/card";
+import {
+  ADMISSION_APPLICATION_STATUS,
+  ADMISSION_PAYMENT_METHODS,
+} from "@MEHelpers/enums/admissionEnum";
+import {
+  ALLOWED_TRANSITIONS,
+  APPOINTMENT_DATE_REQUIRED,
+} from "@MEScreenComponents/admission/admissionFormSheet/admissionForm/allowedTransactions";
 import {
   updatedVerifiedDocument,
   feePaymentAppointmentBooking,
@@ -31,213 +29,8 @@ import MESelect from "@MECommonComponents/form/select/meSelect";
 import MEButton from "@MECommonComponents/form/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import MEDatePicker from "@MECommonComponents/form/input/meDatePicker";
-import MECheckbox from "@MECommonComponents/form/checkbox";
 import MEActionAlertDialog from "@MECommonComponents/alertDialog/actionAlertDialog";
-
-// ---------------------------------------------------------------------------
-// Static constants (no re-creation on every render)
-// ---------------------------------------------------------------------------
-
-const ALLOWED_TRANSITIONS = {
-  [ADMISSION_APPLICATION_STATUS.SUBMITTED]: [
-    ADMISSION_APPLICATION_STATUS.UNDER_REVIEW,
-    ADMISSION_APPLICATION_STATUS.REJECTED,
-  ],
-  [ADMISSION_APPLICATION_STATUS.UNDER_REVIEW]: [
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
-    ADMISSION_APPLICATION_STATUS.REJECTED,
-  ],
-  [ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING]: [
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED,
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED,
-    ADMISSION_APPLICATION_STATUS.REJECTED,
-  ],
-  [ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED]: [
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED,
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED,
-    ADMISSION_APPLICATION_STATUS.REJECTED,
-  ],
-  [ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFIED]: [
-    ADMISSION_APPLICATION_STATUS.APPROVED,
-    ADMISSION_APPLICATION_STATUS.REJECTED,
-  ],
-  [ADMISSION_APPLICATION_STATUS.REJECTED]: [
-    ADMISSION_APPLICATION_STATUS.APPROVED,
-  ],
-  [ADMISSION_APPLICATION_STATUS.FEES_PENDING]: [
-    ADMISSION_APPLICATION_STATUS.FEES_PAID,
-    ADMISSION_APPLICATION_STATUS.REJECTED,
-  ],
-  [ADMISSION_APPLICATION_STATUS.FEES_PAID]: [
-    ADMISSION_APPLICATION_STATUS.SELECTED,
-    ADMISSION_APPLICATION_STATUS.REJECTED,
-  ],
-  [ADMISSION_APPLICATION_STATUS.SELECTED]: [
-    ADMISSION_APPLICATION_STATUS.REJECTED,
-  ],
-};
-
-/**
- * Status transitions that require an appointment date field.
- * Key: currentStatus | Value: set of next statuses that need a date picker.
- */
-const APPOINTMENT_DATE_REQUIRED = {
-  [ADMISSION_APPLICATION_STATUS.UNDER_REVIEW]: new Set([
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
-  ]),
-  [ADMISSION_APPLICATION_STATUS.APPROVED]: new Set([
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING,
-    ADMISSION_APPLICATION_STATUS.FEES_PENDING,
-  ]),
-  [ADMISSION_APPLICATION_STATUS.DOCUMENTS_VERIFICATION_PENDING]: new Set([
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED,
-  ]),
-  [ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED]: new Set([
-    ADMISSION_APPLICATION_STATUS.DOCUMENTS_UNVERIFIED,
-  ]),
-};
-
-// ---------------------------------------------------------------------------
-// Sub-component: Document Verification Field
-// ---------------------------------------------------------------------------
-
-const DocumentVerificationField = ({
-  documentList,
-  onDocumentListChange,
-  disabled,
-  error,
-}) => {
-  const verifiedCount = _.size(_.filter(documentList, (doc) => doc.isSelected));
-  const totalCount = _.size(documentList);
-  const allVerified = verifiedCount === totalCount && totalCount > 0;
-
-  const handleCheckboxChange = (updated) => {
-    onDocumentListChange(
-      _.map(documentList, (doc) => {
-        const found = _.find(updated, (u) => u.label === doc.label);
-        return found ? { ...doc, isSelected: found.isSelected } : doc;
-      }),
-    );
-  };
-
-  const requiredDocs = _.filter(documentList, (doc) => doc.isRequired);
-  const optionalDocs = _.filter(documentList, (doc) => !doc.isRequired);
-
-  const dialogDescription =
-    totalCount > 0 ? (
-      <div className="space-y-4">
-        {_.size(requiredDocs) > 0 && (
-          <div className="space-y-2">
-            <p className="text-xs font-semibold text-danger uppercase tracking-wide">
-              Required Documents ({_.size(requiredDocs)})
-            </p>
-            <MECheckbox
-              label=""
-              disabled={false}
-              direction={ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_LIST_DIRECTION.ROW}
-              checkboxDirection={
-                ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_DIRECTION.RIGHT
-              }
-              labelVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
-              checkboxVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
-              messageVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
-              checkboxList={requiredDocs}
-              leadingIcon={<FileClockIcon className="text-primary" size={15} />}
-              onChange={handleCheckboxChange}
-            />
-          </div>
-        )}
-        {_.size(optionalDocs) > 0 && (
-          <div className="space-y-2">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-              Optional Documents ({_.size(optionalDocs)})
-            </p>
-            <MECheckbox
-              label=""
-              disabled={false}
-              direction={ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_LIST_DIRECTION.ROW}
-              checkboxDirection={
-                ME_CHECKBOX_COMPONENT_ENUM.CHECKBOX_DIRECTION.RIGHT
-              }
-              labelVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
-              checkboxVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
-              messageVariant={ME_CHECKBOX_COMPONENT_ENUM.VARIANTS.PRIMARY}
-              checkboxList={optionalDocs}
-              leadingIcon={<FileClockIcon className="text-primary" size={15} />}
-              onChange={handleCheckboxChange}
-            />
-          </div>
-        )}
-      </div>
-    ) : (
-      <span>No documents uploaded for this application.</span>
-    );
-
-  return (
-    <div className="space-y-2">
-      <Label className="text-primary">Document Verification</Label>
-
-      <MEActionAlertDialog
-        icon={<FileSearch2Icon className="text-primary" size={20} />}
-        title="Document Verification"
-        description={dialogDescription}
-        actions={[
-          {
-            label: "Cancel",
-            className: "bg-primary hover:bg-primary/90 text-white",
-            onClick: () => {},
-          },
-          {
-            label: "Confirm Verification",
-            className: "bg-success hover:bg-success/90 text-white",
-            onClick: () => {},
-          },
-        ]}
-      >
-        <button
-          type="button"
-          disabled={disabled}
-          className="flex w-full items-center justify-between rounded-md border border-primary/80 bg-transparent px-3 py-1.5 text-sm shadow-sm transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/20 disabled:opacity-50"
-        >
-          <span className="flex items-center gap-2 text-primary/80">
-            <FileSearch2Icon size={15} className="text-primary shrink-0" />
-            {verifiedCount > 0
-              ? `${verifiedCount} of ${totalCount} documents verified`
-              : "Click to verify documents"}
-          </span>
-          <span className="flex items-center gap-1.5 shrink-0">
-            {allVerified ? (
-              <CheckCircle2Icon size={15} className="text-success" />
-            ) : (
-              <ChevronRightIcon size={15} className="text-primary/60" />
-            )}
-          </span>
-        </button>
-      </MEActionAlertDialog>
-
-      {error && (
-        <p className="text-xs text-danger" role="alert" aria-live="polite">
-          {error}
-        </p>
-      )}
-
-      <p className="mt-2 mb-5 text-xs text-primary flex flex-wrap gap-x-3 gap-y-0.5">
-        <span>
-          <span className="font-semibold">{totalCount}</span> total
-        </span>
-        <span className="text-danger">
-          <span className="font-semibold">{_.size(requiredDocs)}</span> required
-        </span>
-        <span className="text-muted-foreground">
-          <span className="font-semibold">{_.size(optionalDocs)}</span> optional
-        </span>
-        <span className="text-success">
-          <span className="font-semibold">{verifiedCount}</span> verified
-        </span>
-      </p>
-    </div>
-  );
-};
+import DocumentVerificationFieldComponent from "@MEScreenComponents/admission/admissionFormSheet/admissionForm/documentVerificationField";
 
 // ---------------------------------------------------------------------------
 // Main component
@@ -277,6 +70,16 @@ const AdmissionScreenAdmissionForm = () => {
           applicationId: selectedAdmissionApplication.id,
           documentList: values.documentList,
         });
+      case ADMISSION_APPLICATION_STATUS.FEES_PAID:
+        return updateAdmissionApplicationStatus({
+          applicationId: selectedAdmissionApplication.id,
+          status: values.status,
+          remarks: values.remarks,
+          feePaidBy: values.feePaidBy,
+          feePaidAmount: values.feePaidAmount,
+          paymentMethod: values.paymentMethod,
+          transactionId: values.transactionId || null,
+        });
       default:
         return updateAdmissionApplicationStatus({
           applicationId: selectedAdmissionApplication.id,
@@ -296,6 +99,10 @@ const AdmissionScreenAdmissionForm = () => {
       appointmentDate: null,
       remarks: "",
       documentList: selectedAdmissionApplication.documentVerificationList ?? [],
+      feePaidBy: "",
+      feePaidAmount: "",
+      paymentMethod: "",
+      transactionId: "",
     },
     validationSchema: AdmissionFormSchema,
     validateOnChange: false,
@@ -318,6 +125,19 @@ const AdmissionScreenAdmissionForm = () => {
 
   const showAppointmentDateField =
     !!APPOINTMENT_DATE_REQUIRED[currentStatus]?.has(nextStatus);
+
+  const showFeeFields = nextStatus === ADMISSION_APPLICATION_STATUS.FEES_PAID;
+
+  const transactionIdRequired = [
+    ADMISSION_PAYMENT_METHODS.UPI,
+    ADMISSION_PAYMENT_METHODS.CARD,
+    ADMISSION_PAYMENT_METHODS.NETBANKING,
+  ].includes(formik.values.paymentMethod);
+
+  const paymentMethodItems = _.map(ADMISSION_PAYMENT_METHODS, (value) => ({
+    label: _.upperCase(value),
+    value,
+  }));
 
   const showDocumentVerification =
     (currentStatus ===
@@ -463,9 +283,110 @@ const AdmissionScreenAdmissionForm = () => {
                 onBlur={formik.handleBlur}
               />
 
+              {showFeeFields && (
+                <>
+                  <div>
+                    <MEInput
+                      id="feePaidBy"
+                      name="feePaidBy"
+                      type="text"
+                      label="Fee Paid By"
+                      placeholder="Enter payer name"
+                      value={formik.values.feePaidBy}
+                      message={formik.errors.feePaidBy}
+                      labelvariant={
+                        formik.errors.feePaidBy
+                          ? variants.DANGER
+                          : variants.PRIMARY
+                      }
+                      inputvariant={
+                        formik.errors.feePaidBy
+                          ? variants.DANGER
+                          : variants.PRIMARY
+                      }
+                      messagevariant={variants.DANGER}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  </div>
+                  <div>
+                    <MEInput
+                      id="feePaidAmount"
+                      name="feePaidAmount"
+                      type="number"
+                      label="Amount Paid"
+                      placeholder="Enter amount"
+                      value={formik.values.feePaidAmount}
+                      message={formik.errors.feePaidAmount}
+                      labelvariant={
+                        formik.errors.feePaidAmount
+                          ? variants.DANGER
+                          : variants.PRIMARY
+                      }
+                      inputvariant={
+                        formik.errors.feePaidAmount
+                          ? variants.DANGER
+                          : variants.PRIMARY
+                      }
+                      messagevariant={variants.DANGER}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  </div>
+                  <div>
+                    <MESelect
+                      label="Payment Method"
+                      placeholder="Select Payment Method"
+                      items={paymentMethodItems}
+                      selectedValue={formik.values.paymentMethod}
+                      selectVariant={
+                        formik.errors.paymentMethod
+                          ? variants.DANGER
+                          : variants.DARK
+                      }
+                      selectedVariant={variants.DARK}
+                      labelvariant={variants.DARK}
+                      messagevariant={variants.DANGER}
+                      message={formik.errors.paymentMethod}
+                      clearable={true}
+                      onValueChange={(value) => {
+                        formik.setFieldValue("paymentMethod", value);
+                        formik.setFieldValue("transactionId", "");
+                      }}
+                    />
+                  </div>
+                  {transactionIdRequired && (
+                    <div>
+                      <MEInput
+                        id="transactionId"
+                        name="transactionId"
+                        type="text"
+                        label="Transaction ID"
+                        placeholder="Enter transaction ID"
+                        value={formik.values.transactionId}
+                        message={formik.errors.transactionId}
+                        labelvariant={
+                          formik.errors.transactionId
+                            ? variants.DANGER
+                            : variants.PRIMARY
+                        }
+                        inputvariant={
+                          formik.errors.transactionId
+                            ? variants.DANGER
+                            : variants.PRIMARY
+                        }
+                        messagevariant={variants.DANGER}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+
               {showDocumentVerification && (
                 <div className="col-span-2">
-                  <DocumentVerificationField
+                  <DocumentVerificationFieldComponent
                     documentList={formik.values.documentList}
                     onDocumentListChange={(updated) => {
                       formik.setFieldValue("documentList", updated);
@@ -521,6 +442,45 @@ const AdmissionFormSchema = Yup.object().shape({
         return true;
       }),
     otherwise: (schema) => schema,
+  }),
+  feePaidBy: Yup.string().when("status", {
+    is: ADMISSION_APPLICATION_STATUS.FEES_PAID,
+    then: (schema) =>
+      schema
+        .required("Please specify who will pay the fees")
+        .min(3, "Must be at least 3 characters")
+        .max(50, "Cannot exceed 50 characters"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  feePaidAmount: Yup.number().when("status", {
+    is: ADMISSION_APPLICATION_STATUS.FEES_PAID,
+    then: (schema) =>
+      schema
+        .required("Please enter the amount paid")
+        .typeError("Amount must be a number")
+        .positive("Amount must be greater than zero")
+        .max(1000000, "Amount seems too high"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  paymentMethod: Yup.string().when("status", {
+    is: ADMISSION_APPLICATION_STATUS.FEES_PAID,
+    then: (schema) => schema.required("Please specify the payment method"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  transactionId: Yup.string().when(["status", "paymentMethod"], {
+    is: (status, pm) =>
+      status === ADMISSION_APPLICATION_STATUS.FEES_PAID &&
+      [
+        ADMISSION_PAYMENT_METHODS.UPI,
+        ADMISSION_PAYMENT_METHODS.CARD,
+        ADMISSION_PAYMENT_METHODS.NETBANKING,
+      ].includes(pm),
+    then: (schema) =>
+      schema
+        .required("Please enter the transaction ID")
+        .min(5, "Must be at least 5 characters")
+        .max(100, "Cannot exceed 100 characters"),
+    otherwise: (schema) => schema.nullable(),
   }),
   appointmentDate: Yup.date().when("status", {
     is: (status) =>

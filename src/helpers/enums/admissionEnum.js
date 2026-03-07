@@ -21,4 +21,16 @@ const ADMISSION_APPLICATION_STATUS = Object.freeze({
   SELECTED: "selected",
 });
 
-export { ADMISSION_APPLICATION, ADMISSION_APPLICATION_STATUS };
+/**
+ * Admission Payment Methods enumeration
+ */
+const ADMISSION_PAYMENT_METHODS = Object.freeze({
+  UPI: "upi",
+  CARD: "card",
+  NETBANKING: "netbanking",
+  CASH: "cash",
+  OTHER: "other",
+  NA: "n/a",
+});
+
+export { ADMISSION_APPLICATION, ADMISSION_APPLICATION_STATUS, ADMISSION_PAYMENT_METHODS };
