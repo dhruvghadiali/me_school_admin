@@ -19,7 +19,7 @@ const MEAlertCardComponent = ({ icon, alertText, alertMessage }) => {
           <h3 className="text-sm md:text-base font-semibold text-foreground mb-1 md:mb-1.5">
             {alertText || "Alert!!"}
           </h3>
-          <p className="text-xs sm:text-sm text-muted-foreground text-center max-w-xs">
+          <p className="text-xs sm:text-sm text-muted-foreground text-center">
             {alertMessage || "Something went wrong, please try again later."}
           </p>
         </div>
