@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 
 import { PROFILE_TABS_ID } from "@MEHelpers/enums";
+import { setActiveTab } from "@MERedux/profile/profileSlice";
 import {
   profileSchoolTab,
   profileOrganizationTab,
@@ -85,7 +86,7 @@ const ProfileScreenComponent = () => {
                   <button
                     key={tab.id}
                     onClick={() => dispatch(setActiveTab(tab.id))}
-                    className={`flex-1 sm:flex-none whitespace-nowrap px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors ${
+                    className={`flex-1 sm:flex-none whitespace-nowrap px-3 sm:px-4 py-2 sm:py-2.5 md:py-3 text-xs sm:text-sm font-medium border-b-2 transition-colors hover:cursor-pointer ${
                       activeTab === tab.id
                         ? "border-white text-white bg-white/10"
                         : "border-transparent text-white/70 hover:text-white hover:bg-white/5"
