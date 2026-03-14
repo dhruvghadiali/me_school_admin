@@ -8,9 +8,7 @@ import OrganizationInformationNotFoundCardComponent from "@MEScreenComponents/pr
 const OrganizationInformationComponent = () => {
   const { user } = useSelector((state) => state.authentication);
 
-  const organizationInformation = _.get(user, "organization", null);
-
-  return organizationInformation ? (
+  return _.get(user, "organization", null) ? (
     <OrganizationInformationCardComponent />
   ) : (
     <OrganizationInformationNotFoundCardComponent />

@@ -37,6 +37,40 @@ const profileSchoolAboutFormSubmitButtonLabel = "submit";
 const profileSchoolAboutFormCancelButtonLabel = "cancel";
 const profileSchoolAboutTextareaPlaceholder = "enter about school";
 
+// organization tab - organization information not found
+const profileOrganizationInformationNotFoundTitle = "no organization information available";
+const profileOrganizationInformationNotFoundMessage =
+  "organization information will appear here once available";
+
+// organization tab - organization information section
+const profileOrganizationCityLabel = "city";
+const profileOrganizationEmailLabel = "email";
+const profileOrganizationStateLabel = "state";
+const profileOrganizationZipcodeLabel = "zipcode";
+const profileOrganizationAddressLabel = "address";
+const profileOrganizationDistrictLabel = "district";
+const profileOrganizationAreaNameLabel = "area name";
+const profileOrganizationNameLabel = "organization name";
+const profileOrganizationContactNumberLabel = "contact number";
+const profileOrganizationInformationTitle = "organization information";
+const profileOrganizationGovernmentRegistrationNumberLabel = "government registration number";
+
+// Organization tab - organization member section
+const profileOrganizationMemberNameLabel = "name";
+const profileOrganizationMemberCityLabel = "city";
+const profileOrganizationMemberEmailLabel = "email";
+const profileOrganizationMemberStateLabel = "state";
+const profileOrganizationMemberCardTitle = "member";
+const profileOrganizationMemberAddButtonLabel = "add";
+const profileOrganizationMemberAddressLabel = "address";
+const profileOrganizationMemberZipcodeLabel = "zipcode";
+const profileOrganizationMemberDistrictLabel = "district";
+const profileOrganizationMemberPositionLabel = "position";
+const profileOrganizationMemberAreaNameLabel = "area name";
+const profileOrganizationMemberTitle = "organization members";
+const profileOrganizationMemberContactNumberLabel = "contact number";
+const profileOrganizationMemberAadhaarNumberLabel = "aadhaar number";
+
 export {
   profileHeader,
   profileSubtitle,
@@ -62,4 +96,31 @@ export {
   profileSchoolAboutTextareaPlaceholder,
   profileSchoolAboutFormSubmitButtonLabel,
   profileSchoolAboutFormCancelButtonLabel,
+  profileOrganizationInformationNotFoundTitle,
+  profileOrganizationInformationNotFoundMessage,
+  profileOrganizationCityLabel,
+  profileOrganizationEmailLabel,
+  profileOrganizationStateLabel,
+  profileOrganizationZipcodeLabel,
+  profileOrganizationAddressLabel,
+  profileOrganizationDistrictLabel,
+  profileOrganizationAreaNameLabel,
+  profileOrganizationNameLabel,
+  profileOrganizationContactNumberLabel,
+  profileOrganizationInformationTitle,
+  profileOrganizationGovernmentRegistrationNumberLabel,
+  profileOrganizationMemberTitle,
+  profileOrganizationMemberCardTitle,
+  profileOrganizationMemberNameLabel,
+  profileOrganizationMemberCityLabel,
+  profileOrganizationMemberEmailLabel,
+  profileOrganizationMemberStateLabel,
+  profileOrganizationMemberAddressLabel,
+  profileOrganizationMemberZipcodeLabel,
+  profileOrganizationMemberDistrictLabel,
+  profileOrganizationMemberPositionLabel,
+  profileOrganizationMemberAreaNameLabel,
+  profileOrganizationMemberAddButtonLabel,
+  profileOrganizationMemberContactNumberLabel,
+  profileOrganizationMemberAadhaarNumberLabel,
 };

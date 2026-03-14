@@ -88,6 +88,7 @@ const SchoolInformationCardComponent = () => {
 
   return (
     <MEInformationCardComponent
+      informationList={informationList}
       titleIcon={<School className="w-5 h-5" />}
       title={
         _.upperCase(
@@ -96,7 +97,6 @@ const SchoolInformationCardComponent = () => {
           }),
         ) || FALLBACK
       }
-      informationList={informationList}
     />
   );
 };
