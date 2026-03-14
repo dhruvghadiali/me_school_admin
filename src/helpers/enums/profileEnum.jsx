@@ -7,4 +7,13 @@ const PROFILE_TABS_ID = Object.freeze({
   ADDRESS: "address",
 });
 
-export { PROFILE_TABS_ID };
+/**
+ * Form sheet modes enumeration
+ */
+const PROFILE_FORM_SHEET_MODES = Object.freeze({
+  ADD: "add",
+  EDIT: "edit",
+  DELETE: "delete",
+});
+
+export { PROFILE_TABS_ID, PROFILE_FORM_SHEET_MODES };

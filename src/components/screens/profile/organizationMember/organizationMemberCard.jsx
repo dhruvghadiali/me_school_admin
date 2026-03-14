@@ -5,7 +5,8 @@ import { Pencil, UsersIcon, Trash2, Plus } from "lucide-react";
 import _ from "lodash";
 
 import { variants } from "@MEUtils/enums";
-import {} from "@MERedux/profile/profileSlice";
+import { PROFILE_FORM_SHEET_MODES } from "@MEHelpers/enums";
+import { setMemberFormSheetStatus } from "@MERedux/profile/profileSlice";
 import {
   Card,
   CardHeader,
@@ -38,6 +39,24 @@ const OrganizationMemberCardComponent = () => {
   const { user } = useSelector((state) => state.authentication);
 
   const FALLBACK = "N/A";
+
+  // Handler for edit button click - opens the member form sheet
+  const handleEditClick = () =>
+    dispatch(
+      setMemberFormSheetStatus({
+        status: true,
+        mode: PROFILE_FORM_SHEET_MODES.EDIT,
+      }),
+    );
+
+  // Handler for add button click - opens the member form sheet in add mode
+  const handleAddClick = () =>
+    dispatch(
+      setMemberFormSheetStatus({
+        status: true,
+        mode: PROFILE_FORM_SHEET_MODES.ADD,
+      }),
+    );
 
   // Helper functions to format labels and values
   const getLabel = (t, key, defaultValue) =>
@@ -118,8 +137,6 @@ const OrganizationMemberCardComponent = () => {
     }));
   };
 
-  const handleEditClick = () => {};
-
   return (
     <Card className="bg-secondary/50 shadow-lg shadow-primary/50">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -138,7 +155,7 @@ const OrganizationMemberCardComponent = () => {
           buttonVariant={variants.PRIMARY}
           buttonClassName="flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 h-auto"
           disabled={_.get(user, "organization.members", []).length >= 5}
-          onClick={handleEditClick}
+          onClick={handleAddClick}
         >
           <Plus className="w-3.5 h-3.5" />
           <span className="hidden xs:inline">
@@ -183,6 +200,7 @@ const OrganizationMemberCardComponent = () => {
                   type="button"
                   variant="outline"
                   buttonClassName="flex items-center gap-1 text-xs sm:text-sm px-1 py-1 h-auto"
+                  disabled={_.get(user, "organization.members", []).length <= 1}
                   onClick={handleEditClick}
                 >
                   <Trash2 className="w-3.5 h-3.5" />

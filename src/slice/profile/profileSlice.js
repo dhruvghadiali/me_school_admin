@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { PROFILE_TABS_ID } from "@MEHelpers/enums";
+import { PROFILE_TABS_ID, PROFILE_FORM_SHEET_MODES } from "@MEHelpers/enums";
 import {
   updateSchoolAbout,
 } from "@MERedux/profile/profileAction";
@@ -18,6 +18,7 @@ export const profileSlice = createSlice({
     schoolAboutFormLoaderError: "",
     memberFormLoaderError: "",
     addressFormLoaderError: "",
+    memberFormSheetMode: PROFILE_FORM_SHEET_MODES.ADD,
     activeTab: PROFILE_TABS_ID.SCHOOL,
   },
   reducers: {
@@ -40,7 +41,8 @@ export const profileSlice = createSlice({
       }
     },
     setMemberFormSheetStatus: (state, action) => {
-      state.memberFormSheetOpen = action.payload;
+      state.memberFormSheetOpen = action.payload.status;
+      state.memberFormSheetMode = action.payload.mode;
       if(action.payload){
         state.memberFormLoaderError = "";
         state.memberFormLoader = false;

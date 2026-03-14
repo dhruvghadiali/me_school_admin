@@ -71,6 +71,12 @@ const profileOrganizationMemberTitle = "organization members";
 const profileOrganizationMemberContactNumberLabel = "contact number";
 const profileOrganizationMemberAadhaarNumberLabel = "aadhaar number";
 
+// Organization tab - organization member sheet section
+const profileAddOrganizationMemberSheetTitle = "add organization member";
+const profileEditOrganizationMemberSheetTitle = "edit organization member";
+const profileEditOrganizationMemberSheetDescription = `update the organization member information to let everyone know more about the member.`;
+const profileAddOrganizationMemberSheetDescription = `add organization member information to let everyone know more about the member.`;
+
 export {
   profileHeader,
   profileSubtitle,
@@ -123,4 +129,8 @@ export {
   profileOrganizationMemberAddButtonLabel,
   profileOrganizationMemberContactNumberLabel,
   profileOrganizationMemberAadhaarNumberLabel,
+  profileAddOrganizationMemberSheetTitle,
+  profileEditOrganizationMemberSheetTitle,
+  profileEditOrganizationMemberSheetDescription,
+  profileAddOrganizationMemberSheetDescription,
 };
