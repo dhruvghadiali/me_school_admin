@@ -29,4 +29,14 @@ const addOrganizationMemberAPIPayload = (user, formPayload) => {
   };
 };
 
-export { schoolAboutAPIPayload, addOrganizationMemberAPIPayload };
+const deleteOrganizationMemberAPIPayload = (member) => {
+  return {
+    id: member.id,
+  };
+};
+
+export {
+  schoolAboutAPIPayload,
+  addOrganizationMemberAPIPayload,
+  deleteOrganizationMemberAPIPayload,
+};

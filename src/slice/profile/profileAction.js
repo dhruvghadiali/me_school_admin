@@ -1,8 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import {
-  setOrganizationMembersInformation,
-} from "@MEUtils/apiResponse";
+import { setOrganizationMembersInformation } from "@MEUtils/apiResponse";
 import {
   statesAPIRoute,
   schoolAboutAPIRoute,
@@ -110,7 +108,9 @@ const addOrganizationMember = createAsyncThunk(
       );
 
       if (apiResponseHaveData(response)) {
-        const member = setOrganizationMembersInformation(_.get(response, "data", []));
+        const member = setOrganizationMembersInformation(
+          _.get(response, "data", []),
+        );
         const { authentication } = getState();
         const updatedOrganizationMembers = _.concat(
           _.get(authentication.user, "organization.members", []),
@@ -145,4 +145,56 @@ const addOrganizationMember = createAsyncThunk(
   },
 );
 
-export { updateSchoolAbout, getStates, addOrganizationMember };
+const deleteOrganizationMember = createAsyncThunk(
+  "profile/deleteOrganizationMember",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { id } = payload;
+      const response = await axiosInstance.delete(
+        `${organizationMembersAPIRoute}/${id}`,
+        {
+          state: getState(),
+        },
+      );
+
+      if (isAPIServedSuccessfully(response)) {
+        const { authentication } = getState();
+        const updatedOrganizationMembers = _.filter(
+          _.get(authentication.user, "organization.members", []),
+          (m) => m.id !== id,
+        );
+        const updatedUser = _.set(
+          _.cloneDeep(authentication.user),
+          "organization.members",
+          updatedOrganizationMembers,
+        );
+
+        dispatch(setLogin({ user: updatedUser, token: authentication.token }));
+        setAuthData(updatedUser, authentication.token);
+
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to delete organization member",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Failed to delete organization member";
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
+export {
+  getStates,
+  updateSchoolAbout,
+  addOrganizationMember,
+  deleteOrganizationMember,
+};

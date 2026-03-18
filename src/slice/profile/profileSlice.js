@@ -5,6 +5,7 @@ import {
   getStates,
   updateSchoolAbout,
   addOrganizationMember,
+  deleteOrganizationMember,
 } from "@MERedux/profile/profileAction";
 
 export const profileSlice = createSlice({
@@ -16,9 +17,11 @@ export const profileSlice = createSlice({
     addressFormSheetOpen: false,
     schoolAboutFormLoader: false,
     memberFormLoader: false,
+    memberDeleteLoader: false,
     addressFormLoader: false,
     schoolAboutFormError: "",
     memberFormError: "",
+    memberDeleteError: "",
     addressFormError: "",
     memberFormSheetMode: PROFILE_FORM_SHEET_MODES.ADD,
     activeTab: PROFILE_TABS_ID.SCHOOL,
@@ -32,9 +35,11 @@ export const profileSlice = createSlice({
       state.addressFormSheetOpen = false;
       state.schoolAboutFormLoader = false;
       state.memberFormLoader = false;
+      state.memberDeleteLoader = false;
       state.addressFormLoader = false;
       state.schoolAboutFormError = "";
       state.memberFormError = "";
+      state.memberDeleteError = "";
       state.addressFormError = "";
     },
     setAboutSchoolFormSheetStatus: (state, action) => {
@@ -64,6 +69,9 @@ export const profileSlice = createSlice({
     setActiveTab: (state, action) => {
       state.activeTab = action.payload;
     },
+    closeMemberDeleteError: (state) => {
+      state.memberDeleteError = "";
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -104,12 +112,25 @@ export const profileSlice = createSlice({
       .addCase(addOrganizationMember.rejected, (state, action) => {
         state.memberFormLoader = false;
         state.memberFormError = action.payload.error;
+      })
+      .addCase(deleteOrganizationMember.pending, (state, action) => {
+        state.memberDeleteLoader = true;
+        state.memberDeleteError = "";
+      })
+      .addCase(deleteOrganizationMember.fulfilled, (state, action) => {
+        state.memberDeleteLoader = false;
+        state.memberDeleteError = action.payload.error;
+      })
+      .addCase(deleteOrganizationMember.rejected, (state, action) => {
+        state.memberDeleteLoader = false;
+        state.memberDeleteError = action.payload.error;
       });
   },
 });
 
 export const {
   setActiveTab,
+  closeMemberDeleteError,
   setMemberFormSheetStatus,
   setAddressFormSheetStatus,
   resetProfileFormSheetStatus,

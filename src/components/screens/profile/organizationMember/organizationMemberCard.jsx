@@ -1,12 +1,18 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
-import { Pencil, UsersIcon, Trash2, Plus } from "lucide-react";
+import { Pencil, UsersIcon, Trash2, Plus, CircleAlertIcon } from "lucide-react";
 
 import _ from "lodash";
 
 import { variants } from "@MEUtils/enums";
 import { PROFILE_FORM_SHEET_MODES } from "@MEHelpers/enums";
-import { setMemberFormSheetStatus } from "@MERedux/profile/profileSlice";
+import { deleteOrganizationMemberAPIPayload } from "@MEUtils/apiPayload";
+import { deleteOrganizationMember } from "@MERedux/profile/profileAction";
+import {
+  setMemberFormSheetStatus,
+  closeMemberDeleteError,
+} from "@MERedux/profile/profileSlice";
 import {
   getAreaIdByName,
   getCityIdByName,
@@ -42,13 +48,26 @@ import {
 } from "@MELocalization/en";
 
 import MEButton from "@MECommonComponents/form/button/meButton";
+import ProfileScreenLoader from "@MEScreenComponents/profile/loader";
+import MEDeleteAlertDialog from "@MECommonComponents/alertDialog/deleteAlertDialog";
 
 const OrganizationMemberCardComponent = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { states } = useSelector((state) => state.profile);
+  const { states, memberDeleteLoader, memberDeleteError } = useSelector(
+    (state) => state.profile,
+  );
   const { user } = useSelector((state) => state.authentication);
+
+  useEffect(() => {
+    if (memberDeleteError) {
+      const timer = setTimeout(() => {
+        dispatch(closeMemberDeleteError());
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [memberDeleteError, dispatch]);
 
   const FALLBACK = "N/A";
 
@@ -56,15 +75,30 @@ const OrganizationMemberCardComponent = () => {
   const resolveMemberLocationIds = (member) => {
     const stateId = getStateIdByName(states, _.get(member, "state", ""));
     const districts = getDistrictsByStateId(states, stateId);
-    const districtId = getDistrictIdByName(districts, _.get(member, "district", ""));
+    const districtId = getDistrictIdByName(
+      districts,
+      _.get(member, "district", ""),
+    );
     const cities = getCitiesByDistrictId(districts, districtId);
     const cityId = getCityIdByName(cities, _.get(member, "city", ""));
     const areaNames = getAreasByCityId(cities, cityId);
-    const areaNameId = getAreaIdByName(areaNames, _.get(member, "areaName", ""));
+    const areaNameId = getAreaIdByName(
+      areaNames,
+      _.get(member, "areaName", ""),
+    );
     const zipcodes = getZipcodesByAreaId(areaNames, areaNameId);
-    const zipcodeId = getZipcodeIdByZipcode(zipcodes, _.get(member, "zipcode", ""));
+    const zipcodeId = getZipcodeIdByZipcode(
+      zipcodes,
+      _.get(member, "zipcode", ""),
+    );
 
-    return { state: stateId, district: districtId, city: cityId, areaName: areaNameId, zipcode: zipcodeId };
+    return {
+      state: stateId,
+      district: districtId,
+      city: cityId,
+      areaName: areaNameId,
+      zipcode: zipcodeId,
+    };
   };
 
   // Handler for edit button click - opens the member form sheet
@@ -82,8 +116,13 @@ const OrganizationMemberCardComponent = () => {
           position: member.position || "",
           address: member.address || "",
           ...resolveMemberLocationIds(member),
-        }
+        },
       }),
+    );
+
+  const handleDeleteConfirm = (member) =>
+    dispatch(
+      deleteOrganizationMember(deleteOrganizationMemberAPIPayload(member)),
     );
 
   // Handler for add button click - opens the member form sheet in add mode
@@ -226,52 +265,70 @@ const OrganizationMemberCardComponent = () => {
         </MEButton>
       </CardHeader>
       <CardContent>
-        {_.map(_.get(user, "organization.members", []), (member, index) => (
-          <div
-            key={_.get(member, "id", index)}
-            className="rounded-md px-5 py-4 mb-2 border border-primary/30"
-          >
-            <div className="flex items-center justify-between pb-4">
-              <p className="text-sm font-medium text-primary">
-                {_.toUpper(
-                  `${t("profileOrganizationMemberCardTitle", { defaultValue: profileOrganizationMemberCardTitle })} ${index + 1}`,
-                )}
-              </p>
-              <div className="flex items-center gap-1">
-                <MEButton
-                  type="button"
-                  variant="outline"
-                  buttonClassName="flex items-center gap-1 text-xs sm:text-sm px-1 py-1 h-auto"
-                  onClick={() => handleEditClick(member)}
-                >
-                  <Pencil className="w-3.5 h-3.5" />
-                </MEButton>
+        {memberDeleteError && (
+          <div className="bg-danger mb-2 flex items-center  rounded-md">
+            <CircleAlertIcon className="text-accent ml-2" />
+            <p className="text-accent p-2 text-left">
+              {_.toLower(_.upperFirst(memberDeleteError))}
+            </p>
+          </div>
+        )}
+        {memberDeleteLoader ? (
+          <ProfileScreenLoader />
+        ) : (
+          _.map(_.get(user, "organization.members", []), (member, index) => (
+            <div
+              key={_.get(member, "id", index)}
+              className="rounded-md px-5 py-4 mb-2 border border-primary/30"
+            >
+              <div className="flex items-center justify-between pb-4">
+                <p className="text-sm font-medium text-primary">
+                  {_.toUpper(
+                    `${t("profileOrganizationMemberCardTitle", { defaultValue: profileOrganizationMemberCardTitle })} ${index + 1}`,
+                  )}
+                </p>
+                <div className="flex items-center gap-1">
+                  <MEButton
+                    type="button"
+                    variant="outline"
+                    buttonClassName="flex items-center gap-1 text-xs sm:text-sm px-1 py-1 h-auto"
+                    onClick={() => handleEditClick(member)}
+                  >
+                    <Pencil className="w-3.5 h-3.5" />
+                  </MEButton>
 
-                <MEButton
-                  type="button"
-                  variant="outline"
-                  buttonClassName="flex items-center gap-1 text-xs sm:text-sm px-1 py-1 h-auto"
-                  disabled={_.get(user, "organization.members", []).length <= 1}
-                  onClick={() => {}}
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </MEButton>
+                  <MEDeleteAlertDialog
+                    onConfirm={() => handleDeleteConfirm(member)}
+                  >
+                    <MEButton
+                      type="button"
+                      variant="outline"
+                      buttonClassName="flex items-center gap-1 text-xs sm:text-sm px-1 py-1 h-auto"
+                      disabled={
+                        _.get(user, "organization.members", []).length <= 1
+                      }
+                      onClick={() => {}}
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </MEButton>
+                  </MEDeleteAlertDialog>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {_.map(informationList(member), (field, subIndex) => (
+                  <div key={subIndex} className="space-y-1">
+                    <p className="text-xs font-medium text-primary/60">
+                      {field.label}
+                    </p>
+                    <p className="text-sm font-semibold text-primary wrap-break-word">
+                      {field.value}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {_.map(informationList(member), (field, subIndex) => (
-                <div key={subIndex} className="space-y-1">
-                  <p className="text-xs font-medium text-primary/60">
-                    {field.label}
-                  </p>
-                  <p className="text-sm font-semibold text-primary wrap-break-word">
-                    {field.value}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </CardContent>
     </Card>
   );
