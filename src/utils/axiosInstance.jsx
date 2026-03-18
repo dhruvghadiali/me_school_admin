@@ -1,5 +1,4 @@
 import axios from "axios";
-
 import { clearAuthData } from "@MEHelpers/authHelpers";
 import { HTTP_STATUS_CODES, API_RESPONSE_MESSAGES } from "@MEHelpers/enums";
 
@@ -7,7 +6,8 @@ import _ from "lodash";
 
 // API Configuration
 const API_CONFIG = {
-  BASE_URL: import.meta.env.VITE_API_BASE_URL,
+  BASE_URL_PUBLIC: import.meta.env.VITE_API_BASE_URL_PUBLIC,
+  BASE_URL_ADMIN: import.meta.env.VITE_API_BASE_URL_ADMIN,
   TIMEOUT: 30000, // 30 seconds
   HEADERS: {
     CONTENT_TYPE: "application/json",
@@ -109,7 +109,7 @@ const handleUnauthorizedUser = (redirectPath = "/signin") => {
  * }
  */
 const axiosInstance = axios.create({
-  baseURL: API_CONFIG.BASE_URL,
+  baseURL: API_CONFIG.BASE_URL_ADMIN,
   timeout: API_CONFIG.TIMEOUT,
   headers: {
     "Content-Type": API_CONFIG.HEADERS.CONTENT_TYPE,
@@ -120,6 +120,12 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const state = config.state;
     delete config.state;
+
+    // Determine base URL based on callPublicAPI flag (default: false for student API)
+    const callPublicAPI = config.callPublicAPI || false;
+    config.baseURL = callPublicAPI
+      ? API_CONFIG.BASE_URL_PUBLIC
+      : API_CONFIG.BASE_URL_ADMIN;
 
     // Store auto-logout preference from config (can be overridden per request)
     if (config.autoLogoutOnUnauthorized === undefined) {
@@ -153,10 +159,10 @@ axiosInstance.interceptors.response.use(
         data: Array.isArray(response.data?.data)
           ? response.data.data
           : Array.isArray(response.data)
-          ? response.data
-          : response.data
-          ? [response.data]
-          : [],
+            ? response.data
+            : response.data
+              ? [response.data]
+              : [],
       };
     }
 

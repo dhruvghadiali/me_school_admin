@@ -34,7 +34,7 @@ const AboutSchoolFormComponent = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
-  const { schoolAboutFormLoader, schoolAboutFormLoaderError } = useSelector(
+  const { schoolAboutFormLoader, schoolAboutFormError } = useSelector(
     (state) => state.profile,
   );
   const { user } = useSelector((state) => state.authentication);
@@ -59,11 +59,11 @@ const AboutSchoolFormComponent = () => {
 
   return (
     <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-8 py-6">
-      {schoolAboutFormLoaderError && (
+      {schoolAboutFormError && (
         <div className="bg-danger mb-2 flex items-center  rounded-md">
           <CircleAlertIcon className="text-accent ml-2" />
           <p className="text-accent p-2 text-left">
-            {_.toLower(_.upperFirst(schoolAboutFormLoaderError))}
+            {_.toLower(_.upperFirst(schoolAboutFormError))}
           </p>
         </div>
       )}

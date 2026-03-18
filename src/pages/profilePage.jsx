@@ -3,8 +3,11 @@ import { useDispatch } from "react-redux";
 
 import { PROFILE_TABS_ID } from "@MEHelpers/enums";
 import {
-  resetProfileFormSheetStatus,
+  getStates,
+} from "@MERedux/profile/profileAction";
+import {
   setActiveTab,
+  resetProfileFormSheetStatus,
 } from "@MERedux/profile/profileSlice";
 
 import ProfileScreenComponent from "@MEScreenComponents/profile";
@@ -14,6 +17,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getStates());
     dispatch(resetProfileFormSheetStatus());
     dispatch(setActiveTab(PROFILE_TABS_ID.SCHOOL));
   }, [dispatch]);

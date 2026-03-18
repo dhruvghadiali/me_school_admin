@@ -94,4 +94,4 @@ const setEducationBoardsInformation = (educationBoards) => {
   }));
 };
 
-export { setUserInformation };
+export { setUserInformation, setOrganizationMembersInformation };

@@ -8,6 +8,17 @@ import { variants } from "@MEUtils/enums";
 import { PROFILE_FORM_SHEET_MODES } from "@MEHelpers/enums";
 import { setMemberFormSheetStatus } from "@MERedux/profile/profileSlice";
 import {
+  getAreaIdByName,
+  getCityIdByName,
+  getStateIdByName,
+  getAreasByCityId,
+  getZipcodesByAreaId,
+  getDistrictIdByName,
+  getZipcodeIdByZipcode,
+  getDistrictsByStateId,
+  getCitiesByDistrictId,
+} from "@MEUtils/utility";
+import {
   Card,
   CardHeader,
   CardContent,
@@ -36,16 +47,42 @@ const OrganizationMemberCardComponent = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
+  const { states } = useSelector((state) => state.profile);
   const { user } = useSelector((state) => state.authentication);
 
   const FALLBACK = "N/A";
 
+  // Resolve member location names to their corresponding IDs
+  const resolveMemberLocationIds = (member) => {
+    const stateId = getStateIdByName(states, _.get(member, "state", ""));
+    const districts = getDistrictsByStateId(states, stateId);
+    const districtId = getDistrictIdByName(districts, _.get(member, "district", ""));
+    const cities = getCitiesByDistrictId(districts, districtId);
+    const cityId = getCityIdByName(cities, _.get(member, "city", ""));
+    const areaNames = getAreasByCityId(cities, cityId);
+    const areaNameId = getAreaIdByName(areaNames, _.get(member, "areaName", ""));
+    const zipcodes = getZipcodesByAreaId(areaNames, areaNameId);
+    const zipcodeId = getZipcodeIdByZipcode(zipcodes, _.get(member, "zipcode", ""));
+
+    return { state: stateId, district: districtId, city: cityId, areaName: areaNameId, zipcode: zipcodeId };
+  };
+
   // Handler for edit button click - opens the member form sheet
-  const handleEditClick = () =>
+  const handleEditClick = (member) =>
     dispatch(
       setMemberFormSheetStatus({
         status: true,
         mode: PROFILE_FORM_SHEET_MODES.EDIT,
+        formInitalValue: {
+          firstName: member.firstName || "",
+          lastName: member.lastName || "",
+          email: member.email || "",
+          phoneNumber: member.phoneNumber || "",
+          aadhaarNumber: member.aadhaarNumber || "",
+          position: member.position || "",
+          address: member.address || "",
+          ...resolveMemberLocationIds(member),
+        }
       }),
     );
 
@@ -55,6 +92,20 @@ const OrganizationMemberCardComponent = () => {
       setMemberFormSheetStatus({
         status: true,
         mode: PROFILE_FORM_SHEET_MODES.ADD,
+        formInitalValue: {
+          firstName: "",
+          lastName: "",
+          email: "",
+          phoneNumber: "",
+          aadhaarNumber: "",
+          position: "",
+          address: "",
+          state: "",
+          district: "",
+          city: "",
+          areaName: "",
+          zipcode: "",
+        },
       }),
     );
 
@@ -191,7 +242,7 @@ const OrganizationMemberCardComponent = () => {
                   type="button"
                   variant="outline"
                   buttonClassName="flex items-center gap-1 text-xs sm:text-sm px-1 py-1 h-auto"
-                  onClick={handleEditClick}
+                  onClick={() => handleEditClick(member)}
                 >
                   <Pencil className="w-3.5 h-3.5" />
                 </MEButton>
@@ -201,7 +252,7 @@ const OrganizationMemberCardComponent = () => {
                   variant="outline"
                   buttonClassName="flex items-center gap-1 text-xs sm:text-sm px-1 py-1 h-auto"
                   disabled={_.get(user, "organization.members", []).length <= 1}
-                  onClick={handleEditClick}
+                  onClick={() => {}}
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </MEButton>

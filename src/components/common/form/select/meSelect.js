@@ -81,7 +81,7 @@ const MESelect = (props) => {
           )}
         </div>
         <p
-          className={`mt-2 text-xs ${selectMessageClassNameByVariant(
+          className={`mt-2 mb-5 text-xs ${selectMessageClassNameByVariant(
             messagevariant
           )}`}
           role="alert"

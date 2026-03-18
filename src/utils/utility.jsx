@@ -1,4 +1,6 @@
+import _ from "lodash";
 import moment from "moment";
+
 import { ADMISSION_APPLICATION } from "@MEHelpers/enums";
 
 /**
@@ -41,4 +43,111 @@ const currentAcademicSession = (count) => {
   });
 };
 
-export { currentAcademicSession };
+const createStateOptions = (states) => {
+  if (_.isArray(states) && _.size(states) > 0) {
+    return _.map(states, (state) => ({
+      label: _.startCase(state.name),
+      value: state.id,
+    }));
+  }
+};
+
+const createDistrictOptions = (districts) => {
+  if (_.isArray(districts) && _.size(districts) > 0) {
+    return _.map(districts, (district) => ({
+      label: _.startCase(district.name),
+      value: district.id,
+    }));
+  }
+};
+
+const createCityOptions = (cities) => {
+  if (_.isArray(cities) && _.size(cities) > 0) {
+    return _.map(cities, (city) => ({
+      label: _.startCase(city.name),
+      value: city.id,
+    }));
+  }
+};
+
+const createAreaOptions = (areas) => {
+  if (_.isArray(areas) && _.size(areas) > 0) {
+    return _.map(areas, (area) => ({
+      label: _.startCase(area.name),
+      value: area.id,
+    }));
+  }
+};
+
+const createZipcodeOptions = (zipcodes) => {
+  if (_.isArray(zipcodes) && _.size(zipcodes) > 0) {
+    return _.map(zipcodes, (zipcode) => ({
+      label: zipcode.zipcode,
+      value: zipcode.id,
+    }));
+  }
+};
+
+const getStateIdByName = (states, name) => {
+  const state = _.find(states, { name });
+  return state ? state.id : null;
+};
+
+const getDistrictIdByName = (districts, name) => {
+  const district = _.find(districts, { name });
+  return district ? district.id : null;
+};
+
+const getCityIdByName = (cities, name) => {
+  const city = _.find(cities, { name });
+  return city ? city.id : null;
+};
+
+const getAreaIdByName = (areas, name) => {
+  const area = _.find(areas, { name });
+  return area ? area.id : null;
+};
+
+const getZipcodeIdByZipcode = (zipcodes, zipcode) => {
+  const zip = _.find(zipcodes, { zipcode });
+  return zip ? zip.id : null;
+};
+
+const getDistrictsByStateId = (states, stateId) => {
+  const state = _.find(states, { id: stateId });
+  return state ? state.districts : [];
+};
+
+const getCitiesByDistrictId = (districts, districtId) => {
+  const district = _.find(districts, { id: districtId });
+  return district ? district.cities : [];
+};
+
+const getAreasByCityId = (cities, cityId) => {
+  const city = _.find(cities, { id: cityId });
+  return city ? city.area_names : [];
+};  
+
+const getZipcodesByAreaId = (areas, areaId) => {
+  const area = _.find(areas, { id: areaId });
+  return area ? area.zipcodes : [];
+};
+
+
+export {
+  getAreaIdByName,
+  getCityIdByName,
+  getStateIdByName,
+  getAreasByCityId,
+  createAreaOptions,
+  createCityOptions,
+  createStateOptions,
+  getZipcodesByAreaId,
+  getDistrictIdByName,
+  createZipcodeOptions,
+  getZipcodeIdByZipcode,
+  getDistrictsByStateId,
+  getCitiesByDistrictId,
+  createDistrictOptions,
+  currentAcademicSession,
+};

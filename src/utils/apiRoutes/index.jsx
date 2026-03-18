@@ -1,4 +1,5 @@
 export const signInAPIRoute = "/signin";
+export const statesAPIRoute = "/states";
 export const feesAPIRoute = `/school-fees`;
 export const feeTypesAPIRoute = `/fee-types`;
 export const schoolAboutAPIRoute = `/school-about`;
@@ -8,6 +9,7 @@ export const facilityTypesAPIRoute = `/facility-types`;
 export const academicClassesAPIRoute = `/academic-classes`;
 export const verifyDocumentsAPIRoute = `/verified-documents`;
 export const admissionDocumentsAPIRoute = `/admission-documents`;
+export const organizationMembersAPIRoute = `/organization-members`;
 export const admissionApplicationsAPIRoute = `/admission-applications`;
 export const schoolAcademicClassesAPIRoute = `/school-academic-classes`;
 export const schoolAdmissionDocumentsAPIRoute = `/school-admission-documents`;

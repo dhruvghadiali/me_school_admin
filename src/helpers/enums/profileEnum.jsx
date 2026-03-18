@@ -16,4 +16,22 @@ const PROFILE_FORM_SHEET_MODES = Object.freeze({
   DELETE: "delete",
 });
 
-export { PROFILE_TABS_ID, PROFILE_FORM_SHEET_MODES };
+/**
+ * organization member position enumeration
+ */
+const ORGANIZATION_MEMBER_POSITION = Object.freeze({
+  PRESIDENT: "president",
+  VICE_PRESIDENT: "vice president",
+  SECRETARY: "secretary",
+  JOINT_SECRETARY: "joint secretary",
+  TREASURER: "treasurer",
+  MEMBER: "member",
+  PRINCIPAL: "principal",
+  OTHER: "other",
+});
+
+export {
+  PROFILE_TABS_ID,
+  PROFILE_FORM_SHEET_MODES,
+  ORGANIZATION_MEMBER_POSITION,
+};

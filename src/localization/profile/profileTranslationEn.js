@@ -77,6 +77,12 @@ const profileEditOrganizationMemberSheetTitle = "edit organization member";
 const profileEditOrganizationMemberSheetDescription = `update the organization member information to let everyone know more about the member.`;
 const profileAddOrganizationMemberSheetDescription = `add organization member information to let everyone know more about the member.`;
 
+// Organization tab - organization member form section
+const profileOrganizationMemberFirstNameLabel = "first name";
+const profileOrganizationMemberLastNameLabel = "last name";
+const profileOrganizationMemberCancelButtonLabel = "cancel";
+const profileOrganizationMemberSubmitButtonLabel = "submit";
+
 export {
   profileHeader,
   profileSubtitle,
@@ -133,4 +139,8 @@ export {
   profileEditOrganizationMemberSheetTitle,
   profileEditOrganizationMemberSheetDescription,
   profileAddOrganizationMemberSheetDescription,
+  profileOrganizationMemberFirstNameLabel,
+  profileOrganizationMemberLastNameLabel,
+  profileOrganizationMemberCancelButtonLabel,
+  profileOrganizationMemberSubmitButtonLabel,
 };

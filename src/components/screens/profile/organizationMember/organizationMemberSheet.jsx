@@ -19,6 +19,8 @@ import {
   profileAddOrganizationMemberSheetDescription,
 } from "@MELocalization/en";
 
+import OrganizationMemberFormComponent from "@MEScreenComponents/profile/organizationMember/organizationMemberForm";
+
 const OrganizationMemberSheetComponent = () => {
   const dispatch = useDispatch();
 
@@ -71,6 +73,7 @@ const OrganizationMemberSheetComponent = () => {
             </SheetDescription>
           </SheetHeader>
         </div>
+        <OrganizationMemberFormComponent/>
       </SheetContent>
     </Sheet>
   );
