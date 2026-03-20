@@ -108,6 +108,7 @@ const OrganizationMemberCardComponent = () => {
         status: true,
         mode: PROFILE_FORM_SHEET_MODES.EDIT,
         formInitalValue: {
+          id: member.id,
           firstName: member.firstName || "",
           lastName: member.lastName || "",
           email: member.email || "",

@@ -5,6 +5,7 @@ import {
   getStates,
   updateSchoolAbout,
   addOrganizationMember,
+  updateOrganizationMember,
   deleteOrganizationMember,
 } from "@MERedux/profile/profileAction";
 
@@ -113,6 +114,20 @@ export const profileSlice = createSlice({
         state.memberFormLoader = false;
         state.memberFormError = action.payload.error;
       })
+      .addCase(updateOrganizationMember.pending, (state, action) => {
+        state.memberFormLoader = true;
+        state.memberFormError = "";
+      })
+      .addCase(updateOrganizationMember.fulfilled, (state, action) => {
+        state.memberFormLoader = false;
+        state.memberFormSheetOpen = action.payload.error ? true : false;
+        state.memberFormError = action.payload.error;
+      })
+      .addCase(updateOrganizationMember.rejected, (state, action) => {
+        state.memberFormLoader = false;
+        state.memberFormError = action.payload.error;
+      })
+
       .addCase(deleteOrganizationMember.pending, (state, action) => {
         state.memberDeleteLoader = true;
         state.memberDeleteError = "";

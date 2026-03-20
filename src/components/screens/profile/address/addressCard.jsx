@@ -27,16 +27,6 @@ const AddressCardComponent = () => {
           <MapPinnedIcon className="w-5 h-5" />
           <CardTitle>Address</CardTitle>
         </div>
-        <MEButton
-          type="button"
-          buttonVariant={variants.PRIMARY}
-          buttonClassName="flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 h-auto"
-          onClick={handleEditClick}
-        >
-          <Plus className="w-3.5 h-3.5" />
-          <span className="hidden xs:inline">Add</span>
-          <span className="xs:hidden">Add</span>
-        </MEButton>
       </CardHeader>
       <CardContent>
         {_.map(
@@ -101,16 +91,6 @@ const AddressCardComponent = () => {
                     onClick={handleEditClick}
                   >
                     <Pencil className="w-3.5 h-3.5" />
-                  </MEButton>
-
-                  <MEButton
-                    type="button"
-                    variant="outline"
-                    // buttonVariant={variants.PRIMARY}
-                    buttonClassName="flex items-center gap-1 text-xs sm:text-sm px-1 py-1 h-auto"
-                    onClick={handleEditClick}
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
                   </MEButton>
                 </div>
               </div>

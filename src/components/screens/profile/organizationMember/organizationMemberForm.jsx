@@ -9,12 +9,18 @@ import * as Yup from "yup";
 import { variants } from "@MEUtils/enums";
 import { objectIdRegex, phoneNumberRegex } from "@MEHelpers/regex";
 import { setMemberFormSheetStatus } from "@MERedux/profile/profileSlice";
-import { addOrganizationMember } from "@MERedux/profile/profileAction";
-import { addOrganizationMemberAPIPayload } from "@MEUtils/apiPayload";
 import {
   PROFILE_FORM_SHEET_MODES,
   ORGANIZATION_MEMBER_POSITION,
 } from "@MEHelpers/enums";
+import {
+  addOrganizationMemberAPIPayload,
+  updateOrganizationMemberAPIPayload,
+} from "@MEUtils/apiPayload";
+import {
+  addOrganizationMember,
+  updateOrganizationMember,
+} from "@MERedux/profile/profileAction";
 import {
   getAreasByCityId,
   createAreaOptions,
@@ -127,7 +133,11 @@ const OrganizationMemberFormComponent = () => {
           );
           break;
         case PROFILE_FORM_SHEET_MODES.EDIT:
-          // await dispatch(updateSchoolAbout({ id: schoolId, data: values }));
+          await dispatch(
+            updateOrganizationMember(
+              updateOrganizationMemberAPIPayload(values),
+            ),
+          );
           break;
         default:
           break;

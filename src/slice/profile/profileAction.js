@@ -108,13 +108,13 @@ const addOrganizationMember = createAsyncThunk(
       );
 
       if (apiResponseHaveData(response)) {
-        const member = setOrganizationMembersInformation(
+        const members = setOrganizationMembersInformation(
           _.get(response, "data", []),
         );
         const { authentication } = getState();
         const updatedOrganizationMembers = _.concat(
           _.get(authentication.user, "organization.members", []),
-          member,
+          members,
         );
         const updatedUser = _.set(
           _.cloneDeep(authentication.user),
@@ -140,6 +140,69 @@ const addOrganizationMember = createAsyncThunk(
       const errMsg =
         (error && (error.message || error.error)) ||
         "Failed to add organization member";
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
+const updateOrganizationMember = createAsyncThunk(
+  "profile/updateOrganizationMember",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { id, data } = payload;
+      const response = await axiosInstance.put(
+        `${organizationMembersAPIRoute}/${id}`,
+        data,
+        {
+          state: getState(),
+        },
+      );
+
+      if (apiResponseHaveData(response)) {
+        const members = setOrganizationMembersInformation(
+          _.get(response, "data", []),
+        );
+
+        if(_.size(members) > 0) {
+          const { authentication } = getState();
+          const organizationMembers = _.cloneDeep(
+            _.get(authentication.user, "organization.members", []),
+          );
+
+          const memberIndex = _.findIndex(
+            organizationMembers,
+            (m) => m.id == members[0].id,
+          );
+
+          if (memberIndex !== -1) {
+            organizationMembers[memberIndex] = members[0];
+          }
+
+          const updatedUser = _.set(
+            _.cloneDeep(authentication.user),
+            "organization.members",
+            organizationMembers,
+          );
+
+          dispatch(setLogin({ user: updatedUser, token: authentication.token }));
+          setAuthData(updatedUser, authentication.token);
+        }
+
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to update organization member",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Failed to update organization member";
       return rejectWithValue({ error: errMsg });
     }
   },
@@ -196,5 +259,6 @@ export {
   getStates,
   updateSchoolAbout,
   addOrganizationMember,
+  updateOrganizationMember,
   deleteOrganizationMember,
 };
