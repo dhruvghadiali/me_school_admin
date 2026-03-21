@@ -4,11 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import AddressCardComponent from "@MEScreenComponents/profile/address/addressCard";
+import AddressInformationNotFoundCardComponent from "@MEScreenComponents/profile/address/addressInformationNotFoundCard";
 
 const AddressComponent = () => {
+  const { user } = useSelector((state) => state.authentication);
+
   return (
     <div className="mt-5">
-      <AddressCardComponent />
+      {_.get(user, "school", null) ? (
+        <AddressCardComponent />
+      ) : (
+        <AddressInformationNotFoundCardComponent />
+      )}
     </div>
   );
 };

@@ -83,6 +83,44 @@ const profileOrganizationMemberLastNameLabel = "last name";
 const profileOrganizationMemberCancelButtonLabel = "cancel";
 const profileOrganizationMemberSubmitButtonLabel = "submit";
 
+// Address tab - address information
+const profileAddressInformationTitle = "address";
+const profileAddressEditButtonLabel = "edit";
+
+// Address tab - address information labels
+const profileAddressLabel = "address";
+const profileAddressCityLabel = "city";
+const profileAddressStateLabel = "state";
+const profileAddressZipcodeLabel = "zipcode";
+const profileAddressLatitudeLabel = "latitude";
+const profileAddressDistrictLabel = "district";
+const profileAddressAreaNameLabel = "area name";
+const profileAddressLongitudeLabel = "longitude";
+const profileAddressAdminNameLabel = "admin name";
+const profileAddressAdminEmailLabel = "admin email";
+const profileAddressCampusAreaLabel = "campus area (in sq. ft.)";
+const profileAddressOutdoorAreaLabel = "outdoor area (in sq. ft.)";
+const profileAddressBuildingAreaLabel = "building area (in sq. ft.)";
+const profileAddressAdminContactNumberLabel = "admin contact number";
+
+
+// Address tab - address information not found
+const profileAddressInformationNotFoundTitle = "no address information available";
+const profileAddressInformationNotFoundMessage =
+  "address information will appear here once available";
+
+// Address tab - campus hours information
+const profileAddressMondayLabel = "monday";
+const profileAddressTuesdayLabel = "tuesday";
+const profileAddressWednesdayLabel = "wednesday";
+const profileAddressThursdayLabel = "thursday";
+const profileAddressFridayLabel = "friday";
+const profileAddressSaturdayLabel = "saturday";
+const profileAddressSundayLabel = "sunday";
+const profileAddressClosedLabel = "closed";
+const profileAddressSchoolHoursTitle = "school hours";
+const profileAddressAdministrationHoursTitle = "administration hours";
+
 export {
   profileHeader,
   profileSubtitle,
@@ -143,4 +181,32 @@ export {
   profileOrganizationMemberLastNameLabel,
   profileOrganizationMemberCancelButtonLabel,
   profileOrganizationMemberSubmitButtonLabel,
+  profileAddressEditButtonLabel,
+  profileAddressInformationTitle,
+  profileAddressInformationNotFoundTitle,
+  profileAddressInformationNotFoundMessage,
+  profileAddressLabel,
+  profileAddressCityLabel,
+  profileAddressStateLabel,
+  profileAddressZipcodeLabel,
+  profileAddressDistrictLabel,
+  profileAddressAreaNameLabel,
+  profileAddressLatitudeLabel,
+  profileAddressAdminNameLabel,
+  profileAddressLongitudeLabel,
+  profileAddressAdminEmailLabel,
+  profileAddressCampusAreaLabel,
+  profileAddressOutdoorAreaLabel,
+  profileAddressBuildingAreaLabel,
+  profileAddressAdminContactNumberLabel,
+  profileAddressMondayLabel,
+  profileAddressTuesdayLabel,
+  profileAddressWednesdayLabel,
+  profileAddressThursdayLabel,
+  profileAddressFridayLabel,
+  profileAddressSaturdayLabel,
+  profileAddressSundayLabel,
+  profileAddressClosedLabel,
+  profileAddressSchoolHoursTitle,
+  profileAddressAdministrationHoursTitle,
 };
