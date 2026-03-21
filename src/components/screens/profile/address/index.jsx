@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import AddressCardComponent from "@MEScreenComponents/profile/address/addressCard";
+import AddressSheetComponent from "@MEScreenComponents/profile/address/addressSheet";
 import AddressInformationNotFoundCardComponent from "@MEScreenComponents/profile/address/addressInformationNotFoundCard";
 
 const AddressComponent = () => {
@@ -12,7 +13,10 @@ const AddressComponent = () => {
   return (
     <div className="mt-5">
       {_.get(user, "school", null) ? (
-        <AddressCardComponent />
+        <>
+          <AddressCardComponent />
+          <AddressSheetComponent />
+        </>
       ) : (
         <AddressInformationNotFoundCardComponent />
       )}

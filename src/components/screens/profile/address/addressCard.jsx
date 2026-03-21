@@ -1,10 +1,11 @@
-import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Pencil, MapPinnedIcon } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
 
 import _ from "lodash";
 
 import { variants } from "@MEUtils/enums";
+import { setAddressFormSheetStatus } from "@MERedux/profile/profileSlice";
 import {
   Card,
   CardHeader,
@@ -37,7 +38,7 @@ import {
   profileAddressOutdoorAreaLabel,
   profileAddressBuildingAreaLabel,
   profileAddressAdminContactNumberLabel,
-  profileAddressAdministrationHoursTitle
+  profileAddressAdministrationHoursTitle,
 } from "@MELocalization/en";
 
 import MEButton from "@MECommonComponents/form/button/meButton";
@@ -47,6 +48,8 @@ const AddressCardComponent = () => {
   const { t } = useTranslation();
   const { user } = useSelector((state) => state.authentication);
 
+  const dispatch = useDispatch();
+
   // Extract school information with safe access and provide fallbacks
   const school = _.get(user, "school", {});
   const FALLBACK = "N/A";
@@ -54,7 +57,7 @@ const AddressCardComponent = () => {
     t("profileAddressClosedLabel", { defaultValue: profileAddressClosedLabel }),
   );
 
-  const handleEditClick = () => {};
+  const handleEditClick = () => dispatch(setAddressFormSheetStatus(true));
 
   // Helper functions to format labels and values
   const getLabel = (t, key, defaultValue) => {
@@ -253,7 +256,7 @@ const AddressCardComponent = () => {
           type="button"
           buttonVariant={variants.PRIMARY}
           buttonClassName="flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 h-auto"
-          onClick={() => {}}
+          onClick={() => handleEditClick()}
         >
           <Pencil className="w-3.5 h-3.5" />
           <span className="hidden xs:inline">

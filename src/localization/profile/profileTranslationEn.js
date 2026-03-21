@@ -121,6 +121,11 @@ const profileAddressClosedLabel = "closed";
 const profileAddressSchoolHoursTitle = "school hours";
 const profileAddressAdministrationHoursTitle = "administration hours";
 
+// Address tab - address sheet section
+const profileEditAddressSheetTitle = "edit address";
+const profileEditAddressSheetDescription = `update the address information to let everyone know more about the school address.`;
+
+
 export {
   profileHeader,
   profileSubtitle,
@@ -209,4 +214,6 @@ export {
   profileAddressClosedLabel,
   profileAddressSchoolHoursTitle,
   profileAddressAdministrationHoursTitle,
+  profileEditAddressSheetTitle,
+  profileEditAddressSheetDescription,
 };
