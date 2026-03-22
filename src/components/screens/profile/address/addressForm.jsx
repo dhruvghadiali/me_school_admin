@@ -1,5 +1,835 @@
+import { useFormik } from "formik";
+import { CircleAlertIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+
+import _ from "lodash";
+import * as Yup from "yup";
+
+import { variants } from "@MEUtils/enums";
+import { Label } from "@MEShadcnComponents/label";
+import { Checkbox } from "@MEShadcnComponents/checkbox";
+import { objectIdRegex, timeRegex } from "@MEHelpers/regex";
+import { setAddressFormSheetStatus } from "@MERedux/profile/profileSlice";
+import {
+  getAreaIdByName,
+  getCityIdByName,
+  getStateIdByName,
+  getAreasByCityId,
+  createAreaOptions,
+  createCityOptions,
+  createStateOptions,
+  getDistrictIdByName,
+  getZipcodesByAreaId,
+  createZipcodeOptions,
+  getDistrictsByStateId,
+  getZipcodeIdByZipcode,
+  getCitiesByDistrictId,
+  createDistrictOptions,
+} from "@MEUtils/utility";
+import {
+  profileAddressFormAddressMinChar,
+  profileAddressFormAddressMaxChar,
+  profileAddressFormLatitudeMinChar,
+  profileAddressFormLatitudeMaxChar,
+  profileAddressFormLongitudeMinChar,
+  profileAddressFormLongitudeMaxChar,
+  profileAddressFormCampusAreaMinChar,
+  profileAddressFormCampusAreaMaxChar,
+  profileAddressFormBuildingAreaMinChar,
+  profileAddressFormBuildingAreaMaxChar,
+  profileAddressFormOutdoorAreaMinChar,
+  profileAddressFormOutdoorAreaMaxChar,
+} from "@MEUtils/validationConst";
+import {
+  profileAddressFormAddressRequired,
+  profileAddressFormAddressMinLength,
+  profileAddressFormAddressMaxLength,
+  profileAddressFormStateRequired,
+  profileAddressFormStateInvalid,
+  profileAddressFormDistrictRequired,
+  profileAddressFormDistrictInvalid,
+  profileAddressFormCityRequired,
+  profileAddressFormCityInvalid,
+  profileAddressFormAreaNameRequired,
+  profileAddressFormAreaNameInvalid,
+  profileAddressFormZipcodeRequired,
+  profileAddressFormZipcodeInvalid,
+  profileAddressFormLatitudeMinLength,
+  profileAddressFormLatitudeMaxLength,
+  profileAddressFormLongitudeMinLength,
+  profileAddressFormLongitudeMaxLength,
+  profileAddressFormCampusAreaMinLength,
+  profileAddressFormCampusAreaMaxLength,
+  profileAddressFormBuildingAreaMinLength,
+  profileAddressFormBuildingAreaMaxLength,
+  profileAddressFormOutdoorAreaMinLength,
+  profileAddressFormOutdoorAreaMaxLength,
+  profileAddressFormTimeInvalid,
+} from "@MEUtils/validationMessage";
+import {
+  profileAddressFormCityLabel,
+  profileAddressFormStateLabel,
+  profileAddressFormAddressLabel,
+  profileAddressFormZipcodeLabel,
+  profileAddressFormAreaNameLabel,
+  profileAddressFormDistrictLabel,
+  profileAddressFormLatitudeLabel,
+  profileAddressFormLongitudeLabel,
+  profileAddressFormCampusAreaLabel,
+  profileAddressFormBuildingAreaLabel,
+  profileAddressFormOutdoorAreaLabel,
+  profileAddressFormCancelButtonLabel,
+  profileAddressFormSubmitButtonLabel,
+  profileAddressFormOpenTimeLabel,
+  profileAddressFormCloseTimeLabel,
+  profileAddressFormClosedLabel,
+  profileAddressSchoolHoursTitle,
+  profileAddressAdministrationHoursTitle,
+  profileAddressMondayLabel,
+  profileAddressTuesdayLabel,
+  profileAddressWednesdayLabel,
+  profileAddressThursdayLabel,
+  profileAddressFridayLabel,
+  profileAddressSaturdayLabel,
+  profileAddressSundayLabel,
+} from "@MELocalization/en";
+
+import MEInput from "@MECommonComponents/form/input/meInput";
+import MESelect from "@MECommonComponents/form/select/meSelect";
+import MEButton from "@MECommonComponents/form/button/meButton";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import METimePicker from "@MECommonComponents/form/input/meTimePicker";
+
+const DAYS_OF_WEEK = [
+  {
+    key: "monday",
+    labelKey: "profileAddressMondayLabel",
+    defaultLabel: profileAddressMondayLabel,
+  },
+  {
+    key: "tuesday",
+    labelKey: "profileAddressTuesdayLabel",
+    defaultLabel: profileAddressTuesdayLabel,
+  },
+  {
+    key: "wednesday",
+    labelKey: "profileAddressWednesdayLabel",
+    defaultLabel: profileAddressWednesdayLabel,
+  },
+  {
+    key: "thursday",
+    labelKey: "profileAddressThursdayLabel",
+    defaultLabel: profileAddressThursdayLabel,
+  },
+  {
+    key: "friday",
+    labelKey: "profileAddressFridayLabel",
+    defaultLabel: profileAddressFridayLabel,
+  },
+  {
+    key: "saturday",
+    labelKey: "profileAddressSaturdayLabel",
+    defaultLabel: profileAddressSaturdayLabel,
+  },
+  {
+    key: "sunday",
+    labelKey: "profileAddressSundayLabel",
+    defaultLabel: profileAddressSundayLabel,
+  },
+];
+
+const createDefaultHoursState = () =>
+  DAYS_OF_WEEK.reduce((acc, { key }) => {
+    acc[key] = {
+      openTime: "",
+      closeTime: "",
+      closed: false,
+    };
+    return acc;
+  }, {});
+
 const AddressFormComponent = () => {
-  return <div>Address Form</div>;
+  const dispatch = useDispatch();
+
+  const { t } = useTranslation();
+  const { states, addressFormError, addressFormLoader } = useSelector(
+    (state) => state.profile,
+  );
+  const { user } = useSelector((state) => state.authentication);
+
+  const school = _.get(user, "school", {});
+
+  // Resolve member location names to their corresponding IDs
+  const resolveMemberLocationIds = (member) => {
+    const stateId = getStateIdByName(states, _.get(member, "state", ""));
+    const districts = getDistrictsByStateId(states, stateId);
+    const districtId = getDistrictIdByName(
+      districts,
+      _.get(member, "district", ""),
+    );
+    const cities = getCitiesByDistrictId(districts, districtId);
+    const cityId = getCityIdByName(cities, _.get(member, "city", ""));
+    const areaNames = getAreasByCityId(cities, cityId);
+    const areaNameId = getAreaIdByName(
+      areaNames,
+      _.get(member, "areaName", ""),
+    );
+    const zipcodes = getZipcodesByAreaId(areaNames, areaNameId);
+    const zipcodeId = getZipcodeIdByZipcode(
+      zipcodes,
+      _.get(member, "zipcode", ""),
+    );
+
+    return {
+      state: stateId,
+      district: districtId,
+      city: cityId,
+      areaName: areaNameId,
+      zipcode: zipcodeId,
+    };
+  };
+
+  // Initialize formik for managing the address form state and validation
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      address: _.get(school, "address", ""),
+      latitude: _.get(school, "latitude", ""),
+      longitude: _.get(school, "longitude", ""),
+      campusArea: _.get(school, "campusArea", ""),
+      buildingArea: _.get(school, "buildingArea", ""),
+      outdoorArea: _.get(school, "outdoorArea", ""),
+      schoolHours: _.get(school, "schoolHours", createDefaultHoursState()),
+      administrationHours: _.get(
+        school,
+        "administrationHours",
+        createDefaultHoursState(),
+      ),
+      ...resolveMemberLocationIds(school),
+    },
+    validationSchema,
+    validateOnChange: false,
+    validateOnBlur: false,
+    onSubmit: async (values) => {
+      console.log("Form submitted with values:", values);
+    },
+  });
+
+  // Handler for cancel button click - resets the form and closes the sheet
+  const onCancelClick = () => {
+    formik.resetForm();
+    dispatch(setAddressFormSheetStatus(false));
+  };
+
+  // Renders the hours section (school hours / administration hours)
+  const renderHoursSection = (title, fieldPrefix) => (
+    <div className="mt-8 pt-4 border-t border-primary/20">
+      <p className="text-sm font-semibold uppercase tracking-wider text-primary/70 mb-4">
+        {_.upperCase(title)}
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-3">
+        {_.map(DAYS_OF_WEEK, ({ key, labelKey, defaultLabel }) => {
+          const isClosed = _.get(
+            formik.values,
+            `${fieldPrefix}.${key}.closed`,
+            false,
+          );
+          const openTimeError = _.get(
+            formik.errors,
+            `${fieldPrefix}.${key}.openTime`,
+            "",
+          );
+          const closeTimeError = _.get(
+            formik.errors,
+            `${fieldPrefix}.${key}.closeTime`,
+            "",
+          );
+
+          return (
+            <div
+              key={key}
+              className={`rounded-lg border px-3 py-3 transition-colors ${
+                isClosed
+                  ? "border-primary/10 bg-primary/3"
+                  : "border-primary/15 bg-transparent"
+              }`}
+            >
+              <div className="flex items-center justify-between mb-2">
+                <p
+                  className={`text-xs font-semibold tracking-wide ${
+                    isClosed
+                      ? "text-primary/40 line-through"
+                      : "text-primary/70"
+                  }`}
+                >
+                  {_.upperFirst(t(labelKey, { defaultValue: defaultLabel }))}
+                </p>
+                <div className="flex items-center gap-1.5">
+                  <Checkbox
+                    id={`${fieldPrefix}-${key}-closed`}
+                    checked={isClosed}
+                    onCheckedChange={(checked) => {
+                      formik.setFieldValue(
+                        `${fieldPrefix}.${key}.closed`,
+                        checked,
+                      );
+                      if (checked) {
+                        formik.setFieldValue(
+                          `${fieldPrefix}.${key}.openTime`,
+                          "",
+                        );
+                        formik.setFieldValue(
+                          `${fieldPrefix}.${key}.closeTime`,
+                          "",
+                        );
+                      }
+                    }}
+                  />
+                  <Label
+                    htmlFor={`${fieldPrefix}-${key}-closed`}
+                    className="text-xs text-primary/60 cursor-pointer"
+                  >
+                    {_.upperFirst(
+                      t("profileAddressFormClosedLabel", {
+                        defaultValue: profileAddressFormClosedLabel,
+                      }),
+                    )}
+                  </Label>
+                </div>
+              </div>
+              {isClosed ? (
+                <p className="text-xs text-primary/40 italic py-2">
+                  {_.upperFirst(
+                    t("profileAddressFormClosedLabel", {
+                      defaultValue: profileAddressFormClosedLabel,
+                    }),
+                  )}
+                </p>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                  <METimePicker
+                    label={_.upperFirst(
+                      t("profileAddressFormOpenTimeLabel", {
+                        defaultValue: profileAddressFormOpenTimeLabel,
+                      }),
+                    )}
+                    value={_.get(
+                      formik.values,
+                      `${fieldPrefix}.${key}.openTime`,
+                      "",
+                    )}
+                    inputvariant={
+                      openTimeError ? variants.DANGER : variants.PRIMARY
+                    }
+                    messagevariant={
+                      openTimeError ? variants.DANGER : variants.PRIMARY
+                    }
+                    message={openTimeError}
+                    onValueChange={(val) =>
+                      formik.setFieldValue(
+                        `${fieldPrefix}.${key}.openTime`,
+                        val,
+                      )
+                    }
+                  />
+                  <METimePicker
+                    label={_.upperFirst(
+                      t("profileAddressFormCloseTimeLabel", {
+                        defaultValue: profileAddressFormCloseTimeLabel,
+                      }),
+                    )}
+                    value={_.get(
+                      formik.values,
+                      `${fieldPrefix}.${key}.closeTime`,
+                      "",
+                    )}
+                    inputvariant={
+                      closeTimeError ? variants.DANGER : variants.PRIMARY
+                    }
+                    messagevariant={
+                      closeTimeError ? variants.DANGER : variants.PRIMARY
+                    }
+                    message={closeTimeError}
+                    onValueChange={(val) =>
+                      formik.setFieldValue(
+                        `${fieldPrefix}.${key}.closeTime`,
+                        val,
+                      )
+                    }
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-8 py-6">
+      {addressFormError && (
+        <div className="bg-danger mb-2 flex items-center  rounded-md">
+          <CircleAlertIcon className="text-accent ml-2" />
+          <p className="text-accent p-2 text-left">
+            {_.toLower(_.upperFirst(addressFormError))}
+          </p>
+        </div>
+      )}
+      <form onSubmit={formik.handleSubmit}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 sm:gap-x-6">
+          <MEInput
+            id="address"
+            name="address"
+            required
+            label={_.upperFirst(
+              t("profileAddressFormAddressLabel", {
+                defaultValue: profileAddressFormAddressLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormAddressLabel", {
+                defaultValue: profileAddressFormAddressLabel,
+              }),
+            )}
+            inputvariant={
+              formik.errors.address ? variants.DANGER : variants.PRIMARY
+            }
+            messagevariant={
+              formik.errors.address ? variants.DANGER : variants.PRIMARY
+            }
+            value={formik.values.address}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            message={formik.errors.address ? formik.errors.address : ""}
+          />
+          <MESelect
+            id="state"
+            required
+            label={_.upperFirst(
+              t("profileAddressFormStateLabel", {
+                defaultValue: profileAddressFormStateLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormStateLabel", {
+                defaultValue: profileAddressFormStateLabel,
+              }),
+            )}
+            items={createStateOptions(states)}
+            selectedValue={formik.values.state}
+            message={formik.errors.state}
+            selectVariant={variants.DARK}
+            selectedVariant={variants.DARK}
+            labelvariant={variants.DARK}
+            messagevariant={variants.DANGER}
+            onValueChange={(value) => {
+              formik.setFieldValue("state", value);
+              formik.setFieldValue("district", "");
+              formik.setFieldValue("city", "");
+              formik.setFieldValue("areaName", "");
+              formik.setFieldValue("zipcode", "");
+            }}
+          />
+          <MESelect
+            id="district"
+            required
+            label={_.upperFirst(
+              t("profileAddressFormDistrictLabel", {
+                defaultValue: profileAddressFormDistrictLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormDistrictLabel", {
+                defaultValue: profileAddressFormDistrictLabel,
+              }),
+            )}
+            items={createDistrictOptions(
+              getDistrictsByStateId(states, formik.values.state),
+            )}
+            selectedValue={formik.values.district}
+            message={formik.errors.district}
+            selectVariant={variants.DARK}
+            selectedVariant={variants.DARK}
+            labelvariant={variants.DARK}
+            messagevariant={variants.DANGER}
+            onValueChange={(value) => {
+              formik.setFieldValue("district", value);
+              formik.setFieldValue("city", "");
+              formik.setFieldValue("areaName", "");
+              formik.setFieldValue("zipcode", "");
+            }}
+          />
+          <MESelect
+            id="city"
+            required
+            label={_.upperFirst(
+              t("profileAddressFormCityLabel", {
+                defaultValue: profileAddressFormCityLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormCityLabel", {
+                defaultValue: profileAddressFormCityLabel,
+              }),
+            )}
+            items={createCityOptions(
+              getCitiesByDistrictId(
+                getDistrictsByStateId(states, formik.values.state),
+                formik.values.district,
+              ),
+            )}
+            selectedValue={formik.values.city}
+            message={formik.errors.city}
+            selectVariant={variants.DARK}
+            selectedVariant={variants.DARK}
+            labelvariant={variants.DARK}
+            messagevariant={variants.DANGER}
+            onValueChange={(value) => {
+              formik.setFieldValue("city", value);
+              formik.setFieldValue("areaName", "");
+              formik.setFieldValue("zipcode", "");
+            }}
+          />
+          <MESelect
+            id="areaName"
+            required
+            label={_.upperFirst(
+              t("profileAddressFormAreaNameLabel", {
+                defaultValue: profileAddressFormAreaNameLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormAreaNameLabel", {
+                defaultValue: profileAddressFormAreaNameLabel,
+              }),
+            )}
+            items={createAreaOptions(
+              getAreasByCityId(
+                getCitiesByDistrictId(
+                  getDistrictsByStateId(states, formik.values.state),
+                  formik.values.district,
+                ),
+                formik.values.city,
+              ),
+            )}
+            selectedValue={formik.values.areaName}
+            message={formik.errors.areaName}
+            selectVariant={variants.DARK}
+            selectedVariant={variants.DARK}
+            labelvariant={variants.DARK}
+            messagevariant={variants.DANGER}
+            onValueChange={(value) => {
+              formik.setFieldValue("areaName", value);
+              formik.setFieldValue("zipcode", "");
+            }}
+          />
+          <MESelect
+            id="zipcode"
+            required
+            label={_.upperFirst(
+              t("profileAddressFormZipcodeLabel", {
+                defaultValue: profileAddressFormZipcodeLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormZipcodeLabel", {
+                defaultValue: profileAddressFormZipcodeLabel,
+              }),
+            )}
+            items={createZipcodeOptions(
+              getZipcodesByAreaId(
+                getAreasByCityId(
+                  getCitiesByDistrictId(
+                    getDistrictsByStateId(states, formik.values.state),
+                    formik.values.district,
+                  ),
+                  formik.values.city,
+                ),
+                formik.values.areaName,
+              ),
+            )}
+            selectedValue={formik.values.zipcode}
+            message={formik.errors.zipcode}
+            selectVariant={variants.DARK}
+            selectedVariant={variants.DARK}
+            labelvariant={variants.DARK}
+            messagevariant={variants.DANGER}
+            onValueChange={(value) => {
+              formik.setFieldValue("zipcode", value);
+            }}
+          />
+          <MEInput
+            id="latitude"
+            name="latitude"
+            label={_.upperFirst(
+              t("profileAddressFormLatitudeLabel", {
+                defaultValue: profileAddressFormLatitudeLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormLatitudeLabel", {
+                defaultValue: profileAddressFormLatitudeLabel,
+              }),
+            )}
+            inputvariant={
+              formik.errors.latitude ? variants.DANGER : variants.PRIMARY
+            }
+            messagevariant={
+              formik.errors.latitude ? variants.DANGER : variants.PRIMARY
+            }
+            value={formik.values.latitude}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            message={formik.errors.latitude ? formik.errors.latitude : ""}
+          />
+          <MEInput
+            id="longitude"
+            name="longitude"
+            label={_.upperFirst(
+              t("profileAddressFormLongitudeLabel", {
+                defaultValue: profileAddressFormLongitudeLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormLongitudeLabel", {
+                defaultValue: profileAddressFormLongitudeLabel,
+              }),
+            )}
+            inputvariant={
+              formik.errors.longitude ? variants.DANGER : variants.PRIMARY
+            }
+            messagevariant={
+              formik.errors.longitude ? variants.DANGER : variants.PRIMARY
+            }
+            value={formik.values.longitude}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            message={formik.errors.longitude ? formik.errors.longitude : ""}
+          />
+          <MEInput
+            id="campusArea"
+            name="campusArea"
+            label={_.upperFirst(
+              t("profileAddressFormCampusAreaLabel", {
+                defaultValue: profileAddressFormCampusAreaLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormCampusAreaLabel", {
+                defaultValue: profileAddressFormCampusAreaLabel,
+              }),
+            )}
+            inputvariant={
+              formik.errors.campusArea ? variants.DANGER : variants.PRIMARY
+            }
+            messagevariant={
+              formik.errors.campusArea ? variants.DANGER : variants.PRIMARY
+            }
+            value={formik.values.campusArea}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            message={formik.errors.campusArea ? formik.errors.campusArea : ""}
+          />
+          <MEInput
+            id="buildingArea"
+            name="buildingArea"
+            label={_.upperFirst(
+              t("profileAddressFormBuildingAreaLabel", {
+                defaultValue: profileAddressFormBuildingAreaLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormBuildingAreaLabel", {
+                defaultValue: profileAddressFormBuildingAreaLabel,
+              }),
+            )}
+            inputvariant={
+              formik.errors.buildingArea ? variants.DANGER : variants.PRIMARY
+            }
+            messagevariant={
+              formik.errors.buildingArea ? variants.DANGER : variants.PRIMARY
+            }
+            value={formik.values.buildingArea}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            message={
+              formik.errors.buildingArea ? formik.errors.buildingArea : ""
+            }
+          />
+          <MEInput
+            id="outdoorArea"
+            name="outdoorArea"
+            label={_.upperFirst(
+              t("profileAddressFormOutdoorAreaLabel", {
+                defaultValue: profileAddressFormOutdoorAreaLabel,
+              }),
+            )}
+            placeholder={_.upperFirst(
+              t("profileAddressFormOutdoorAreaLabel", {
+                defaultValue: profileAddressFormOutdoorAreaLabel,
+              }),
+            )}
+            inputvariant={
+              formik.errors.outdoorArea ? variants.DANGER : variants.PRIMARY
+            }
+            messagevariant={
+              formik.errors.outdoorArea ? variants.DANGER : variants.PRIMARY
+            }
+            value={formik.values.outdoorArea}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            message={formik.errors.outdoorArea ? formik.errors.outdoorArea : ""}
+          />
+        </div>
+
+        {/* School Hours */}
+        {renderHoursSection(
+          t("profileAddressSchoolHoursTitle", {
+            defaultValue: profileAddressSchoolHoursTitle,
+          }),
+          "schoolHours",
+        )}
+
+        {/* Administration Hours */}
+        {renderHoursSection(
+          t("profileAddressAdministrationHoursTitle", {
+            defaultValue: profileAddressAdministrationHoursTitle,
+          }),
+          "administrationHours",
+        )}
+
+        {/* Action Buttons */}
+        <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-8 pt-4 border-t border-primary/20">
+          <MEButton
+            type="button"
+            buttonVariant={variants.SECONDARY}
+            buttonClassName="w-full sm:w-auto"
+            onClick={() => onCancelClick()}
+            disabled={addressFormLoader}
+          >
+            {_.upperFirst(
+              t("profileAddressFormCancelButtonLabel", {
+                defaultValue: profileAddressFormCancelButtonLabel,
+              }),
+            )}
+          </MEButton>
+          <MEButton
+            type="submit"
+            buttonVariant={variants.PRIMARY}
+            buttonClassName="w-full sm:w-auto"
+            disabled={addressFormLoader || !formik.isValid}
+          >
+            {_.upperFirst(
+              t("profileAddressFormSubmitButtonLabel", {
+                defaultValue: profileAddressFormSubmitButtonLabel,
+              }),
+            )}
+            {addressFormLoader && <MELoaderIcon />}
+          </MEButton>
+        </div>
+      </form>
+    </div>
+  );
 };
+
+const dayHoursSchema = Yup.object().shape({
+  openTime: Yup.string().when("closed", {
+    is: false,
+    then: (schema) => schema.matches(timeRegex, profileAddressFormTimeInvalid),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  closeTime: Yup.string().when("closed", {
+    is: false,
+    then: (schema) => schema.matches(timeRegex, profileAddressFormTimeInvalid),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  closed: Yup.boolean(),
+});
+
+const hoursSchema = Yup.object().shape(
+  DAYS_OF_WEEK.reduce((acc, { key }) => {
+    acc[key] = dayHoursSchema;
+    return acc;
+  }, {}),
+);
+
+const validationSchema = Yup.object({
+  address: Yup.string()
+    .trim()
+    .required(profileAddressFormAddressRequired)
+    .min(profileAddressFormAddressMinChar, profileAddressFormAddressMinLength)
+    .max(profileAddressFormAddressMaxChar, profileAddressFormAddressMaxLength),
+  state: Yup.string()
+    .trim()
+    .required(profileAddressFormStateRequired)
+    .matches(objectIdRegex, profileAddressFormStateInvalid),
+  district: Yup.string()
+    .trim()
+    .required(profileAddressFormDistrictRequired)
+    .matches(objectIdRegex, profileAddressFormDistrictInvalid),
+  city: Yup.string()
+    .trim()
+    .required(profileAddressFormCityRequired)
+    .matches(objectIdRegex, profileAddressFormCityInvalid),
+  areaName: Yup.string()
+    .trim()
+    .required(profileAddressFormAreaNameRequired)
+    .matches(objectIdRegex, profileAddressFormAreaNameInvalid),
+  zipcode: Yup.string()
+    .trim()
+    .required(profileAddressFormZipcodeRequired)
+    .matches(objectIdRegex, profileAddressFormZipcodeInvalid),
+  latitude: Yup.string()
+    .trim()
+    .min(profileAddressFormLatitudeMinChar, profileAddressFormLatitudeMinLength)
+    .max(
+      profileAddressFormLatitudeMaxChar,
+      profileAddressFormLatitudeMaxLength,
+    ),
+  longitude: Yup.string()
+    .trim()
+    .min(
+      profileAddressFormLongitudeMinChar,
+      profileAddressFormLongitudeMinLength,
+    )
+    .max(
+      profileAddressFormLongitudeMaxChar,
+      profileAddressFormLongitudeMaxLength,
+    ),
+  campusArea: Yup.string()
+    .trim()
+    .min(
+      profileAddressFormCampusAreaMinChar,
+      profileAddressFormCampusAreaMinLength,
+    )
+    .max(
+      profileAddressFormCampusAreaMaxChar,
+      profileAddressFormCampusAreaMaxLength,
+    ),
+  buildingArea: Yup.string()
+    .trim()
+    .min(
+      profileAddressFormBuildingAreaMinChar,
+      profileAddressFormBuildingAreaMinLength,
+    )
+    .max(
+      profileAddressFormBuildingAreaMaxChar,
+      profileAddressFormBuildingAreaMaxLength,
+    ),
+  outdoorArea: Yup.string()
+    .trim()
+    .min(
+      profileAddressFormOutdoorAreaMinChar,
+      profileAddressFormOutdoorAreaMinLength,
+    )
+    .max(
+      profileAddressFormOutdoorAreaMaxChar,
+      profileAddressFormOutdoorAreaMaxLength,
+    ),
+  schoolHours: hoursSchema,
+  administrationHours: hoursSchema,
+});
 
 export default AddressFormComponent;

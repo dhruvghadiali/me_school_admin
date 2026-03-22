@@ -39,11 +39,12 @@ const AddressSheetComponent = () => {
         <div className="border-b border-primary/50 px-4 sm:px-6 md:px-8 shadow-lg shadow-primary/80">
           <SheetHeader className="space-y-1 sm:space-y-1.5 p-1 m-2">
             <SheetTitle className="text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-left m-0 p-0">
-              {_.startCase(
-                t("profileEditAddressSheetTitle", {
+              {t("profileEditAddressSheetTitle", {
                   defaultValue: profileEditAddressSheetTitle,
-                }),
-              )}
+                })
+                .split(" ")
+                .map((word) => _.upperFirst(word))
+                .join(" ")}
             </SheetTitle>
             <SheetDescription className="text-xs sm:text-sm text-left">
               {_.upperFirst(

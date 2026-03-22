@@ -121,6 +121,24 @@ const profileAddressClosedLabel = "closed";
 const profileAddressSchoolHoursTitle = "school hours";
 const profileAddressAdministrationHoursTitle = "administration hours";
 
+// Address tab - address form section
+const profileAddressFormAddressLabel = "address";
+const profileAddressFormStateLabel = "state";
+const profileAddressFormDistrictLabel = "district";
+const profileAddressFormCityLabel = "city";
+const profileAddressFormAreaNameLabel = "area name";
+const profileAddressFormZipcodeLabel = "zipcode";
+const profileAddressFormLatitudeLabel = "latitude";
+const profileAddressFormLongitudeLabel = "longitude";
+const profileAddressFormCampusAreaLabel = "campus area (in sq. ft.)";
+const profileAddressFormBuildingAreaLabel = "building area (in sq. ft.)";
+const profileAddressFormOutdoorAreaLabel = "outdoor area (in sq. ft.)";
+const profileAddressFormCancelButtonLabel = "cancel";
+const profileAddressFormSubmitButtonLabel = "submit";
+const profileAddressFormOpenTimeLabel = "open time";
+const profileAddressFormCloseTimeLabel = "close time";
+const profileAddressFormClosedLabel = "closed";
+
 // Address tab - address sheet section
 const profileEditAddressSheetTitle = "edit address";
 const profileEditAddressSheetDescription = `update the address information to let everyone know more about the school address.`;
@@ -214,6 +232,22 @@ export {
   profileAddressClosedLabel,
   profileAddressSchoolHoursTitle,
   profileAddressAdministrationHoursTitle,
+  profileAddressFormAddressLabel,
+  profileAddressFormStateLabel,
+  profileAddressFormDistrictLabel,
+  profileAddressFormCityLabel,
+  profileAddressFormAreaNameLabel,
+  profileAddressFormZipcodeLabel,
+  profileAddressFormLatitudeLabel,
+  profileAddressFormLongitudeLabel,
+  profileAddressFormCampusAreaLabel,
+  profileAddressFormBuildingAreaLabel,
+  profileAddressFormOutdoorAreaLabel,
+  profileAddressFormCancelButtonLabel,
+  profileAddressFormSubmitButtonLabel,
+  profileAddressFormOpenTimeLabel,
+  profileAddressFormCloseTimeLabel,
+  profileAddressFormClosedLabel,
   profileEditAddressSheetTitle,
   profileEditAddressSheetDescription,
 };
