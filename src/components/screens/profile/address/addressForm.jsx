@@ -7,8 +7,6 @@ import _ from "lodash";
 import * as Yup from "yup";
 
 import { variants } from "@MEUtils/enums";
-import { Label } from "@MEShadcnComponents/label";
-import { Checkbox } from "@MEShadcnComponents/checkbox";
 import { objectIdRegex, timeRegex } from "@MEHelpers/regex";
 import { setAddressFormSheetStatus } from "@MERedux/profile/profileSlice";
 import {
@@ -65,6 +63,11 @@ import {
   profileAddressFormBuildingAreaMaxLength,
   profileAddressFormOutdoorAreaMinLength,
   profileAddressFormOutdoorAreaMaxLength,
+  profileAddressFormLatitudeInvalid,
+  profileAddressFormLongitudeInvalid,
+  profileAddressFormCampusAreaInvalid,
+  profileAddressFormBuildingAreaInvalid,
+  profileAddressFormOutdoorAreaInvalid,
   profileAddressFormTimeInvalid,
 } from "@MEUtils/validationMessage";
 import {
@@ -81,62 +84,24 @@ import {
   profileAddressFormOutdoorAreaLabel,
   profileAddressFormCancelButtonLabel,
   profileAddressFormSubmitButtonLabel,
-  profileAddressFormOpenTimeLabel,
-  profileAddressFormCloseTimeLabel,
-  profileAddressFormClosedLabel,
   profileAddressSchoolHoursTitle,
   profileAddressAdministrationHoursTitle,
-  profileAddressMondayLabel,
-  profileAddressTuesdayLabel,
-  profileAddressWednesdayLabel,
-  profileAddressThursdayLabel,
-  profileAddressFridayLabel,
-  profileAddressSaturdayLabel,
-  profileAddressSundayLabel,
 } from "@MELocalization/en";
 
 import MEInput from "@MECommonComponents/form/input/meInput";
 import MESelect from "@MECommonComponents/form/select/meSelect";
 import MEButton from "@MECommonComponents/form/button/meButton";
 import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
-import METimePicker from "@MECommonComponents/form/input/meTimePicker";
+import HoursSection from "@MEScreenComponents/profile/address/hoursSection";
 
 const DAYS_OF_WEEK = [
-  {
-    key: "monday",
-    labelKey: "profileAddressMondayLabel",
-    defaultLabel: profileAddressMondayLabel,
-  },
-  {
-    key: "tuesday",
-    labelKey: "profileAddressTuesdayLabel",
-    defaultLabel: profileAddressTuesdayLabel,
-  },
-  {
-    key: "wednesday",
-    labelKey: "profileAddressWednesdayLabel",
-    defaultLabel: profileAddressWednesdayLabel,
-  },
-  {
-    key: "thursday",
-    labelKey: "profileAddressThursdayLabel",
-    defaultLabel: profileAddressThursdayLabel,
-  },
-  {
-    key: "friday",
-    labelKey: "profileAddressFridayLabel",
-    defaultLabel: profileAddressFridayLabel,
-  },
-  {
-    key: "saturday",
-    labelKey: "profileAddressSaturdayLabel",
-    defaultLabel: profileAddressSaturdayLabel,
-  },
-  {
-    key: "sunday",
-    labelKey: "profileAddressSundayLabel",
-    defaultLabel: profileAddressSundayLabel,
-  },
+  { key: "monday" },
+  { key: "tuesday" },
+  { key: "wednesday" },
+  { key: "thursday" },
+  { key: "friday" },
+  { key: "saturday" },
+  { key: "sunday" },
 ];
 
 const createDefaultHoursState = () =>
@@ -221,151 +186,6 @@ const AddressFormComponent = () => {
     formik.resetForm();
     dispatch(setAddressFormSheetStatus(false));
   };
-
-  // Renders the hours section (school hours / administration hours)
-  const renderHoursSection = (title, fieldPrefix) => (
-    <div className="mt-8 pt-4 border-t border-primary/20">
-      <p className="text-sm font-semibold uppercase tracking-wider text-primary/70 mb-4">
-        {_.upperCase(title)}
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-3">
-        {_.map(DAYS_OF_WEEK, ({ key, labelKey, defaultLabel }) => {
-          const isClosed = _.get(
-            formik.values,
-            `${fieldPrefix}.${key}.closed`,
-            false,
-          );
-          const openTimeError = _.get(
-            formik.errors,
-            `${fieldPrefix}.${key}.openTime`,
-            "",
-          );
-          const closeTimeError = _.get(
-            formik.errors,
-            `${fieldPrefix}.${key}.closeTime`,
-            "",
-          );
-
-          return (
-            <div
-              key={key}
-              className={`rounded-lg border px-3 py-3 transition-colors ${
-                isClosed
-                  ? "border-primary/10 bg-primary/3"
-                  : "border-primary/15 bg-transparent"
-              }`}
-            >
-              <div className="flex items-center justify-between mb-2">
-                <p
-                  className={`text-xs font-semibold tracking-wide ${
-                    isClosed
-                      ? "text-primary/40 line-through"
-                      : "text-primary/70"
-                  }`}
-                >
-                  {_.upperFirst(t(labelKey, { defaultValue: defaultLabel }))}
-                </p>
-                <div className="flex items-center gap-1.5">
-                  <Checkbox
-                    id={`${fieldPrefix}-${key}-closed`}
-                    checked={isClosed}
-                    onCheckedChange={(checked) => {
-                      formik.setFieldValue(
-                        `${fieldPrefix}.${key}.closed`,
-                        checked,
-                      );
-                      if (checked) {
-                        formik.setFieldValue(
-                          `${fieldPrefix}.${key}.openTime`,
-                          "",
-                        );
-                        formik.setFieldValue(
-                          `${fieldPrefix}.${key}.closeTime`,
-                          "",
-                        );
-                      }
-                    }}
-                  />
-                  <Label
-                    htmlFor={`${fieldPrefix}-${key}-closed`}
-                    className="text-xs text-primary/60 cursor-pointer"
-                  >
-                    {_.upperFirst(
-                      t("profileAddressFormClosedLabel", {
-                        defaultValue: profileAddressFormClosedLabel,
-                      }),
-                    )}
-                  </Label>
-                </div>
-              </div>
-              {isClosed ? (
-                <p className="text-xs text-primary/40 italic py-2">
-                  {_.upperFirst(
-                    t("profileAddressFormClosedLabel", {
-                      defaultValue: profileAddressFormClosedLabel,
-                    }),
-                  )}
-                </p>
-              ) : (
-                <div className="grid grid-cols-2 gap-2">
-                  <METimePicker
-                    label={_.upperFirst(
-                      t("profileAddressFormOpenTimeLabel", {
-                        defaultValue: profileAddressFormOpenTimeLabel,
-                      }),
-                    )}
-                    value={_.get(
-                      formik.values,
-                      `${fieldPrefix}.${key}.openTime`,
-                      "",
-                    )}
-                    inputvariant={
-                      openTimeError ? variants.DANGER : variants.PRIMARY
-                    }
-                    messagevariant={
-                      openTimeError ? variants.DANGER : variants.PRIMARY
-                    }
-                    message={openTimeError}
-                    onValueChange={(val) =>
-                      formik.setFieldValue(
-                        `${fieldPrefix}.${key}.openTime`,
-                        val,
-                      )
-                    }
-                  />
-                  <METimePicker
-                    label={_.upperFirst(
-                      t("profileAddressFormCloseTimeLabel", {
-                        defaultValue: profileAddressFormCloseTimeLabel,
-                      }),
-                    )}
-                    value={_.get(
-                      formik.values,
-                      `${fieldPrefix}.${key}.closeTime`,
-                      "",
-                    )}
-                    inputvariant={
-                      closeTimeError ? variants.DANGER : variants.PRIMARY
-                    }
-                    messagevariant={
-                      closeTimeError ? variants.DANGER : variants.PRIMARY
-                    }
-                    message={closeTimeError}
-                    onValueChange={(val) =>
-                      formik.setFieldValue(
-                        `${fieldPrefix}.${key}.closeTime`,
-                        val,
-                      )
-                    }
-                  />
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
 
   return (
     <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-8 py-6">
@@ -563,6 +383,7 @@ const AddressFormComponent = () => {
           <MEInput
             id="latitude"
             name="latitude"
+            type="number"
             label={_.upperFirst(
               t("profileAddressFormLatitudeLabel", {
                 defaultValue: profileAddressFormLatitudeLabel,
@@ -587,6 +408,7 @@ const AddressFormComponent = () => {
           <MEInput
             id="longitude"
             name="longitude"
+            type="number"
             label={_.upperFirst(
               t("profileAddressFormLongitudeLabel", {
                 defaultValue: profileAddressFormLongitudeLabel,
@@ -611,6 +433,7 @@ const AddressFormComponent = () => {
           <MEInput
             id="campusArea"
             name="campusArea"
+            type="number"
             label={_.upperFirst(
               t("profileAddressFormCampusAreaLabel", {
                 defaultValue: profileAddressFormCampusAreaLabel,
@@ -635,6 +458,7 @@ const AddressFormComponent = () => {
           <MEInput
             id="buildingArea"
             name="buildingArea"
+            type="number"
             label={_.upperFirst(
               t("profileAddressFormBuildingAreaLabel", {
                 defaultValue: profileAddressFormBuildingAreaLabel,
@@ -661,6 +485,7 @@ const AddressFormComponent = () => {
           <MEInput
             id="outdoorArea"
             name="outdoorArea"
+            type="number"
             label={_.upperFirst(
               t("profileAddressFormOutdoorAreaLabel", {
                 defaultValue: profileAddressFormOutdoorAreaLabel,
@@ -685,20 +510,22 @@ const AddressFormComponent = () => {
         </div>
 
         {/* School Hours */}
-        {renderHoursSection(
-          t("profileAddressSchoolHoursTitle", {
+        <HoursSection
+          title={t("profileAddressSchoolHoursTitle", {
             defaultValue: profileAddressSchoolHoursTitle,
-          }),
-          "schoolHours",
-        )}
+          })}
+          fieldPrefix="schoolHours"
+          formik={formik}
+        />
 
         {/* Administration Hours */}
-        {renderHoursSection(
-          t("profileAddressAdministrationHoursTitle", {
+        <HoursSection
+          title={t("profileAddressAdministrationHoursTitle", {
             defaultValue: profileAddressAdministrationHoursTitle,
-          }),
-          "administrationHours",
-        )}
+          })}
+          fieldPrefix="administrationHours"
+          formik={formik}
+        />
 
         {/* Action Buttons */}
         <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-8 pt-4 border-t border-primary/20">
@@ -719,7 +546,7 @@ const AddressFormComponent = () => {
             type="submit"
             buttonVariant={variants.PRIMARY}
             buttonClassName="w-full sm:w-auto"
-            disabled={addressFormLoader || !formik.isValid}
+            disabled={addressFormLoader}
           >
             {_.upperFirst(
               t("profileAddressFormSubmitButtonLabel", {
@@ -737,12 +564,16 @@ const AddressFormComponent = () => {
 const dayHoursSchema = Yup.object().shape({
   openTime: Yup.string().when("closed", {
     is: false,
-    then: (schema) => schema.matches(timeRegex, profileAddressFormTimeInvalid),
+    then: (schema) =>
+      schema
+        .matches(timeRegex, profileAddressFormTimeInvalid),
     otherwise: (schema) => schema.notRequired(),
   }),
   closeTime: Yup.string().when("closed", {
     is: false,
-    then: (schema) => schema.matches(timeRegex, profileAddressFormTimeInvalid),
+    then: (schema) =>
+      schema
+        .matches(timeRegex, profileAddressFormTimeInvalid),
     otherwise: (schema) => schema.notRequired(),
   }),
   closed: Yup.boolean(),
@@ -781,15 +612,25 @@ const validationSchema = Yup.object({
     .trim()
     .required(profileAddressFormZipcodeRequired)
     .matches(objectIdRegex, profileAddressFormZipcodeInvalid),
-  latitude: Yup.string()
-    .trim()
+  latitude: Yup.number()
+    .transform((value, originalValue) =>
+      String(originalValue).trim() === "" ? undefined : value,
+    )
+    .nullable()
+    .notRequired()
+    .typeError(profileAddressFormLatitudeInvalid)
     .min(profileAddressFormLatitudeMinChar, profileAddressFormLatitudeMinLength)
     .max(
       profileAddressFormLatitudeMaxChar,
       profileAddressFormLatitudeMaxLength,
     ),
-  longitude: Yup.string()
-    .trim()
+  longitude: Yup.number()
+    .transform((value, originalValue) =>
+      String(originalValue).trim() === "" ? undefined : value,
+    )
+    .nullable()
+    .notRequired()
+    .typeError(profileAddressFormLongitudeInvalid)
     .min(
       profileAddressFormLongitudeMinChar,
       profileAddressFormLongitudeMinLength,
@@ -798,8 +639,13 @@ const validationSchema = Yup.object({
       profileAddressFormLongitudeMaxChar,
       profileAddressFormLongitudeMaxLength,
     ),
-  campusArea: Yup.string()
-    .trim()
+  campusArea: Yup.number()
+    .transform((value, originalValue) =>
+      String(originalValue).trim() === "" ? undefined : value,
+    )
+    .nullable()
+    .notRequired()
+    .typeError(profileAddressFormCampusAreaInvalid)
     .min(
       profileAddressFormCampusAreaMinChar,
       profileAddressFormCampusAreaMinLength,
@@ -808,8 +654,13 @@ const validationSchema = Yup.object({
       profileAddressFormCampusAreaMaxChar,
       profileAddressFormCampusAreaMaxLength,
     ),
-  buildingArea: Yup.string()
-    .trim()
+  buildingArea: Yup.number()
+    .transform((value, originalValue) =>
+      String(originalValue).trim() === "" ? undefined : value,
+    )
+    .nullable()
+    .notRequired()
+    .typeError(profileAddressFormBuildingAreaInvalid)
     .min(
       profileAddressFormBuildingAreaMinChar,
       profileAddressFormBuildingAreaMinLength,
@@ -818,8 +669,13 @@ const validationSchema = Yup.object({
       profileAddressFormBuildingAreaMaxChar,
       profileAddressFormBuildingAreaMaxLength,
     ),
-  outdoorArea: Yup.string()
-    .trim()
+  outdoorArea: Yup.number()
+    .transform((value, originalValue) =>
+      String(originalValue).trim() === "" ? undefined : value,
+    )
+    .nullable()
+    .notRequired()
+    .typeError(profileAddressFormOutdoorAreaInvalid)
     .min(
       profileAddressFormOutdoorAreaMinChar,
       profileAddressFormOutdoorAreaMinLength,

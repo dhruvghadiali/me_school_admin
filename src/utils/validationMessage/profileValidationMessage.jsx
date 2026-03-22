@@ -76,16 +76,21 @@ const profileAddressFormAreaNameRequired = `Area name is required`;
 const profileAddressFormAreaNameInvalid = `Please select a valid area`;
 const profileAddressFormZipcodeRequired = `Zipcode is required`;
 const profileAddressFormZipcodeInvalid = `Please select a valid zipcode`;
-const profileAddressFormLatitudeMinLength = `Latitude must be at least ${profileAddressFormLatitudeMinChar} characters`;
-const profileAddressFormLatitudeMaxLength = `Latitude cannot exceed ${profileAddressFormLatitudeMaxChar} characters`;
-const profileAddressFormLongitudeMinLength = `Longitude must be at least ${profileAddressFormLongitudeMinChar} characters`;
-const profileAddressFormLongitudeMaxLength = `Longitude cannot exceed ${profileAddressFormLongitudeMaxChar} characters`;
-const profileAddressFormCampusAreaMinLength = `Campus area must be at least ${profileAddressFormCampusAreaMinChar} characters`;
-const profileAddressFormCampusAreaMaxLength = `Campus area cannot exceed ${profileAddressFormCampusAreaMaxChar} characters`;
-const profileAddressFormBuildingAreaMinLength = `Building area must be at least ${profileAddressFormBuildingAreaMinChar} characters`;
-const profileAddressFormBuildingAreaMaxLength = `Building area cannot exceed ${profileAddressFormBuildingAreaMaxChar} characters`;
-const profileAddressFormOutdoorAreaMinLength = `Outdoor area must be at least ${profileAddressFormOutdoorAreaMinChar} characters`;
-const profileAddressFormOutdoorAreaMaxLength = `Outdoor area cannot exceed ${profileAddressFormOutdoorAreaMaxChar} characters`;
+const profileAddressFormLatitudeMinLength = `Latitude must be at least ${profileAddressFormLatitudeMinChar}`;
+const profileAddressFormLatitudeMaxLength = `Latitude cannot exceed ${profileAddressFormLatitudeMaxChar}`;
+const profileAddressFormLatitudeInvalid = `Please enter a valid number for latitude`;
+const profileAddressFormLongitudeMinLength = `Longitude must be at least ${profileAddressFormLongitudeMinChar}`;
+const profileAddressFormLongitudeMaxLength = `Longitude cannot exceed ${profileAddressFormLongitudeMaxChar}`;
+const profileAddressFormLongitudeInvalid = `Please enter a valid number for longitude`;
+const profileAddressFormCampusAreaMinLength = `Campus area must be at least ${profileAddressFormCampusAreaMinChar}`;
+const profileAddressFormCampusAreaMaxLength = `Campus area cannot exceed ${profileAddressFormCampusAreaMaxChar}`;
+const profileAddressFormCampusAreaInvalid = `Please enter a valid number for campus area`;
+const profileAddressFormBuildingAreaMinLength = `Building area must be at least ${profileAddressFormBuildingAreaMinChar}`;
+const profileAddressFormBuildingAreaMaxLength = `Building area cannot exceed ${profileAddressFormBuildingAreaMaxChar}`;
+const profileAddressFormBuildingAreaInvalid = `Please enter a valid number for building area`;
+const profileAddressFormOutdoorAreaMinLength = `Outdoor area must be at least ${profileAddressFormOutdoorAreaMinChar}`;
+const profileAddressFormOutdoorAreaMaxLength = `Outdoor area cannot exceed ${profileAddressFormOutdoorAreaMaxChar}`;
+const profileAddressFormOutdoorAreaInvalid = `Please enter a valid number for outdoor area`;
 const profileAddressFormTimeInvalid = `Please enter a valid time (e.g. 08:00)`;
 
 export {
@@ -148,5 +153,10 @@ export {
   profileAddressFormBuildingAreaMaxLength,
   profileAddressFormOutdoorAreaMinLength,
   profileAddressFormOutdoorAreaMaxLength,
+  profileAddressFormLatitudeInvalid,
+  profileAddressFormLongitudeInvalid,
+  profileAddressFormCampusAreaInvalid,
+  profileAddressFormBuildingAreaInvalid,
+  profileAddressFormOutdoorAreaInvalid,
   profileAddressFormTimeInvalid,
 };

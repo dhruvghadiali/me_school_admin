@@ -511,7 +511,7 @@ const OrganizationMemberFormComponent = () => {
             type="submit"
             buttonVariant={variants.PRIMARY}
             buttonClassName="w-full sm:w-auto"
-            disabled={memberFormLoader || !formik.isValid}
+            disabled={memberFormLoader}
           >
             {_.upperFirst(
               t("profileOrganizationMemberSubmitButtonLabel", {
