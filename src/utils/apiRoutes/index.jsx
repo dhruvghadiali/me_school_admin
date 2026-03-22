@@ -6,6 +6,7 @@ export const schoolAboutAPIRoute = `/school-about`;
 export const facilityAPIRoute = `/school-facilities`;
 export const schoolProfileAPIRoute = `/school-profile`;
 export const facilityTypesAPIRoute = `/facility-types`;
+export const schoolAddressesAPIRoute = `/school-addresses`;
 export const academicClassesAPIRoute = `/academic-classes`;
 export const verifyDocumentsAPIRoute = `/verified-documents`;
 export const admissionDocumentsAPIRoute = `/admission-documents`;

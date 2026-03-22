@@ -4,6 +4,7 @@ import { setOrganizationMembersInformation } from "@MEUtils/apiResponse";
 import {
   statesAPIRoute,
   schoolAboutAPIRoute,
+  schoolAddressesAPIRoute,
   organizationMembersAPIRoute,
 } from "@MEUtils/apiRoutes";
 import {
@@ -255,9 +256,74 @@ const deleteOrganizationMember = createAsyncThunk(
   },
 );
 
+const updateSchoolAddress = createAsyncThunk(
+  "profile/updateSchoolAddress",
+  async (payload, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { id, data } = payload;
+      const response = await axiosInstance.put(
+        `${schoolAddressesAPIRoute}/${id}`,
+        data,
+        {
+          state: getState(),
+        },
+      );
+
+      if (apiResponseHaveData(response)) {
+        console.log("School address updated successfully:", response);
+        // const members = setOrganizationMembersInformation(
+        //   _.get(response, "data", []),
+        // );
+
+        // if(_.size(members) > 0) {
+        //   const { authentication } = getState();
+        //   const organizationMembers = _.cloneDeep(
+        //     _.get(authentication.user, "organization.members", []),
+        //   );
+
+        //   const memberIndex = _.findIndex(
+        //     organizationMembers,
+        //     (m) => m.id == members[0].id,
+        //   );
+
+        //   if (memberIndex !== -1) {
+        //     organizationMembers[memberIndex] = members[0];
+        //   }
+
+        //   const updatedUser = _.set(
+        //     _.cloneDeep(authentication.user),
+        //     "organization.members",
+        //     organizationMembers,
+        //   );
+
+        //   dispatch(setLogin({ user: updatedUser, token: authentication.token }));
+        //   setAuthData(updatedUser, authentication.token);
+        // }
+
+        return {
+          error: "",
+        };
+      } else {
+        return {
+          error:
+            response && response.message
+              ? response.message
+              : "Failed to update school address",
+        };
+      }
+    } catch (error) {
+      const errMsg =
+        (error && (error.message || error.error)) ||
+        "Failed to update school address";
+      return rejectWithValue({ error: errMsg });
+    }
+  },
+);
+
 export {
   getStates,
   updateSchoolAbout,
+  updateSchoolAddress,
   addOrganizationMember,
   updateOrganizationMember,
   deleteOrganizationMember,

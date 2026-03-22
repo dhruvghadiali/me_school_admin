@@ -55,8 +55,39 @@ const deleteOrganizationMemberAPIPayload = (member) => {
   };
 };
 
+const transformHoursPayload = (hours) =>
+  _.mapValues(hours, (day) => ({
+    open_time: day.openTime,
+    close_time: day.closeTime,
+    closed: day.closed,
+  }));
+
+const updateSchoolAddressAPIPayload = (user, formPayload) => {
+  const data = {
+    address: formPayload.address,
+    state: formPayload.state,
+    district: formPayload.district,
+    city: formPayload.city,
+    area_name: formPayload.areaName,
+    zipcode: formPayload.zipcode,
+    school_hours: transformHoursPayload(formPayload.schoolHours),
+    administrative_hours: transformHoursPayload(formPayload.administrativeHours),
+  };
+
+  if (formPayload.latitude) data.latitude = formPayload.latitude;
+  if (formPayload.longitude) data.longitude = formPayload.longitude;
+  if (formPayload.buildingArea) data.building_area = formPayload.buildingArea;
+  if (formPayload.outdoorArea) data.outdoor_area = formPayload.outdoorArea;
+
+  return {
+    id: _.get(user, "school.schoolAddressId", null),
+    data,
+  };
+};
+
 export {
   schoolAboutAPIPayload,
+  updateSchoolAddressAPIPayload,
   addOrganizationMemberAPIPayload,
   updateOrganizationMemberAPIPayload,
   deleteOrganizationMemberAPIPayload,

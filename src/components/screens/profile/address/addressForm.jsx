@@ -8,6 +8,8 @@ import * as Yup from "yup";
 
 import { variants } from "@MEUtils/enums";
 import { objectIdRegex, timeRegex } from "@MEHelpers/regex";
+import { updateSchoolAddressAPIPayload } from "@MEUtils/apiPayload";
+import { updateSchoolAddress } from "@MERedux/profile/profileAction";
 import { setAddressFormSheetStatus } from "@MERedux/profile/profileSlice";
 import {
   getAreaIdByName,
@@ -166,9 +168,9 @@ const AddressFormComponent = () => {
       buildingArea: _.get(school, "buildingArea", ""),
       outdoorArea: _.get(school, "outdoorArea", ""),
       schoolHours: _.get(school, "schoolHours", createDefaultHoursState()),
-      administrationHours: _.get(
+      administrativeHours: _.get(
         school,
-        "administrationHours",
+        "administrativeHours",
         createDefaultHoursState(),
       ),
       ...resolveMemberLocationIds(school),
@@ -178,6 +180,10 @@ const AddressFormComponent = () => {
     validateOnBlur: false,
     onSubmit: async (values) => {
       console.log("Form submitted with values:", values);
+      console.log("Payload", updateSchoolAddressAPIPayload(user, values));
+      dispatch(
+        updateSchoolAddress(updateSchoolAddressAPIPayload(user, values)),
+      );
     },
   });
 
@@ -523,7 +529,7 @@ const AddressFormComponent = () => {
           title={t("profileAddressAdministrationHoursTitle", {
             defaultValue: profileAddressAdministrationHoursTitle,
           })}
-          fieldPrefix="administrationHours"
+          fieldPrefix="administrativeHours"
           formik={formik}
         />
 
@@ -564,16 +570,12 @@ const AddressFormComponent = () => {
 const dayHoursSchema = Yup.object().shape({
   openTime: Yup.string().when("closed", {
     is: false,
-    then: (schema) =>
-      schema
-        .matches(timeRegex, profileAddressFormTimeInvalid),
+    then: (schema) => schema.matches(timeRegex, profileAddressFormTimeInvalid),
     otherwise: (schema) => schema.notRequired(),
   }),
   closeTime: Yup.string().when("closed", {
     is: false,
-    then: (schema) =>
-      schema
-        .matches(timeRegex, profileAddressFormTimeInvalid),
+    then: (schema) => schema.matches(timeRegex, profileAddressFormTimeInvalid),
     otherwise: (schema) => schema.notRequired(),
   }),
   closed: Yup.boolean(),
@@ -685,7 +687,7 @@ const validationSchema = Yup.object({
       profileAddressFormOutdoorAreaMaxLength,
     ),
   schoolHours: hoursSchema,
-  administrationHours: hoursSchema,
+  administrativeHours: hoursSchema,
 });
 
 export default AddressFormComponent;

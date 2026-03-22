@@ -4,6 +4,7 @@ import { PROFILE_TABS_ID, PROFILE_FORM_SHEET_MODES } from "@MEHelpers/enums";
 import {
   getStates,
   updateSchoolAbout,
+  updateSchoolAddress,
   addOrganizationMember,
   updateOrganizationMember,
   deleteOrganizationMember,
@@ -72,7 +73,7 @@ export const profileSlice = createSlice({
     },
     closeMemberDeleteError: (state) => {
       state.memberDeleteError = "";
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -127,7 +128,6 @@ export const profileSlice = createSlice({
         state.memberFormLoader = false;
         state.memberFormError = action.payload.error;
       })
-
       .addCase(deleteOrganizationMember.pending, (state, action) => {
         state.memberDeleteLoader = true;
         state.memberDeleteError = "";
@@ -139,6 +139,19 @@ export const profileSlice = createSlice({
       .addCase(deleteOrganizationMember.rejected, (state, action) => {
         state.memberDeleteLoader = false;
         state.memberDeleteError = action.payload.error;
+      })
+      .addCase(updateSchoolAddress.pending, (state, action) => {
+        state.addressFormLoader = true;
+        state.addressFormError = "";
+      })
+      .addCase(updateSchoolAddress.fulfilled, (state, action) => {
+        state.addressFormLoader = false;
+        state.addressFormSheetOpen = action.payload.error ? true : false;
+        state.addressFormError = action.payload.error;
+      })
+      .addCase(updateSchoolAddress.rejected, (state, action) => {
+        state.addressFormLoader = false;
+        state.addressFormError = action.payload.error;
       });
   },
 });
