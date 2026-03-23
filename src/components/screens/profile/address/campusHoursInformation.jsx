@@ -1,6 +1,13 @@
-import _ from "lodash";
+import {useTranslation} from "react-i18next";
 
-const CampusHoursInformationComponent = ({title, hours}) => {
+import _ from "lodash";
+import moment from "moment";
+
+import {profileAddressClosedLabel} from "@MELocalization/en";
+
+const CampusHoursInformationComponent = ({ title, hours }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="mt-5 pt-4 border-t border-primary/15">
       <p className="text-xs font-semibold uppercase tracking-wider text-primary/50 mb-3">
@@ -17,10 +24,22 @@ const CampusHoursInformationComponent = ({title, hours}) => {
             </p>
             <p
               className={`text-xs font-semibold ${
-                _.toLower(hour.value) === _.toLower("closed") ? "text-danger" : "text-primary"
+                _.get(hour, "value.closed", false)
+                  ? "text-danger"
+                  : "text-primary"
               }`}
             >
-              {hour.value}
+              {_.get(hour, "value.closed", false)
+                ? _.upperFirst(t("profileAddressClosedLabel", { defaultValue: profileAddressClosedLabel }))
+                : `${
+                    moment(_.get(hour, "value.openTime", ""), "HH:mm", true).isValid()
+                      ? moment(_.get(hour, "value.openTime", ""), "HH:mm", true).format("hh:mm A")
+                      : ""
+                  } - ${
+                    moment(_.get(hour, "value.closeTime", ""), "HH:mm", true).isValid()
+                      ? moment(_.get(hour, "value.closeTime", ""), "HH:mm", true).format("hh:mm A")
+                      : ""
+                  }`}
             </p>
           </div>
         ))}

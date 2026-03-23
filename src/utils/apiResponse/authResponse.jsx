@@ -63,6 +63,13 @@ const setOrganizationMembersInformation = (members) => {
   }));
 };
 
+const transformHoursPayload = (hours) =>
+  _.mapValues(hours, (day) => ({
+    openTime: _.get(day, "open_time", ""),
+    closeTime: _.get(day, "close_time", ""),
+    closed: _.get(day, "closed", false),
+  }));
+
 const setSchoolInformation = (school) => {
   return {
     id: _.get(school, "id", null),
@@ -84,6 +91,12 @@ const setSchoolInformation = (school) => {
     city: _.get(school, "city", ""),
     areaName: _.get(school, "area_name", ""),
     zipcode: _.get(school, "zipcode", ""),
+    latitude: _.get(school, "latitude", null),
+    longitude: _.get(school, "longitude", null),
+    buildingArea: _.get(school, "building_area", null),
+    outdoorArea: _.get(school, "outdoor_area", null),
+    schoolHours: transformHoursPayload(_.get(school, "school_hours", {})),
+    administrativeHours: transformHoursPayload(_.get(school, "administrative_hours", {})),
   };
 };
 

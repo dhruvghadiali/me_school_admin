@@ -9,6 +9,13 @@ import {
   profileAddressFormOpenTimeLabel,
   profileAddressFormCloseTimeLabel,
   profileAddressFormClosedLabel,
+  profileAddressMondayLabel,
+  profileAddressTuesdayLabel,
+  profileAddressWednesdayLabel,
+  profileAddressThursdayLabel,
+  profileAddressFridayLabel,
+  profileAddressSaturdayLabel,
+  profileAddressSundayLabel,
 } from "@MELocalization/en";
 
 import METimePicker from "@MECommonComponents/form/input/meTimePicker";
@@ -17,30 +24,37 @@ const DAYS_OF_WEEK = [
   {
     key: "monday",
     labelKey: "profileAddressMondayLabel",
+    label: profileAddressMondayLabel,
   },
   {
     key: "tuesday",
     labelKey: "profileAddressTuesdayLabel",
+    label: profileAddressTuesdayLabel,
   },
   {
     key: "wednesday",
     labelKey: "profileAddressWednesdayLabel",
+    label: profileAddressWednesdayLabel,
   },
   {
     key: "thursday",
     labelKey: "profileAddressThursdayLabel",
+    label: profileAddressThursdayLabel,
   },
   {
     key: "friday",
     labelKey: "profileAddressFridayLabel",
+    label: profileAddressFridayLabel,
   },
   {
     key: "saturday",
     labelKey: "profileAddressSaturdayLabel",
+    label: profileAddressSaturdayLabel,
   },
   {
     key: "sunday",
     labelKey: "profileAddressSundayLabel",
+    label: profileAddressSundayLabel,
   },
 ];
 
@@ -53,7 +67,7 @@ const HoursSection = ({ title, fieldPrefix, formik }) => {
         {_.upperCase(title)}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-3">
-        {_.map(DAYS_OF_WEEK, ({ key, labelKey }) => {
+        {_.map(DAYS_OF_WEEK, ({ key, labelKey, label }) => {
           const isClosed = _.get(
             formik.values,
             `${fieldPrefix}.${key}.closed`,
@@ -83,11 +97,11 @@ const HoursSection = ({ title, fieldPrefix, formik }) => {
                 <p
                   className={`text-xs font-semibold tracking-wide ${
                     isClosed
-                      ? "text-primary/40 line-through"
+                      ? "text-danger/40 line-through"
                       : "text-primary/70"
                   }`}
                 >
-                  {_.upperFirst(t(labelKey))}
+                  {_.upperFirst(t(labelKey, { defaultValue: label }))}
                 </p>
                 <div className="flex items-center gap-1.5">
                   <Checkbox
@@ -121,7 +135,7 @@ const HoursSection = ({ title, fieldPrefix, formik }) => {
                 </div>
               </div>
               {isClosed ? (
-                <p className="text-xs text-primary/40 italic py-2">
+                <p className="text-xs text-danger italic py-2">
                   {_.upperFirst(
                     t("profileAddressFormClosedLabel", {
                       defaultValue: profileAddressFormClosedLabel,

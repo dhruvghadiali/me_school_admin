@@ -161,37 +161,37 @@ const AddressCardComponent = () => {
     {
       labelKey: "profileAddressMondayLabel",
       defaultLabel: profileAddressMondayLabel,
-      value: _.get(school, "monday", CLOSED),
+      value: _.get(school, "schoolHours.monday", CLOSED),
     },
     {
       labelKey: "profileAddressTuesdayLabel",
       defaultLabel: profileAddressTuesdayLabel,
-      value: _.get(school, "tuesday", CLOSED),
+      value: _.get(school, "schoolHours.tuesday", CLOSED),
     },
     {
       labelKey: "profileAddressWednesdayLabel",
       defaultLabel: profileAddressWednesdayLabel,
-      value: _.get(school, "wednesday", CLOSED),
+      value: _.get(school, "schoolHours.wednesday", CLOSED),
     },
     {
       labelKey: "profileAddressThursdayLabel",
       defaultLabel: profileAddressThursdayLabel,
-      value: _.get(school, "thursday", CLOSED),
+      value: _.get(school, "schoolHours.thursday", CLOSED),
     },
     {
       labelKey: "profileAddressFridayLabel",
       defaultLabel: profileAddressFridayLabel,
-      value: _.get(school, "friday", CLOSED),
+      value: _.get(school, "schoolHours.friday", CLOSED),
     },
     {
       labelKey: "profileAddressSaturdayLabel",
       defaultLabel: profileAddressSaturdayLabel,
-      value: _.get(school, "saturday", CLOSED),
+      value: _.get(school, "schoolHours.saturday", CLOSED),
     },
     {
       labelKey: "profileAddressSundayLabel",
       defaultLabel: profileAddressSundayLabel,
-      value: _.get(school, "sunday", CLOSED),
+      value: _.get(school, "schoolHours.sunday", CLOSED),
     },
   ].map(({ labelKey, defaultLabel, value }) => ({
     label: getLabel(t, labelKey, defaultLabel),
@@ -202,37 +202,37 @@ const AddressCardComponent = () => {
     {
       labelKey: "profileAddressMondayLabel",
       defaultLabel: profileAddressMondayLabel,
-      value: _.get(school, "monday", CLOSED),
+      value: _.get(school, "administrativeHours.monday", CLOSED),
     },
     {
       labelKey: "profileAddressTuesdayLabel",
       defaultLabel: profileAddressTuesdayLabel,
-      value: _.get(school, "tuesday", CLOSED),
+      value: _.get(school, "administrativeHours.tuesday", CLOSED),
     },
     {
       labelKey: "profileAddressWednesdayLabel",
       defaultLabel: profileAddressWednesdayLabel,
-      value: _.get(school, "wednesday", CLOSED),
+      value: _.get(school, "administrativeHours.wednesday", CLOSED),
     },
     {
       labelKey: "profileAddressThursdayLabel",
       defaultLabel: profileAddressThursdayLabel,
-      value: _.get(school, "thursday", CLOSED),
+      value: _.get(school, "administrativeHours.thursday", CLOSED),
     },
     {
       labelKey: "profileAddressFridayLabel",
       defaultLabel: profileAddressFridayLabel,
-      value: _.get(school, "friday", CLOSED),
+      value: _.get(school, "administrativeHours.friday", CLOSED),
     },
     {
       labelKey: "profileAddressSaturdayLabel",
       defaultLabel: profileAddressSaturdayLabel,
-      value: _.get(school, "saturday", CLOSED),
+      value: _.get(school, "administrativeHours.saturday", CLOSED),
     },
     {
       labelKey: "profileAddressSundayLabel",
       defaultLabel: profileAddressSundayLabel,
-      value: _.get(school, "sunday", CLOSED),
+      value: _.get(school, "administrativeHours.sunday", CLOSED),
     },
   ].map(({ labelKey, defaultLabel, value }) => ({
     label: getLabel(t, labelKey, defaultLabel),

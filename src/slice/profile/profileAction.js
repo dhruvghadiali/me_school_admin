@@ -1,6 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { setOrganizationMembersInformation } from "@MEUtils/apiResponse";
+import {
+  setAddressInformation,
+  setOrganizationMembersInformation,
+} from "@MEUtils/apiResponse";
 import {
   statesAPIRoute,
   schoolAboutAPIRoute,
@@ -164,7 +167,7 @@ const updateOrganizationMember = createAsyncThunk(
           _.get(response, "data", []),
         );
 
-        if(_.size(members) > 0) {
+        if (_.size(members) > 0) {
           const { authentication } = getState();
           const organizationMembers = _.cloneDeep(
             _.get(authentication.user, "organization.members", []),
@@ -185,7 +188,9 @@ const updateOrganizationMember = createAsyncThunk(
             organizationMembers,
           );
 
-          dispatch(setLogin({ user: updatedUser, token: authentication.token }));
+          dispatch(
+            setLogin({ user: updatedUser, token: authentication.token }),
+          );
           setAuthData(updatedUser, authentication.token);
         }
 
@@ -271,34 +276,25 @@ const updateSchoolAddress = createAsyncThunk(
 
       if (apiResponseHaveData(response)) {
         console.log("School address updated successfully:", response);
-        // const members = setOrganizationMembersInformation(
-        //   _.get(response, "data", []),
-        // );
+        if (_.size(response.data) > 0) {
+          const address = setAddressInformation(response.data[0]);
+          const { authentication } = getState();
+          const schoolInformation = _.assign(
+            _.cloneDeep(_.get(authentication.user, "school", {})),
+            address,
+          );
 
-        // if(_.size(members) > 0) {
-        //   const { authentication } = getState();
-        //   const organizationMembers = _.cloneDeep(
-        //     _.get(authentication.user, "organization.members", []),
-        //   );
+          const updatedUser = _.set(
+            _.cloneDeep(authentication.user),
+            "school",
+            schoolInformation,
+          );
 
-        //   const memberIndex = _.findIndex(
-        //     organizationMembers,
-        //     (m) => m.id == members[0].id,
-        //   );
-
-        //   if (memberIndex !== -1) {
-        //     organizationMembers[memberIndex] = members[0];
-        //   }
-
-        //   const updatedUser = _.set(
-        //     _.cloneDeep(authentication.user),
-        //     "organization.members",
-        //     organizationMembers,
-        //   );
-
-        //   dispatch(setLogin({ user: updatedUser, token: authentication.token }));
-        //   setAuthData(updatedUser, authentication.token);
-        // }
+          dispatch(
+            setLogin({ user: updatedUser, token: authentication.token }),
+          );
+          setAuthData(updatedUser, authentication.token);
+        }
 
         return {
           error: "",
