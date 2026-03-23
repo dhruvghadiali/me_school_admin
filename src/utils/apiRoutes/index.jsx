@@ -18,3 +18,5 @@ export const admissionApplicationSummaryAPIRoute = `/admission-applications/summ
 export const feePaymentAppointmentBookingAPIRoute = `/fee-payment-appointment-booking`;
 export const documentVerificationAppointmentBookingAPIRoute = `/document-verification-appointment-booking`;
 export const rescheduleDocumentVerificationAppointmentAPIRoute = `/reschedule-document-verification-appointment`;
+export const changeUsernameAPIRoute = `/change-username`;
+export const changePasswordAPIRoute = `/change-password`;

@@ -1,5 +1,5 @@
 // Screen header and subtitle
-const profileHeader = "school profile";
+const profileHeader = "profile";
 const profileSubtitle = "explore all details about the school in one place";
 
 // Tab labels

@@ -7,3 +7,4 @@ export * from "@MELocalization/dashboard/dashboardTranslationEn";
 export * from "@MELocalization/admission/admissionTranslationEn";
 export * from "@MELocalization/academicClass/academicClassTranslationEn";
 export * from "@MELocalization/admissionDocument/admissionDocumentTranslationEn";
+export * from "@MELocalization/setting/settingTranslationEn";

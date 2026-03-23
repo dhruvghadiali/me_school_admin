@@ -10,6 +10,7 @@ import academicClassSlice from "@MERedux/academicClass/academicClassSlice";
 import authenticationSlice from "@MERedux/authentication/authenticationSlice";
 import admissionDocumentSlice from "@MERedux/admissionDocument/admissionDocumentSlice";
 import profileSlice from "@MERedux/profile/profileSlice";
+import settingSlice from "@MERedux/setting/settingSlice";
 
 export default configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export default configureStore({
     admissionDocument: admissionDocumentSlice,
     admissionApplication: admissionApplicationSlice,
     profile: profileSlice,
+    setting: settingSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(loggerMiddleware),
