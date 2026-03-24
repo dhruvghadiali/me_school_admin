@@ -5,10 +5,8 @@ import { changeUsername, changePassword } from "@MERedux/setting/settingAction";
 const initialState = {
   changeUsernameLoader: false,
   changeUsernameError: "",
-  changeUsernameSuccess: false,
   changePasswordLoader: false,
   changePasswordError: "",
-  changePasswordSuccess: false,
 };
 
 const settingSlice = createSlice({
@@ -18,11 +16,11 @@ const settingSlice = createSlice({
     resetSettingState: () => initialState,
     resetChangeUsernameStatus: (state) => {
       state.changeUsernameError = "";
-      state.changeUsernameSuccess = false;
+      state.changeUsernameLoader = false;
     },
     resetChangePasswordStatus: (state) => {
       state.changePasswordError = "";
-      state.changePasswordSuccess = false;
+      state.changePasswordLoader = false;
     },
   },
   extraReducers: (builder) => {
@@ -30,32 +28,26 @@ const settingSlice = createSlice({
       .addCase(changeUsername.pending, (state) => {
         state.changeUsernameLoader = true;
         state.changeUsernameError = "";
-        state.changeUsernameSuccess = false;
       })
       .addCase(changeUsername.fulfilled, (state, action) => {
         state.changeUsernameLoader = false;
         state.changeUsernameError = action.payload.error;
-        state.changeUsernameSuccess = !action.payload.error;
       })
       .addCase(changeUsername.rejected, (state, action) => {
         state.changeUsernameLoader = false;
-        state.changeUsernameError = action.payload?.error || "Failed to change username";
-        state.changeUsernameSuccess = false;
+        state.changeUsernameError = action.payload.error;
       })
       .addCase(changePassword.pending, (state) => {
         state.changePasswordLoader = true;
         state.changePasswordError = "";
-        state.changePasswordSuccess = false;
       })
       .addCase(changePassword.fulfilled, (state, action) => {
         state.changePasswordLoader = false;
         state.changePasswordError = action.payload.error;
-        state.changePasswordSuccess = !action.payload.error;
       })
       .addCase(changePassword.rejected, (state, action) => {
         state.changePasswordLoader = false;
-        state.changePasswordError = action.payload?.error || "Failed to change password";
-        state.changePasswordSuccess = false;
+        state.changePasswordError = action.payload.error;
       });
   },
 });

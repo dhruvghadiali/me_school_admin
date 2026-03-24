@@ -1,7 +1,7 @@
 const settingUsernameMinChar = 5;
-const settingUsernameMaxChar = 10;
+const settingUsernameMaxChar = 100;
 const settingPasswordMinChar = 5;
-const settingPasswordMaxChar = 10;
+const settingPasswordMaxChar = 50;
 
 export {
   settingUsernameMinChar,

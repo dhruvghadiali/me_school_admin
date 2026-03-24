@@ -1,39 +1,15 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { AlertTriangle, CircleAlertIcon } from "lucide-react";
 
+import * as Yup from "yup";
 import _ from "lodash";
 
 import { variants } from "@MEUtils/enums";
-import {
-  settingUsernameMinChar,
-  settingUsernameMaxChar,
-} from "@MEUtils/validationConst/settingValidationConst";
-import {
-  currentUsernameRequired,
-  newUsernameRequired,
-  newUsernameMin,
-  newUsernameMax,
-  confirmUsernameRequired,
-  confirmUsernameMismatch,
-} from "@MEUtils/validationMessage/settingValidationMessage";
-import {
-  settingChangeUsernameTitle,
-  settingCurrentPasswordLabel,
-  settingNewUsernameLabel,
-  settingConfirmUsernameLabel,
-  settingChangeUsernameButtonLabel,
-  settingChangeUsernameCancelButtonLabel,
-} from "@MELocalization/en";
-
+import { updateUsernameAPIPayload } from "@MEUtils/apiPayload";
 import { changeUsername } from "@MERedux/setting/settingAction";
 import { resetChangeUsernameStatus } from "@MERedux/setting/settingSlice";
-
-import MEInput from "@MECommonComponents/form/input/meInput";
-import MEButton from "@MECommonComponents/form/button/meButton";
-import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
 import {
   Card,
   CardHeader,
@@ -41,12 +17,45 @@ import {
   CardContent,
   CardFooter,
 } from "@MEShadcnComponents/card";
+import {
+  settingUsernameMinChar,
+  settingUsernameMaxChar,
+  settingPasswordMaxChar,
+  settingPasswordMinChar,
+} from "@MEUtils/validationConst";
+import {
+  usernameMinLength,
+  usernameMaxLength,
+  passwordMaxLength,
+  passwordMinLength,
+  newUsernameRequired,
+  currentPasswordRequired,
+  confirmUsernameRequired,
+  confirmUsernameMismatch,
+} from "@MEUtils/validationMessage";
+import {
+  settingChangeUsernameTitle,
+  settingCurrentPasswordLabel,
+  settingNewUsernameLabel,
+  settingConfirmUsernameLabel,
+  settingChangeUsernameButtonLabel,
+  settingChangeUsernameCancelButtonLabel,
+  settingChangeUsernameConfirmButtonLabel,
+  settingChangeUsernameAlertTitle,
+  settingChangeUsernameAlertDescription,
+} from "@MELocalization/en";
+
+import MEInput from "@MECommonComponents/form/input/meInput";
+import MEButton from "@MECommonComponents/form/button/meButton";
+import MELoaderIcon from "@MECommonComponents/loader/meLoaderIcon";
+import MEActionAlertDialog from "@MECommonComponents/alertDialog/actionAlertDialog";
 
 const ChangeUsernameForm = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { changeUsernameLoader, changeUsernameError, changeUsernameSuccess } =
-    useSelector((state) => state.setting);
+  const { changeUsernameLoader, changeUsernameError } = useSelector(
+    (state) => state.setting,
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -56,25 +65,51 @@ const ChangeUsernameForm = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      dispatch(
-        changeUsername({
-          password: values.password,
-          newUsername: values.newUsername,
-        }),
-      );
+      dispatch(changeUsername(updateUsernameAPIPayload(values)));
     },
   });
-
-  useEffect(() => {
-    if (changeUsernameSuccess) {
-      formik.resetForm();
-      dispatch(resetChangeUsernameStatus());
-    }
-  }, [changeUsernameSuccess]);
 
   const onCancelClick = () => {
     formik.resetForm();
     dispatch(resetChangeUsernameStatus());
+  };
+
+  const alertConfig = {
+    icon: <AlertTriangle className="text-primary" size={20} />,
+    title: _.upperFirst(
+      t("settingChangeUsernameAlertTitle", {
+        defaultValue: settingChangeUsernameAlertTitle,
+      }),
+    ),
+    description: (
+      <span>
+        {_.upperFirst(
+          t("settingChangeUsernameAlertDescription", {
+            defaultValue: settingChangeUsernameAlertDescription,
+          }),
+        )}
+      </span>
+    ),
+    actions: [
+      {
+        label: _.upperFirst(
+          t("settingChangeUsernameCancelButtonLabel", {
+            defaultValue: settingChangeUsernameCancelButtonLabel,
+          }),
+        ),
+        className: "bg-primary hover:bg-primary/90 text-white",
+        onClick: onCancelClick,
+      },
+      {
+        label: _.upperFirst(
+          t("settingChangeUsernameConfirmButtonLabel", {
+            defaultValue: settingChangeUsernameConfirmButtonLabel,
+          }),
+        ),
+        className: "bg-success hover:bg-success/90 text-white",
+        onClick: () => formik.handleSubmit(),
+      },
+    ],
   };
 
   return (
@@ -91,12 +126,12 @@ const ChangeUsernameForm = () => {
       <form onSubmit={formik.handleSubmit}>
         <CardContent className="space-y-4">
           {changeUsernameError && (
-            <p className="text-sm text-danger">{changeUsernameError}</p>
-          )}
-          {changeUsernameSuccess && (
-            <p className="text-sm text-success">
-              Username changed successfully
-            </p>
+            <div className="bg-danger mb-2 flex items-center  rounded-md">
+              <CircleAlertIcon className="text-accent ml-2" />
+              <p className="text-accent p-2 text-left">
+                {_.toLower(_.upperFirst(changeUsernameError))}
+              </p>
+            </div>
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -163,7 +198,7 @@ const ChangeUsernameForm = () => {
             <MEInput
               id="password"
               name="password"
-              type="text"
+              type="password"
               label={_.upperFirst(
                 t("settingCurrentPasswordLabel", {
                   defaultValue: settingCurrentPasswordLabel,
@@ -193,18 +228,34 @@ const ChangeUsernameForm = () => {
         </CardContent>
         <CardFooter className="flex flex-col sm:flex-row gap-3 sm:justify-end">
           <MEButton
-            type="submit"
-            buttonVariant={variants.PRIMARY}
+            type="button"
+            variant="outline"
             buttonClassName="w-full sm:w-auto"
             disabled={changeUsernameLoader}
+            onClick={onCancelClick}
           >
             {_.upperFirst(
-              t("settingChangeUsernameButtonLabel", {
-                defaultValue: settingChangeUsernameButtonLabel,
+              t("settingChangeUsernameCancelButtonLabel", {
+                defaultValue: settingChangeUsernameCancelButtonLabel,
               }),
             )}
-            {changeUsernameLoader && <MELoaderIcon />}
           </MEButton>
+
+          <MEActionAlertDialog {...alertConfig}>
+            <MEButton
+              type="button"
+              buttonVariant={variants.PRIMARY}
+              buttonClassName="w-full sm:w-auto"
+              disabled={changeUsernameLoader}
+            >
+              {_.upperFirst(
+                t("settingChangeUsernameButtonLabel", {
+                  defaultValue: settingChangeUsernameButtonLabel,
+                }),
+              )}
+              {changeUsernameLoader && <MELoaderIcon />}
+            </MEButton>
+          </MEActionAlertDialog>
         </CardFooter>
       </form>
     </Card>
@@ -212,11 +263,15 @@ const ChangeUsernameForm = () => {
 };
 
 const validationSchema = Yup.object({
-  password: Yup.string().trim().required(currentUsernameRequired),
+  password: Yup.string()
+    .trim()
+    .min(settingPasswordMinChar, passwordMinLength)
+    .max(settingPasswordMaxChar, passwordMaxLength)
+    .required(currentPasswordRequired),
   newUsername: Yup.string()
     .trim()
-    .min(settingUsernameMinChar, newUsernameMin)
-    .max(settingUsernameMaxChar, newUsernameMax)
+    .min(settingUsernameMinChar, usernameMinLength)
+    .max(settingUsernameMaxChar, usernameMaxLength)
     .required(newUsernameRequired),
   confirmUsername: Yup.string()
     .trim()

@@ -1,28 +1,37 @@
-const currentPasswordRequired = "Current password is required";
-const newPasswordRequired = "New password is required";
-const newPasswordMin = "Minimum 5 characters required";
-const newPasswordMax = "Maximum 10 characters allowed";
-const confirmPasswordRequired = "Confirm password is required";
-const confirmPasswordMismatch = "Passwords do not match";
+import {
+    settingPasswordMaxChar,
+    settingPasswordMinChar,
+    settingUsernameMaxChar,
+    settingUsernameMinChar, 
+} from "@MEUtils/validationConst";
 
-const currentUsernameRequired = "Current username is required";
+// Setting - Change Password Validation Messages
+const newPasswordRequired = "New password is required";
+const confirmPasswordMismatch = "Passwords do not match";
+const currentPasswordRequired = "Current password is required";
+const confirmPasswordRequired = "Confirm password is required";
+const passwordMaxLength = `Maximum ${settingPasswordMaxChar} characters allowed`;
+const passwordMinLength = `Minimum ${settingPasswordMinChar} characters required`;
+
+// Setting - Change Username Validation Messages
 const newUsernameRequired = "New username is required";
-const newUsernameMin = "Minimum 5 characters required";
-const newUsernameMax = "Maximum 10 characters allowed";
-const confirmUsernameRequired = "Confirm username is required";
 const confirmUsernameMismatch = "Usernames do not match";
+const currentUsernameRequired = "Current username is required";
+const confirmUsernameRequired = "Confirm username is required";
+const usernameMaxLength = `Maximum ${settingUsernameMaxChar} characters allowed`;
+const usernameMinLength = `Minimum ${settingUsernameMinChar} characters required`;
 
 export {
-  currentPasswordRequired,
+  passwordMinLength,
+  passwordMaxLength,
   newPasswordRequired,
-  newPasswordMin,
-  newPasswordMax,
+  currentPasswordRequired,
   confirmPasswordRequired,
   confirmPasswordMismatch,
-  currentUsernameRequired,
+  usernameMinLength,
+  usernameMaxLength,
   newUsernameRequired,
-  newUsernameMin,
-  newUsernameMax,
   confirmUsernameRequired,
   confirmUsernameMismatch,
+  currentUsernameRequired,
 };

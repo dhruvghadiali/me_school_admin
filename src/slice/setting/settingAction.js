@@ -1,19 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
+import { signOut } from "@MERedux/authentication/authenticationSlice";
+import { axiosInstance, isAPIServedSuccessfully } from "@MEUtils/axiosInstance";
 import {
   changeUsernameAPIRoute,
   changePasswordAPIRoute,
 } from "@MEUtils/apiRoutes";
-import {
-  axiosInstance,
-  isAPIServedSuccessfully,
-} from "@MEUtils/axiosInstance";
 
 import _ from "lodash";
 
 const changeUsername = createAsyncThunk(
   "setting/changeUsername",
-  async (payload, { getState, rejectWithValue }) => {
+  async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       const response = await axiosInstance.put(
         changeUsernameAPIRoute,
@@ -24,6 +22,7 @@ const changeUsername = createAsyncThunk(
       );
 
       if (isAPIServedSuccessfully(response)) {
+        dispatch(signOut());
         return {
           error: "",
         };
@@ -46,7 +45,7 @@ const changeUsername = createAsyncThunk(
 
 const changePassword = createAsyncThunk(
   "setting/changePassword",
-  async (payload, { getState, rejectWithValue }) => {
+  async (payload, { getState, rejectWithValue, dispatch }) => {
     try {
       const response = await axiosInstance.put(
         changePasswordAPIRoute,
@@ -57,6 +56,7 @@ const changePassword = createAsyncThunk(
       );
 
       if (isAPIServedSuccessfully(response)) {
+        dispatch(signOut());
         return {
           error: "",
         };
