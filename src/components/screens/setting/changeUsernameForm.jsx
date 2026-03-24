@@ -21,7 +21,7 @@ import {
 } from "@MEUtils/validationMessage/settingValidationMessage";
 import {
   settingChangeUsernameTitle,
-  settingCurrentUsernameLabel,
+  settingCurrentPasswordLabel,
   settingNewUsernameLabel,
   settingConfirmUsernameLabel,
   settingChangeUsernameButtonLabel,
@@ -42,19 +42,6 @@ import {
   CardFooter,
 } from "@MEShadcnComponents/card";
 
-const validationSchema = Yup.object({
-  currentUsername: Yup.string().trim().required(currentUsernameRequired),
-  newUsername: Yup.string()
-    .trim()
-    .min(settingUsernameMinChar, newUsernameMin)
-    .max(settingUsernameMaxChar, newUsernameMax)
-    .required(newUsernameRequired),
-  confirmUsername: Yup.string()
-    .trim()
-    .oneOf([Yup.ref("newUsername")], confirmUsernameMismatch)
-    .required(confirmUsernameRequired),
-});
-
 const ChangeUsernameForm = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -63,7 +50,7 @@ const ChangeUsernameForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      currentUsername: "",
+      password: "",
       newUsername: "",
       confirmUsername: "",
     },
@@ -71,7 +58,7 @@ const ChangeUsernameForm = () => {
     onSubmit: (values) => {
       dispatch(
         changeUsername({
-          currentUsername: values.currentUsername,
+          password: values.password,
           newUsername: values.newUsername,
         }),
       );
@@ -113,36 +100,6 @@ const ChangeUsernameForm = () => {
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <MEInput
-              id="currentUsername"
-              name="currentUsername"
-              type="text"
-              label={_.upperFirst(
-                t("settingCurrentUsernameLabel", {
-                  defaultValue: settingCurrentUsernameLabel,
-                }),
-              )}
-              required
-              value={formik.values.currentUsername}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              inputvariant={
-                formik.touched.currentUsername && formik.errors.currentUsername
-                  ? variants.DANGER
-                  : variants.PRIMARY
-              }
-              messagevariant={
-                formik.touched.currentUsername && formik.errors.currentUsername
-                  ? variants.DANGER
-                  : variants.PRIMARY
-              }
-              message={
-                formik.touched.currentUsername && formik.errors.currentUsername
-                  ? formik.errors.currentUsername
-                  : ""
-              }
-            />
-
             <MEInput
               id="newUsername"
               name="newUsername"
@@ -202,6 +159,36 @@ const ChangeUsernameForm = () => {
                   : ""
               }
             />
+
+            <MEInput
+              id="password"
+              name="password"
+              type="text"
+              label={_.upperFirst(
+                t("settingCurrentPasswordLabel", {
+                  defaultValue: settingCurrentPasswordLabel,
+                }),
+              )}
+              required
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              inputvariant={
+                formik.touched.password && formik.errors.password
+                  ? variants.DANGER
+                  : variants.PRIMARY
+              }
+              messagevariant={
+                formik.touched.password && formik.errors.password
+                  ? variants.DANGER
+                  : variants.PRIMARY
+              }
+              message={
+                formik.touched.password && formik.errors.password
+                  ? formik.errors.password
+                  : ""
+              }
+            />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col sm:flex-row gap-3 sm:justify-end">
@@ -223,5 +210,18 @@ const ChangeUsernameForm = () => {
     </Card>
   );
 };
+
+const validationSchema = Yup.object({
+  password: Yup.string().trim().required(currentUsernameRequired),
+  newUsername: Yup.string()
+    .trim()
+    .min(settingUsernameMinChar, newUsernameMin)
+    .max(settingUsernameMaxChar, newUsernameMax)
+    .required(newUsernameRequired),
+  confirmUsername: Yup.string()
+    .trim()
+    .oneOf([Yup.ref("newUsername")], confirmUsernameMismatch)
+    .required(confirmUsernameRequired),
+});
 
 export default ChangeUsernameForm;

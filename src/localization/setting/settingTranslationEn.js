@@ -3,7 +3,6 @@ const settingSubtitle = "manage your account settings";
 
 // Change Username
 const settingChangeUsernameTitle = "change username";
-const settingCurrentUsernameLabel = "current username";
 const settingNewUsernameLabel = "new username";
 const settingConfirmUsernameLabel = "confirm new username";
 const settingChangeUsernameButtonLabel = "update username";
@@ -21,13 +20,12 @@ export {
   settingHeader,
   settingSubtitle,
   settingChangeUsernameTitle,
-  settingCurrentUsernameLabel,
+  settingCurrentPasswordLabel,
   settingNewUsernameLabel,
   settingConfirmUsernameLabel,
   settingChangeUsernameButtonLabel,
   settingChangeUsernameCancelButtonLabel,
   settingChangePasswordTitle,
-  settingCurrentPasswordLabel,
   settingNewPasswordLabel,
   settingConfirmPasswordLabel,
   settingChangePasswordButtonLabel,
