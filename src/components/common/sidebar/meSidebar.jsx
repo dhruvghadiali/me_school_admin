@@ -1,11 +1,12 @@
-import {useState} from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { useSelector, useDispatch } from "react-redux";
+
+import _ from "lodash";
 
 import { sidebarMenuName } from "@MEUtils/enums";
-import { signOut } from "@/slice/authentication/authenticationSlice";
 import { changeActiveMenu } from "@MERedux/sidebar/sidebarSlice";
+import { signOut } from "@/slice/authentication/authenticationSlice";
 import {
   sidebarMenu,
   footerMenu,
@@ -26,19 +27,21 @@ import {
   SidebarInset,
   useSidebar,
 } from "@MEShadcnComponents/sidebar";
-import { Separator } from "@MEShadcnComponents/separator";
 import { sidebarMenuLabel, sidebar } from "@MELocalization/en";
 
-import _ from "lodash";
+import { LogOut } from "lucide-react";
 import PropTypes from "prop-types";
+import MEActionAlertDialog from "@MECommonComponents/alertDialog/actionAlertDialog";
 
 import logo from "@MEAssets/logo.png";
 
 const MainContent = ({ children }) => {
   const { open, isMobile } = useSidebar();
-  
+
   return (
-    <main className={`flex-1 overflow-auto transition-all duration-200 pr-6 ${!isMobile ? open ? 'pl-6 ml-48' : 'pl-6 ml-14' : ''}`}>
+    <main
+      className={`flex-1 overflow-auto transition-all duration-200 pr-6 ${!isMobile ? (open ? "pl-6 ml-48" : "pl-6 ml-14") : ""}`}
+    >
       {children}
     </main>
   );
@@ -68,11 +71,18 @@ const MESidebar = ({ children }) => {
 
   const onClick = (item) => {
     if (item.title === sidebarMenuName.LOGOUT) {
-      dispatch(signOut());
-    } else {
-      dispatch(changeActiveMenu(item.title));
+      return;
     }
+    dispatch(changeActiveMenu(item.title));
     navigate(item.url, { replace: false });
+  };
+
+  const onLogoutConfirm = () => {
+    dispatch(signOut());
+    navigate(
+      footerMenu.find((m) => m.title === sidebarMenuName.LOGOUT)?.url || "/",
+      { replace: false },
+    );
   };
 
   return (
@@ -97,7 +107,9 @@ const MESidebar = ({ children }) => {
           <div className="flex h-full items-center justify-start">
             <img src={logo} alt="Logo" className="h-10 w-10 mr-2" />
             <h2 className="text-white font-bold text-sm truncate group-data-[collapsible=icon]:hidden">
-              {_.upperCase(t('titleStatic', { defaultValue: sidebar.titleStatic }))}
+              {_.upperCase(
+                t("titleStatic", { defaultValue: sidebar.titleStatic }),
+              )}
             </h2>
           </div>
         </SidebarHeader>
@@ -117,7 +129,7 @@ const MESidebar = ({ children }) => {
                           tooltip={_.startCase(
                             t(item.title, {
                               defaultValue: sidebarMenuLabel[item.title],
-                            })
+                            }),
                           )}
                           className={`cursor-pointer ${
                             item.title === activeMenu
@@ -130,7 +142,7 @@ const MESidebar = ({ children }) => {
                             {_.startCase(
                               t(item.title, {
                                 defaultValue: sidebarMenuLabel[item.title],
-                              })
+                              }),
                             )}
                           </span>
                         </SidebarMenuButton>
@@ -148,24 +160,72 @@ const MESidebar = ({ children }) => {
               <SidebarMenu>
                 {footerMenu.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      onClick={() => handleMenuClick(item)}
-                      tooltip={_.upperFirst(
-                        t(item.title, {
-                          defaultValue: sidebarMenuLabel[item.title],
-                        })
-                      )}
-                      className="cursor-pointer"
-                    >
-                      <item.icon className="h-4 w-4" />
-                      <span>
-                        {_.upperFirst(
+                    {item.title === sidebarMenuName.LOGOUT ? (
+                      <MEActionAlertDialog
+                        icon={<LogOut className="text-dark" size={16} />}
+                        title={_.upperFirst(
+                          t("logoutAlertTitle", {
+                            defaultValue: sidebar.logoutAlertTitle,
+                          }),
+                        )}
+                        description={_.upperFirst(
+                          t("logoutAlertDescription", {
+                            defaultValue: sidebar.logoutAlertDescription,
+                          }),
+                        )}
+                        actions={[
+                          {
+                            label: "Cancel",
+                            className:
+                              "bg-secondary text-dark hover:bg-secondary/90",
+                            onClick: () => {},
+                          },
+                          {
+                            label: "Logout",
+                            className:
+                              "bg-danger text-white hover:bg-danger/90",
+                            onClick: onLogoutConfirm,
+                          },
+                        ]}
+                      >
+                        <SidebarMenuButton
+                          tooltip={_.upperFirst(
+                            t(item.title, {
+                              defaultValue: sidebarMenuLabel[item.title],
+                            }),
+                          )}
+                          className="cursor-pointer"
+                        >
+                          <item.icon className="h-4 w-4" />
+                          <span>
+                            {_.upperFirst(
+                              t(item.title, {
+                                defaultValue: sidebarMenuLabel[item.title],
+                              }),
+                            )}
+                          </span>
+                        </SidebarMenuButton>
+                      </MEActionAlertDialog>
+                    ) : (
+                      <SidebarMenuButton
+                        onClick={() => handleMenuClick(item)}
+                        tooltip={_.upperFirst(
                           t(item.title, {
                             defaultValue: sidebarMenuLabel[item.title],
-                          })
+                          }),
                         )}
-                      </span>
-                    </SidebarMenuButton>
+                        className="cursor-pointer"
+                      >
+                        <item.icon className="h-4 w-4" />
+                        <span>
+                          {_.upperFirst(
+                            t(item.title, {
+                              defaultValue: sidebarMenuLabel[item.title],
+                            }),
+                          )}
+                        </span>
+                      </SidebarMenuButton>
+                    )}
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
@@ -174,11 +234,13 @@ const MESidebar = ({ children }) => {
         </SidebarFooter>
       </Sidebar>
       <SidebarInset className="flex flex-col">
-        <MainContent activeMenu={activeMenu} t={t} sidebarMenuLabel={sidebarMenuLabel}>
-          <SidebarTrigger/>
-          <div className="pl-2">
-            {children}
-          </div>
+        <MainContent
+          activeMenu={activeMenu}
+          t={t}
+          sidebarMenuLabel={sidebarMenuLabel}
+        >
+          <SidebarTrigger />
+          <div className="pl-2">{children}</div>
         </MainContent>
       </SidebarInset>
     </SidebarProvider>
