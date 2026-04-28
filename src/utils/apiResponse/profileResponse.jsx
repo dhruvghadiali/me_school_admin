@@ -20,6 +20,7 @@ const setAddressInformation = (schoolAddress) => {
     longitude: _.get(schoolAddress, "longitude", null),
     buildingArea: _.get(schoolAddress, "building_area", null),
     outdoorArea: _.get(schoolAddress, "outdoor_area", null),
+    campusArea: _.get(schoolAddress, "campus_area", null),
     schoolHours: transformHoursPayload(_.get(schoolAddress, "school_hours", {})),
     administrativeHours: transformHoursPayload(_.get(schoolAddress, "administrative_hours", {})),
   };

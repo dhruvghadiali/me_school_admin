@@ -76,6 +76,7 @@ const updateSchoolAddressAPIPayload = (user, formPayload) => {
 
   if (formPayload.latitude) data.latitude = formPayload.latitude;
   if (formPayload.longitude) data.longitude = formPayload.longitude;
+  if (formPayload.campusArea) data.campus_area = formPayload.campusArea;
   if (formPayload.buildingArea) data.building_area = formPayload.buildingArea;
   if (formPayload.outdoorArea) data.outdoor_area = formPayload.outdoorArea;
 

@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@MEShadcnComponents/card";
 
-const MENestedInformationCardComponent = ({ title, informationList }) => {
+const MENestedInformationCardComponent = ({ title, informationList, titleIcon }) => {
   return (
     <Card className="bg-secondary/50 shadow-lg shadow-primary/50 hover:cursor-pointer">
       <CardHeader>
